@@ -9,6 +9,7 @@ define space ram type=ram_space size=4 default;
 
 define space register type=register_space size=4;
 
+@define SALIGN 1
 
 define register offset=0 size=4 [ pfp sp rip r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14 r15 g0 g1 g2 g3 g4 g5 g6 g7 g8 g9 g10 g11 g12 g13 g14 fp ];
 
@@ -56,9 +57,11 @@ define token instr (32)
   fp0004=(0,4)
   op0004=(0,4)
   disp0212=(2,12)
+  sdisp0212=(2,12) signed
   t=(1,1)
   s2=(0,0)
   disp0223=(2,23)
+  sdisp0223=(2,23) signed
   op0000=(0,0)
   mode1213=(12,13)
   mode1011=(10,11)
@@ -93,15 +96,22 @@ attach variables [ sfr0004l sfr1418l sfr1923l ]
 attach variables [ sfr0004tq sfr1418tq sfr1923tq ]
                  [ sf0 _ _ _ sf4 _ _ _ sf8 _ _ _ sf12 _ _ _ sf16 _ _ _ sf20 _ _ _ sf24 _ _ _ sf28 _ _ _ ];
 
+#TODO CC    appears to be:  (mask & cc || mask == cc)
+# 010 true
+# 000 false
+# 000 unordered
+# 001 gt
+# 010 eq
+# 100 lt
+# 01X carry out
+# 0X1 overflow
 
 
-
-
-regS1: reg0004 is reg0004 & m2 & m1 & m0=0 & s1 & s0=0 { export reg0004; }
+regS1: reg0004 is reg0004 & m2 & m1 & m0=0 & s1 & s0=0 { local tmp:4 = reg0004; export tmp; }
 regS1l: reg0004l is reg0004l & m2 & m1 & m0=0 & s1 & s0=0 { export reg0004l; }
 regS1tq: reg0004tq is reg0004tq & m2 & m1 & m0=0 & s1 & s0=0 { export reg0004tq; }
-regS1: op0004 is op0004 & m2 & m1 & m0=1 & s1 & s0=0 { export op0004; }
-regS1: sfr0004 is sfr0004 & m2 & m1 & m0=0 & s1 & s0=1 { export sfr0004; }
+regS1: op0004 is op0004 & m2 & m1 & m0=1 & s1 & s0=0 { local tmp:4 = op0004; export tmp; }
+regS1: sfr0004 is sfr0004 & m2 & m1 & m0=0 & s1 & s0=1 { local tmp:4 = sfr0004; export tmp; }
 regS1l: sfr0004l is sfr0004l & m2 & m1 & m0=0 & s1 & s0=1 { export sfr0004l; }
 regS1tq: sfr0004tq is sfr0004tq & m2 & m1 & m0=0 & s1 & s0=1 { export sfr0004tq; }
 regS2: reg1418 is reg1418 & m2 & m1=0 & m0 & s1=0 & s0 { export reg1418; }
@@ -114,39 +124,38 @@ regS2tq: sfr1418tq is sfr1418tq & m2 & m1=0 & m0 & s1=1 & s0 { export sfr1418tq;
 regSD: reg1923 is reg1923 & m2=0 & m1 & m0 & s1 & s0 { export reg1923; }
 regSDl: reg1923l is reg1923l & m2=0 & m1 & m0 & s1 & s0 { export reg1923l; }
 regSDtq: reg1923tq is reg1923tq & m2=0 & m1 & m0 & s1 & s0 { export reg1923tq; }
-cobrS1: reg0004 is reg0004 & m0=0 & s1=0 & t { export reg0004; }
-cobrS1l: reg0004l is reg0004 & m0=0 & s1=0 & t { export reg0004l; }
-cobrS1tq: reg0004tq is reg0004 & m0=0 & s1=0 & t { export reg0004tq; }
-cobrS2: reg1418 is reg1418 & m0=0 & s1=0 & t { export reg1418; }
-cobrS2l: reg1418l is reg1418l & m0=0 & s1=0 & t { export reg1418l; }
-cobrS2tq: reg1418tq is reg1418tq & m0=0 & s1=0 & t { export reg1418tq; }
-cobrSD:  reg1923 is reg1923 & m0=0 & s1=0 & t { export reg1923; }
-cobrSDl:  reg1923l is reg1923l & m0=0 & s1=0 & t { export reg1923l; }
-cobrSDtq:  reg1923tq is reg1923tq & m0=0 & s1=0 & t { export reg1923tq; }
-cobrS1: op0004 is op0004 & m0=1 & s1=0 & t { export op0004; }
-cobrS2: reg1418 is reg1418 & m0=1 & s1=0 & t { export reg1418; }
-cobrS2l: reg1418l is reg1418l & m0=1 & s1=0 & t { export reg1418l; }
-cobrS2tq: reg1418tq is reg1418tq & m0=1 & s1=0 & t { export reg1418tq; }
-cobrSD:  reg1923 is reg1923 & m0=1 & s1=0 & t { export reg1923; }
-cobrSDl:  reg1923l is reg1923l & m0=1 & s1=0 & t { export reg1923l; }
-cobrSDtq:  reg1923tq is reg1923tq & m0=1 & s1=0 & t { export reg1923tq; }
-cobrS1: reg0004 is reg0004 & m0=0 & s1=1 & t { export reg0004; }
-cobrS1l: reg0004l is reg0004l & m0=0 & s1=1 & t { export reg0004l; }
-cobrS1tq: reg0004tq is reg0004tq & m0=0 & s1=1 & t { export reg0004tq; }
-cobrS2: sfr1418 is sfr1418 & m0=0 & s1=1 & t { export sfr1418; }
-cobrS2l: sfr1418l is sfr1418l & m0=0 & s1=1 & t { export sfr1418l; }
-cobrS2tq: sfr1418tq is sfr1418tq & m0=0 & s1=1 & t { export sfr1418tq; }
-cobrSD:  sfr1923 is sfr1923 & m0=0 & s1=1 & t { export sfr1923; }
-cobrSDl:  sfr1923l is sfr1923l & m0=0 & s1=1 & t { export sfr1923l; }
-cobrSDtq:  sfr1923tq is sfr1923tq & m0=0 & s1=1 & t { export sfr1923tq; }
-cobrS1: op0004 is op0004 & m0=1 & s1=0 & t=0 { export op0004; }
-cobrS2: sfr1418 is sfr1418 & m0=1 & s1=1 & t=0 { export sfr1418; }
-cobrS2l: sfr1418l is sfr1418l & m0=1 & s1=1 & t=0 { export sfr1418l; }
-cobrS2tq: sfr1418tq is sfr1418tq & m0=1 & s1=1 & t=0 { export sfr1418tq; }
-cobrSD:  sfr1923 is sfr1923 & m0=1 & s1=1 & t=0 { export sfr1923; }
-cobrSDl:  sfr1923l is sfr1923l & m0=1 & s1=1 & t=0 { export sfr1923l; }
-cobrSDtq:  sfr1923tq is sfr1923tq & m0=1 & s1=1 & t=0 { export sfr1923tq; }
-
+cobrS1: reg0004 is reg0004 & m2=0 & s2=0 & t { export reg0004; }
+cobrS1l: reg0004l is reg0004 & m2=0 & s2=0 & t { export reg0004l; }
+cobrS1tq: reg0004tq is reg0004 & m2=0 & s2=0 & t { export reg0004tq; }
+cobrS2: reg1418 is reg1418 & m2=0 & s2=0 & t { export reg1418; }
+cobrS2l: reg1418l is reg1418l & m2=0 & s2=0 & t { export reg1418l; }
+cobrS2tq: reg1418tq is reg1418tq & m2=0 & s2=0 & t { export reg1418tq; }
+cobrSD:  reg1923 is reg1923 & m2=0 & s2=0 & t { export reg1923; }
+cobrSDl:  reg1923l is reg1923l & m2=0 & s2=0 & t { export reg1923l; }
+cobrSDtq:  reg1923tq is reg1923tq & m2=0 & s2=0 & t { export reg1923tq; }
+cobrS1: op0004 is op0004 & m2=1 & s2=0 & t { export op0004; }
+cobrS2: reg1418 is reg1418 & m2=1 & s2=0 & t { export reg1418; }
+cobrS2l: reg1418l is reg1418l & m2=1 & s2=0 & t { export reg1418l; }
+cobrS2tq: reg1418tq is reg1418tq & m2=1 & s2=0 & t { export reg1418tq; }
+cobrSD:  reg1923 is reg1923 & m2=1 & s2=0 & t { export reg1923; }
+cobrSDl:  reg1923l is reg1923l & m2=1 & s2=0 & t { export reg1923l; }
+cobrSDtq:  reg1923tq is reg1923tq & m2=1 & s2=0 & t { export reg1923tq; }
+cobrS1: reg0004 is reg0004 & m2=0 & s2=1 & t { export reg0004; }
+cobrS1l: reg0004l is reg0004l & m2=0 & s2=1 & t { export reg0004l; }
+cobrS1tq: reg0004tq is reg0004tq & m2=0 & s2=1 & t { export reg0004tq; }
+cobrS2: sfr1418 is sfr1418 & m2=0 & s2=1 & t { export sfr1418; }
+cobrS2l: sfr1418l is sfr1418l & m2=0 & s2=1 & t { export sfr1418l; }
+cobrS2tq: sfr1418tq is sfr1418tq & m2=0 & s2=1 & t { export sfr1418tq; }
+cobrSD:  sfr1923 is sfr1923 & m2=0 & s2=1 & t { export sfr1923; }
+cobrSDl:  sfr1923l is sfr1923l & m2=0 & s2=1 & t { export sfr1923l; }
+cobrSDtq:  sfr1923tq is sfr1923tq & m2=0 & s2=1 & t { export sfr1923tq; }
+cobrS1: op0004 is op0004 & m2=1 & s2=0 & t=0 { export op0004; }
+cobrS2: sfr1418 is sfr1418 & m2=1 & s2=1 & t=0 { export sfr1418; }
+cobrS2l: sfr1418l is sfr1418l & m2=1 & s2=1 & t=0 { export sfr1418l; }
+cobrS2tq: sfr1418tq is sfr1418tq & m2=1 & s2=1 & t=0 { export sfr1418tq; }
+cobrSD:  sfr1923 is sfr1923 & m2=1 & s2=1 & t=0 { export sfr1923; }
+cobrSDl:  sfr1923l is sfr1923l & m2=1 & s2=1 & t=0 { export sfr1923l; }
+cobrSDtq:  sfr1923tq is sfr1923tq & m2=1 & s2=1 & t=0 { export sfr1923tq; }
 
 
 efa1: offset0011 is offset0011 & mode1213=0 { export *[ram]:1 offset0011; }
@@ -220,7 +229,11 @@ efa8: disp0031 (reg1418) [reg0004 * scale] is reg1418 & reg0004 & scale & mode12
 
 
 # addi
-:addi regS1, regS2, regSD is op2431=0x59 & op0710=0x1 & regS1 & regS2 & regSD unimpl
+:addi regS1, regS2, regSD is op2431=0x59 & op0710=0x1 & regS1 & regS2 & regSD
+{
+	#TODO  flags
+	regSD = regS1 + regS2;
+}
 
 
 # addie
@@ -256,39 +269,82 @@ efa8: disp0031 (reg1418) [reg0004 * scale] is reg1418 & reg0004 & scale & mode12
 
 
 # addo
-:addo regS1, regS2, regSD is op2431=0x59 & op0710=0x0 & regS1 & regS2 & regSD unimpl
+:addo regS1, regS2, regSD is op2431=0x59 & op0710=0x0 & regS1 & regS2 & regSD
+{
+	regSD = regS1 + regS2;
+}
 
 
 # addoe
-:addoe regS1, regS2, regSD is op2431=0x7a & op0710=0x0 & regS1 & regS2 & regSD unimpl
+:addoe regS1, regS2, regSD is op2431=0x7a & op0710=0x0 & regS1 & regS2 & regSD
+{
+	local acCC:1 = ac:1 & 0x07;
+	if (!(acCC & 2)) goto inst_next;
+	regSD = regS1 + regS2;
+}
 
 
 # addog
-:addog regS1, regS2, regSD is op2431=0x79 & op0710=0x0 & regS1 & regS2 & regSD unimpl
+:addog regS1, regS2, regSD is op2431=0x79 & op0710=0x0 & regS1 & regS2 & regSD
+{
+	local acCC:1 = ac:1 & 0x07;
+	if (!(acCC & 1)) goto inst_next;
+	regSD = regS1 + regS2;
+}
 
 
 # addoge
-:addoge regS1, regS2, regSD is op2431=0x7b & op0710=0x0 & regS1 & regS2 & regSD unimpl
+:addoge regS1, regS2, regSD is op2431=0x7b & op0710=0x0 & regS1 & regS2 & regSD
+{
+	local acCC:1 = ac:1 & 0x07;
+	if (!(acCC & 3)) goto inst_next;
+	regSD = regS1 + regS2;
+}
 
 
 # addol
-:addol regS1, regS2, regSD is op2431=0x7c & op0710=0x0 & regS1 & regS2 & regSD unimpl
+:addol regS1, regS2, regSD is op2431=0x7c & op0710=0x0 & regS1 & regS2 & regSD
+{
+	local acCC:1 = ac:1 & 0x07;
+	if (!(acCC & 4)) goto inst_next;
+	regSD = regS1 + regS2;
+}
 
 
 # addole
-:addole regS1, regS2, regSD is op2431=0x7e & op0710=0x0 & regS1 & regS2 & regSD unimpl
+:addole regS1, regS2, regSD is op2431=0x7e & op0710=0x0 & regS1 & regS2 & regSD
+{
+	local acCC:1 = ac:1 & 0x07;
+	if (!(acCC & 6)) goto inst_next;
+	regSD = regS1 + regS2;
+}
 
 
 # addone
-:addone regS1, regS2, regSD is op2431=0x7d & op0710=0x0 & regS1 & regS2 & regSD unimpl
+:addone regS1, regS2, regSD is op2431=0x7d & op0710=0x0 & regS1 & regS2 & regSD
+{
+	local acCC:1 = ac:1 & 0x07;
+	if (!(acCC & 5)) goto inst_next;
+	regSD = regS1 + regS2;
+}
 
 
 # addono
-:addono regS1, regS2, regSD is op2431=0x78 & op0710=0x0 & regS1 & regS2 & regSD unimpl
+:addono regS1, regS2, regSD is op2431=0x78 & op0710=0x0 & regS1 & regS2 & regSD
+{
+	local acCC:1 = ac:1 & 0x07;
+	if (acCC) goto inst_next;
+	regSD = regS1 + regS2;
+}
 
 
 # addoo
-:addoo regS1, regS2, regSD is op2431=0x7f & op0710=0x0 & regS1 & regS2 & regSD unimpl
+:addoo regS1, regS2, regSD is op2431=0x7f & op0710=0x0 & regS1 & regS2 & regSD
+{
+	local acCC:1 = ac:1 & 0x07;
+	if (!acCC) goto inst_next;
+	regSD = regS1 + regS2;
+}
 
 
 # addr
@@ -304,7 +360,10 @@ efa8: disp0031 (reg1418) [reg0004 * scale] is reg1418 & reg0004 & scale & mode12
 
 
 # and
-:and regS1, regS2, regSD is op2431=0x58 & op0710=0x1 & regS1 & regS2 & regSD unimpl
+:and regS1, regS2, regSD is op2431=0x58 & op0710=0x1 & regS1 & regS2 & regSD
+{
+	regSD = regS1 & regS2;
+}
 
 
 # andnot
@@ -328,15 +387,32 @@ efa8: disp0031 (reg1418) [reg0004 * scale] is reg1418 & reg0004 & scale & mode12
 
 
 # b
-:b disp0223 is op2431=0x8 & op0000=0x0 & disp0223 unimpl
+:b sdisp0223 is op2431=0x8 & op0000=0x0 & sdisp0223
+{
+	local temp:4 = sdisp0223 << 2;
+	temp = (inst_start + temp) & 0xfffffffc;
+	goto [temp];
+}
 
 
 # bal
-:bal disp0223 is op2431=0xb & op0000=0x0 & disp0223 unimpl
+:bal sdisp0223 is op2431=0xb & op0000=0x0 & sdisp0223
+{
+	g14 = inst_next;
+	local temp:4 = sdisp0223 << 2;
+	temp = (inst_start + temp) & 0xfffffffc;
+	goto [temp];	
+}
 
 
 # balx
-:balx efa1, reg1923 is ( op2431=0x85 & reg1923 ) ... & efa1 unimpl
+:balx efa1, reg1923 is ( op2431=0x85 & reg1923 ) ... & efa1
+{
+	local temp:4 = zext(efa1) << 2;
+	reg1923 = inst_next;
+	temp = (inst_start + temp) & 0xfffffffc;
+	goto [temp];
+}
 
 
 # bbc
@@ -348,47 +424,114 @@ efa8: disp0031 (reg1418) [reg0004 * scale] is reg1418 & reg0004 & scale & mode12
 
 
 # be
-:be disp0223 is op2431=0x12 & op0000=0x0 & disp0223 unimpl
+:be sdisp0223 is op2431=0x12 & op0000=0x0 & sdisp0223
+{
+	local acCC:1 = ac:1 & 0x07;
+	if (!(acCC & 2)) goto inst_next;
+	local temp:4 = sdisp0223 << 2;
+	temp = (inst_start + temp) & 0xfffffffc;
+	goto [temp];
+}
 
 
 # bg
-:bg disp0223 is op2431=0x11 & op0000=0x0 & disp0223 unimpl
+:bg sdisp0223 is op2431=0x11 & op0000=0x0 & sdisp0223
+{
+	local acCC:1 = ac:1 & 0x07;
+	if (!(acCC & 1)) goto inst_next;
+	local temp:4 = sdisp0223 << 2;
+	temp = (inst_start + temp) & 0xfffffffc;
+	goto [temp];
+}
 
 
 # bge
-:bge disp0223 is op2431=0x13 & op0000=0x0 & disp0223 unimpl
+:bge sdisp0223 is op2431=0x13 & op0000=0x0 & sdisp0223
+{
+	local acCC:1 = ac:1 & 0x07;
+	if (!(acCC & 3)) goto inst_next;
+	local temp:4 = sdisp0223 << 2;
+	temp = (inst_start + temp) & 0xfffffffc;
+	goto [temp];
+}
 
 
 # bl
-:bl disp0223 is op2431=0x14 & op0000=0x0 & disp0223 unimpl
+:bl sdisp0223 is op2431=0x14 & op0000=0x0 & sdisp0223
+{
+	local acCC:1 = ac:1 & 0x07;
+	if (!(acCC & 4)) goto inst_next;
+	local temp:4 = sdisp0223 << 2;
+	temp = (inst_start + temp) & 0xfffffffc;
+	goto [temp];
+}
 
 
 # ble
-:ble disp0223 is op2431=0x16 & op0000=0x0 & disp0223 unimpl
+:ble sdisp0223 is op2431=0x16 & op0000=0x0 & sdisp0223
+{
+	local acCC:1 = ac:1 & 0x07;
+	if (!(acCC & 6)) goto inst_next;
+	local temp:4 = sdisp0223 << 2;
+	temp = (inst_start + temp) & 0xfffffffc;
+	goto [temp];
+}
 
 
 # bne
-:bne disp0223 is op2431=0x15 & op0000=0x0 & disp0223 unimpl
-
+:bne sdisp0223 is op2431=0x15 & op0000=0x0 & sdisp0223
+{
+	local acCC:1 = ac:1 & 0x07;
+	if (!(acCC & 5)) goto inst_next;
+	local temp:4 = sdisp0223 << 2;
+	temp = (inst_start + temp) & 0xfffffffc;
+	goto [temp];
+}
 
 # bno
-:bno disp0223 is op2431=0x10 & op0000=0x0 & disp0223 unimpl
-
+:bno sdisp0223 is op2431=0x10 & op0000=0x0 & sdisp0223
+{
+	local acCC:1 = ac:1 & 0x07;
+	if (acCC) goto inst_next;
+	local temp:4 = sdisp0223 << 2;
+	temp = (inst_start + temp) & 0xfffffffc;
+	goto [temp];
+}
 
 # bo
-:bo disp0223 is op2431=0x17 & op0000=0x0 & disp0223 unimpl
-
+:bo sdisp0223 is op2431=0x17 & op0000=0x0 & sdisp0223
+{
+	local acCC:1 = ac:1 & 0x07;
+	if (!acCC) goto inst_next;
+	local temp:4 = sdisp0223 << 2;
+	temp = (inst_start + temp) & 0xfffffffc;
+	goto [temp];
+}
 
 # bswap
 :bswap regS1, regSD is m1=0x1 & op2431=0x5a & op0710=0xd & regS1 & regSD unimpl
 
 
 # bx
-:bx efa1 is ( op2431=0x84 ) ... & efa1 unimpl
+:bx efa1 is ( op2431=0x84 ) ... & efa1
+{
+	local temp:4 = zext(efa1) << 2;
+	goto [temp];
+}
 
 
 # call
-:call disp0223 is op2431=0x9 & op0000=0x0 & disp0223 unimpl
+:call sdisp0223 is op2431=0x9 & op0000=0x0 & sdisp0223
+{
+	rip = inst_next;
+	pfp = fp;
+	fp = (sp + ($(SALIGN) * 16 - 1)) & ~($(SALIGN) * 16 - 1);
+	sp = fp + 64;
+	local temp:4 = sdisp0223 << 2;
+	temp = (inst_start + temp) & 0xfffffffc;
+	pfp = fp;
+	call [temp];	
+}
 
 
 # calls
@@ -396,7 +539,16 @@ efa8: disp0031 (reg1418) [reg0004 * scale] is reg1418 & reg0004 & scale & mode12
 
 
 # callx
-:callx efa1 is ( op2431=0x86 ) ... & efa1 unimpl
+:callx efa1 is ( op2431=0x86 ) ... & efa1
+{
+	rip = inst_next;
+	pfp = fp;
+	fp = (sp + ($(SALIGN) * 16 - 1)) & ~($(SALIGN) * 16 - 1);
+	sp = fp + 64;
+	local temp:4 = zext(efa1) << 2;
+	pfp = fp;
+	call [temp];	
+}
 
 
 # chkbit
@@ -424,7 +576,14 @@ efa8: disp0031 (reg1418) [reg0004 * scale] is reg1418 & reg0004 & scale & mode12
 
 
 # cmpi
-:cmpi regS1, regS2 is m2=0x1 & op2431=0x5a & op0710=0x1 & regS1 & regS2 unimpl
+:cmpi regS1, regS2 is m2=0x1 & op2431=0x5a & op0710=0x1 & regS1 & regS2
+{
+	#TODO  integer?
+	ac[0,3] = 0;
+	ac[2,1] = regS1 s< regS2;
+	ac[1,1] = regS1 == regS2;
+	ac[0,1] = regS1 s> regS2;	
+}
 
 
 # cmpib
@@ -444,7 +603,10 @@ efa8: disp0031 (reg1418) [reg0004 * scale] is reg1418 & reg0004 & scale & mode12
 
 
 # cmpibl
-:cmpibl cobrS1, cobrS2, disp0212 is op2431=0x3c & cobrS1 & cobrS2 & disp0212 unimpl
+:cmpibl cobrS1, cobrS2, disp0212 is op2431=0x3c & cobrS1 & cobrS2 & disp0212
+{
+
+}
 
 
 # cmpible
@@ -476,35 +638,112 @@ efa8: disp0031 (reg1418) [reg0004 * scale] is reg1418 & reg0004 & scale & mode12
 
 
 # cmpo
-:cmpo regS1, regS2 is m2=0x1 & op2431=0x5a & op0710=0x0 & regS1 & regS2 unimpl
+:cmpo regS1, regS2 is m2=0x1 & op2431=0x5a & op0710=0x0 & regS1 & regS2
+{
+	ac[0,3] = 0;
+	ac[2,1] = regS1 < regS2;
+	ac[1,1] = regS1 == regS2;
+	ac[0,1] = regS1 > regS2;
+}
 
 
 # cmpob
-:cmpob regS1, regS2 is m2=0x1 & op2431=0x59 & op0710=0x4 & regS1 & regS2 unimpl
+:cmpob regS1, regS2 is m2=0x1 & op2431=0x59 & op0710=0x4 & regS1 & regS2
+{
+	ac[0,3] = 0;
+	ac[2,1] = regS1:1 < regS2:1;
+	ac[1,1] = regS1:1 == regS2:1;
+	ac[0,1] = regS1:1 > regS2:1;
+}
 
 
 # cmpobe
-:cmpobe cobrS1, cobrS2, disp0212 is op2431=0x32 & cobrS1 & cobrS2 & disp0212 unimpl
+:cmpobe cobrS1, cobrS2, sdisp0212 is op2431=0x32 & cobrS1 & cobrS2 & sdisp0212
+{
+	ac[0,3] = 0;
+	ac[2,1] = cobrS1 < cobrS2;
+	ac[1,1] = cobrS1 == cobrS2;
+	ac[0,1] = cobrS1 > cobrS2;
+	local acCC:1 = ac:1 & 0x07;
+	if (!(acCC & 2)) goto inst_next;
+	local temp:4 = sdisp0212 << 2;
+	temp = (inst_start + temp) & 0xfffffffc;
+	goto [temp];
+}
 
 
 # cmpobg
-:cmpobg cobrS1, cobrS2, disp0212 is op2431=0x31 & cobrS1 & cobrS2 & disp0212 unimpl
+:cmpobg cobrS1, cobrS2, sdisp0212 is op2431=0x31 & cobrS1 & cobrS2 & sdisp0212
+{
+	ac[0,3] = 0;
+	ac[2,1] = cobrS1 < cobrS2;
+	ac[1,1] = cobrS1 == cobrS2;
+	ac[0,1] = cobrS1 > cobrS2;
+	local acCC:1 = ac:1 & 0x07;
+	if (!(acCC & 1)) goto inst_next;
+	local temp:4 = sdisp0212 << 2;
+	temp = (inst_start + temp) & 0xfffffffc;
+	goto [temp];
+}
 
 
 # cmpobge
-:cmpobge cobrS1, cobrS2, disp0212 is op2431=0x33 & cobrS1 & cobrS2 & disp0212 unimpl
-
+:cmpobge cobrS1, cobrS2, sdisp0212 is op2431=0x33 & cobrS1 & cobrS2 & sdisp0212
+{
+	ac[0,3] = 0;
+	ac[2,1] = cobrS1 < cobrS2;
+	ac[1,1] = cobrS1 == cobrS2;
+	ac[0,1] = cobrS1 > cobrS2;
+	local acCC:1 = ac:1 & 0x07;
+	if (!(acCC & 3)) goto inst_next;
+	local temp:4 = sdisp0212 << 2;
+	temp = (inst_start + temp) & 0xfffffffc;
+	goto [temp];
+}
 
 # cmpobl
-:cmpobl cobrS1, cobrS2, disp0212 is op2431=0x34 & cobrS1 & cobrS2 & disp0212 unimpl
+:cmpobl cobrS1, cobrS2, sdisp0212 is op2431=0x34 & cobrS1 & cobrS2 & sdisp0212
+{
+	ac[0,3] = 0;
+	ac[2,1] = cobrS1 < cobrS2;
+	ac[1,1] = cobrS1 == cobrS2;
+	ac[0,1] = cobrS1 > cobrS2;
+	local acCC:1 = ac:1 & 0x07;
+	if (!(acCC & 4)) goto inst_next;
+	local temp:4 = sdisp0212 << 2;
+	temp = (inst_start + temp) & 0xfffffffc;
+	goto [temp];
+}
 
 
 # cmpoble
-:cmpoble cobrS1, cobrS2, disp0212 is op2431=0x36 & cobrS1 & cobrS2 & disp0212 unimpl
+:cmpoble cobrS1, cobrS2, sdisp0212 is op2431=0x36 & cobrS1 & cobrS2 & sdisp0212
+{
+	ac[0,3] = 0;
+	ac[2,1] = cobrS1 < cobrS2;
+	ac[1,1] = cobrS1 == cobrS2;
+	ac[0,1] = cobrS1 > cobrS2;
+	local acCC:1 = ac:1 & 0x07;
+	if (!(acCC & 6)) goto inst_next;
+	local temp:4 = sdisp0212 << 2;
+	temp = (inst_start + temp) & 0xfffffffc;
+	goto [temp];
+}
 
 
 # cmpobne
-:cmpobne cobrS1, cobrS2, disp0212 is op2431=0x35 & cobrS1 & cobrS2 & disp0212 unimpl
+:cmpobne cobrS1, cobrS2, sdisp0212 is op2431=0x35 & cobrS1 & cobrS2 & sdisp0212
+{
+	ac[0,3] = 0;
+	ac[2,1] = cobrS1 < cobrS2;
+	ac[1,1] = cobrS1 == cobrS2;
+	ac[0,1] = cobrS1 > cobrS2;
+	local acCC:1 = ac:1 & 0x07;
+	if (!(acCC & 5)) goto inst_next;
+	local temp:4 = sdisp0212 << 2;
+	temp = (inst_start + temp) & 0xfffffffc;
+	goto [temp];
+}
 
 
 # cmpor
@@ -516,7 +755,13 @@ efa8: disp0031 (reg1418) [reg0004 * scale] is reg1418 & reg0004 & scale & mode12
 
 
 # cmpos
-:cmpos regS1, regS2 is m2=0x1 & op2431=0x59 & op0710=0x6 & regS1 & regS2 unimpl
+:cmpos regS1, regS2 is m2=0x1 & op2431=0x59 & op0710=0x6 & regS1 & regS2
+{
+	ac[0,3] = 0;
+	ac[2,1] = regS1:2 < regS2:2;
+	ac[1,1] = regS1:2 == regS2:2;
+	ac[0,1] = regS1:2 > regS2:2;
+}
 
 
 # cmpr
@@ -536,7 +781,13 @@ efa8: disp0031 (reg1418) [reg0004 * scale] is reg1418 & reg0004 & scale & mode12
 
 
 # concmpo
-:concmpo regS1, regS2 is m2=0x1 & op2431=0x5a & op0710=0x2 & regS1 & regS2 unimpl
+:concmpo regS1, regS2 is m2=0x1 & op2431=0x5a & op0710=0x2 & regS1 & regS2
+{
+	if ((ac & 4) == 0) goto inst_next;
+	ac[0,3] = 0;
+	ac[1,1] = regS1 <= regS2;
+	ac[0,1] = regS1 > regS2;
+}
 
 
 # condrec
@@ -720,11 +971,17 @@ efa8: disp0031 (reg1418) [reg0004 * scale] is reg1418 & reg0004 & scale & mode12
 
 
 # ld
-:ld efa4, reg1923 is ( op2431=0x90 & reg1923 ) ... & efa4 unimpl
+:ld efa4, reg1923 is ( op2431=0x90 & reg1923 ) ... & efa4
+{
+	reg1923 = efa4;
+}
 
 
 # lda
-:lda efa1, reg1923 is ( op2431=0x8c & reg1923 ) ... & efa1 unimpl
+:lda efa1, reg1923 is ( op2431=0x8c & reg1923 ) ... & efa1
+{
+	reg1923 = zext(efa1);
+}
 
 
 # ldib
@@ -812,15 +1069,26 @@ efa8: disp0031 (reg1418) [reg0004 * scale] is reg1418 & reg0004 & scale & mode12
 
 
 # mov
-:mov regS1, regSD is m1=0x1 & op2431=0x5c & op0710=0xc & regS1 & regSD unimpl
+:mov regS1, regSD is m1=0x1 & op2431=0x5c & op0710=0xc & regS1 & regSD
+{
+	regSD = regS1;
+}
 
 
 # movl
-:movl regS1l, regSDl is m1=0x1 & op2431=0x5d & op0710=0xc & regS1l & regSDl unimpl
+:movl regS1l, regSDl is m1=0x1 & op2431=0x5d & op0710=0xc & regS1l & regSDl
+{
+	#TODO  maybe super broken
+	regSDl = regS1l;
+}
 
 
 # movq
-:movq regS1tq, regSDtq is m1=0x1 & op2431=0x5f & op0710=0xc & regS1tq & regSDtq unimpl
+:movq regS1tq, regSDtq is m1=0x1 & op2431=0x5f & op0710=0xc & regS1tq & regSDtq
+{
+	#TODO  super broken
+	regSDtq = regS1tq;
+}
 
 
 # movqstr
@@ -844,7 +1112,11 @@ efa8: disp0031 (reg1418) [reg0004 * scale] is reg1418 & reg0004 & scale & mode12
 
 
 # movt
-:movt regS1tq, regSDtq is m1=0x1 & op2431=0x5e & op0710=0xc & regS1tq & regSDtq unimpl
+:movt regS1tq, regSDtq is m1=0x1 & op2431=0x5e & op0710=0xc & regS1tq & regSDtq
+{
+	#TODO  super broken
+	regSDtq = regS1tq;
+}
 
 
 # muli
@@ -888,7 +1160,10 @@ efa8: disp0031 (reg1418) [reg0004 * scale] is reg1418 & reg0004 & scale & mode12
 
 
 # or
-:or regS1, regS2, regSD is op2431=0x58 & op0710=0x7 & regS1 & regS2 & regSD unimpl
+:or regS1, regS2, regSD is op2431=0x58 & op0710=0x7 & regS1 & regS2 & regSD
+{
+	regSD = regS1 | regS2;
+}
 
 
 # ornot
@@ -920,7 +1195,11 @@ efa8: disp0031 (reg1418) [reg0004 * scale] is reg1418 & reg0004 & scale & mode12
 
 
 # ret
-:ret  is op2431=0xa & op0000=0x0 unimpl
+:ret  is op2431=0xa & op0000=0x0
+{
+	fp = pfp;
+	return [rip];
+}
 
 
 # rotate
@@ -1008,11 +1287,18 @@ efa8: disp0031 (reg1418) [reg0004 * scale] is reg1418 & reg0004 & scale & mode12
 
 
 # shli
-:shli regS1, regS2, regSD is op2431=0x59 & op0710=0xe & regS1 & regS2 & regSD unimpl
+:shli regS1, regS2, regSD is op2431=0x59 & op0710=0xe & regS1 & regS2 & regSD
+{
+	#TODO  overflow
+	regSD = regS2 << regS1;
+}
 
 
 # shlo
-:shlo regS1, regS2, regSD is op2431=0x59 & op0710=0xc & regS1 & regS2 & regSD unimpl
+:shlo regS1, regS2, regSD is op2431=0x59 & op0710=0xc & regS1 & regS2 & regSD
+{
+	regSD = regS2 << regS1;
+}
 
 
 # shrdi
@@ -1020,11 +1306,17 @@ efa8: disp0031 (reg1418) [reg0004 * scale] is reg1418 & reg0004 & scale & mode12
 
 
 # shri
-:shri regS1, regS2, regSD is op2431=0x59 & op0710=0xb & regS1 & regS2 & regSD unimpl
+:shri regS1, regS2, regSD is op2431=0x59 & op0710=0xb & regS1 & regS2 & regSD
+{
+	regSD = regS2 s>> regS1;
+}
 
 
 # shro
-:shro regS1, regS2, regSD is op2431=0x59 & op0710=0x8 & regS1 & regS2 & regSD unimpl
+:shro regS1, regS2, regSD is op2431=0x59 & op0710=0x8 & regS1 & regS2 & regSD
+{
+	regSD = regS2 >> regS1;
+}
 
 
 # signal
@@ -1052,7 +1344,10 @@ efa8: disp0031 (reg1418) [reg0004 * scale] is reg1418 & reg0004 & scale & mode12
 
 
 # st
-:st reg1923, efa4 is ( op2431=0x92 & reg1923 ) ... & efa4 unimpl
+:st reg1923, efa4 is ( op2431=0x92 & reg1923 ) ... & efa4
+{
+	efa4 = reg1923;
+}
 
 
 # stib
@@ -1068,11 +1363,17 @@ efa8: disp0031 (reg1418) [reg0004 * scale] is reg1418 & reg0004 & scale & mode12
 
 
 # stob
-:stob reg1923, efa1 is ( op2431=0x82 & reg1923 ) ... & efa1 unimpl
+:stob reg1923, efa1 is ( op2431=0x82 & reg1923 ) ... & efa1
+{
+	efa1 = reg1923:1;
+}
 
 
 # stos
-:stos reg1923, efa2 is ( op2431=0x8a & reg1923 ) ... & efa2 unimpl
+:stos reg1923, efa2 is ( op2431=0x8a & reg1923 ) ... & efa2
+{
+	efa2 = reg1923:2;
+}
 
 
 # stq
@@ -1124,39 +1425,82 @@ efa8: disp0031 (reg1418) [reg0004 * scale] is reg1418 & reg0004 & scale & mode12
 
 
 # subo
-:subo regS1, regS2, regSD is op2431=0x59 & op0710=0x2 & regS1 & regS2 & regSD unimpl
+:subo regS1, regS2, regSD is op2431=0x59 & op0710=0x2 & regS1 & regS2 & regSD
+{
+	regSD = regS2 - regS1;
+}
 
 
 # suboe
-:suboe regS1, regS2, regSD is op2431=0x7a & op0710=0x2 & regS1 & regS2 & regSD unimpl
+:suboe regS1, regS2, regSD is op2431=0x7a & op0710=0x2 & regS1 & regS2 & regSD
+{
+	local acCC:1 = ac:1 & 0x07;
+	if (!(acCC & 2)) goto inst_next;
+	regSD = regS2 - regS1;
+}
 
 
 # subog
-:subog regS1, regS2, regSD is op2431=0x79 & op0710=0x2 & regS1 & regS2 & regSD unimpl
+:subog regS1, regS2, regSD is op2431=0x79 & op0710=0x2 & regS1 & regS2 & regSD
+{
+	local acCC:1 = ac:1 & 0x07;
+	if (!(acCC & 1)) goto inst_next;
+	regSD = regS2 - regS1;
+}
 
 
 # suboge
-:suboge regS1, regS2, regSD is op2431=0x7b & op0710=0x2 & regS1 & regS2 & regSD unimpl
+:suboge regS1, regS2, regSD is op2431=0x7b & op0710=0x2 & regS1 & regS2 & regSD
+{
+	local acCC:1 = ac:1 & 0x07;
+	if (!(acCC & 3)) goto inst_next;
+	regSD = regS2 - regS1;
+}
 
 
 # subol
-:subol regS1, regS2, regSD is op2431=0x7c & op0710=0x2 & regS1 & regS2 & regSD unimpl
+:subol regS1, regS2, regSD is op2431=0x7c & op0710=0x2 & regS1 & regS2 & regSD
+{
+	local acCC:1 = ac:1 & 0x07;
+	if (!(acCC & 4)) goto inst_next;
+	regSD = regS2 - regS1;
+}
 
 
 # subole
-:subole regS1, regS2, regSD is op2431=0x7e & op0710=0x2 & regS1 & regS2 & regSD unimpl
+:subole regS1, regS2, regSD is op2431=0x7e & op0710=0x2 & regS1 & regS2 & regSD
+{
+	local acCC:1 = ac:1 & 0x07;
+	if (!(acCC & 6)) goto inst_next;
+	regSD = regS2 - regS1;
+}
 
 
 # subone
-:subone regS1, regS2, regSD is op2431=0x7d & op0710=0x2 & regS1 & regS2 & regSD unimpl
+:subone regS1, regS2, regSD is op2431=0x7d & op0710=0x2 & regS1 & regS2 & regSD
+{
+	local acCC:1 = ac:1 & 0x07;
+	if (!(acCC & 5)) goto inst_next;
+	regSD = regS2 - regS1;
+}
 
 
 # subono
-:subono regS1, regS2, regSD is op2431=0x78 & op0710=0x2 & regS1 & regS2 & regSD unimpl
+:subono regS1, regS2, regSD is op2431=0x78 & op0710=0x2 & regS1 & regS2 & regSD
+{
+	local acCC:1 = ac:1 & 0x07;
+	if (acCC) goto inst_next;
+	regSD = regS2 - regS1;
+}
 
 
 # suboo
-:suboo regS1, regS2, regSD is op2431=0x7f & op0710=0x2 & regS1 & regS2 & regSD unimpl
+:suboo regS1, regS2, regSD is op2431=0x7f & op0710=0x2 & regS1 & regS2 & regSD
+{
+	local acCC:1 = ac:1 & 0x07;
+	if (!(acCC & 2)) goto inst_next;
+	regSD = regS2 - regS1;
+}
 
 
 # subr
