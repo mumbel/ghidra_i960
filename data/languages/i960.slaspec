@@ -97,6 +97,55 @@ attach variables [ sfr0004tq sfr1418tq sfr1923tq ]
 
 
 
+regS1: reg0004 is reg0004 & m2 & m1 & m0=0 & s1 & s0=0 { export reg0004; }
+regS1l: reg0004l is reg0004l & m2 & m1 & m0=0 & s1 & s0=0 { export reg0004l; }
+regS1tq: reg0004tq is reg0004tq & m2 & m1 & m0=0 & s1 & s0=0 { export reg0004tq; }
+regS1: op0004 is op0004 & m2 & m1 & m0=1 & s1 & s0=0 { export op0004; }
+regS1: sfr0004 is sfr0004 & m2 & m1 & m0=0 & s1 & s0=1 { export sfr0004; }
+regS1l: sfr0004l is sfr0004l & m2 & m1 & m0=0 & s1 & s0=1 { export sfr0004l; }
+regS1tq: sfr0004tq is sfr0004tq & m2 & m1 & m0=0 & s1 & s0=1 { export sfr0004tq; }
+regS2: reg1418 is reg1418 & m2 & m1=0 & m0 & s1=0 & s0 { export reg1418; }
+regS2l: reg1418l is reg1418l & m2 & m1=0 & m0 & s1=0 & s0 { export reg1418l; }
+regS2tq: reg1418tq is reg1418tq & m2 & m1=0 & m0 & s1=0 & s0 { export reg1418tq; }
+regS2: op1418 is op1418 & m2 & m1=1 & m0 & s1=0 & s0 { export op1418; }
+regS2: sfr1418 is sfr1418 & m2 & m1=0 & m0 & s1=1 & s0 { export sfr1418; }
+regS2l: sfr1418l is sfr1418l & m2 & m1=0 & m0 & s1=1 & s0 { export sfr1418l; }
+regS2tq: sfr1418tq is sfr1418tq & m2 & m1=0 & m0 & s1=1 & s0 { export sfr1418tq; }
+regSD: reg1923 is reg1923 & m2=0 & m1 & m0 & s1 & s0 { export reg1923; }
+regSDl: reg1923l is reg1923l & m2=0 & m1 & m0 & s1 & s0 { export reg1923l; }
+regSDtq: reg1923tq is reg1923tq & m2=0 & m1 & m0 & s1 & s0 { export reg1923tq; }
+cobrS1: reg0004 is reg0004 & m0=0 & s1=0 & t { export reg0004; }
+cobrS1l: reg0004l is reg0004 & m0=0 & s1=0 & t { export reg0004l; }
+cobrS1tq: reg0004tq is reg0004 & m0=0 & s1=0 & t { export reg0004tq; }
+cobrS2: reg1418 is reg1418 & m0=0 & s1=0 & t { export reg1418; }
+cobrS2l: reg1418l is reg1418l & m0=0 & s1=0 & t { export reg1418l; }
+cobrS2tq: reg1418tq is reg1418tq & m0=0 & s1=0 & t { export reg1418tq; }
+cobrSD:  reg1923 is reg1923 & m0=0 & s1=0 & t { export reg1923; }
+cobrSDl:  reg1923l is reg1923l & m0=0 & s1=0 & t { export reg1923l; }
+cobrSDtq:  reg1923tq is reg1923tq & m0=0 & s1=0 & t { export reg1923tq; }
+cobrS1: op0004 is op0004 & m0=1 & s1=0 & t { export op0004; }
+cobrS2: reg1418 is reg1418 & m0=1 & s1=0 & t { export reg1418; }
+cobrS2l: reg1418l is reg1418l & m0=1 & s1=0 & t { export reg1418l; }
+cobrS2tq: reg1418tq is reg1418tq & m0=1 & s1=0 & t { export reg1418tq; }
+cobrSD:  reg1923 is reg1923 & m0=1 & s1=0 & t { export reg1923; }
+cobrSDl:  reg1923l is reg1923l & m0=1 & s1=0 & t { export reg1923l; }
+cobrSDtq:  reg1923tq is reg1923tq & m0=1 & s1=0 & t { export reg1923tq; }
+cobrS1: reg0004 is reg0004 & m0=0 & s1=1 & t { export reg0004; }
+cobrS1l: reg0004l is reg0004l & m0=0 & s1=1 & t { export reg0004l; }
+cobrS1tq: reg0004tq is reg0004tq & m0=0 & s1=1 & t { export reg0004tq; }
+cobrS2: sfr1418 is sfr1418 & m0=0 & s1=1 & t { export sfr1418; }
+cobrS2l: sfr1418l is sfr1418l & m0=0 & s1=1 & t { export sfr1418l; }
+cobrS2tq: sfr1418tq is sfr1418tq & m0=0 & s1=1 & t { export sfr1418tq; }
+cobrSD:  sfr1923 is sfr1923 & m0=0 & s1=1 & t { export sfr1923; }
+cobrSDl:  sfr1923l is sfr1923l & m0=0 & s1=1 & t { export sfr1923l; }
+cobrSDtq:  sfr1923tq is sfr1923tq & m0=0 & s1=1 & t { export sfr1923tq; }
+cobrS1: op0004 is op0004 & m0=1 & s1=0 & t=0 { export op0004; }
+cobrS2: sfr1418 is sfr1418 & m0=1 & s1=1 & t=0 { export sfr1418; }
+cobrS2l: sfr1418l is sfr1418l & m0=1 & s1=1 & t=0 { export sfr1418l; }
+cobrS2tq: sfr1418tq is sfr1418tq & m0=1 & s1=1 & t=0 { export sfr1418tq; }
+cobrSD:  sfr1923 is sfr1923 & m0=1 & s1=1 & t=0 { export sfr1923; }
+cobrSDl:  sfr1923l is sfr1923l & m0=1 & s1=1 & t=0 { export sfr1923l; }
+cobrSDtq:  sfr1923tq is sfr1923tq & m0=1 & s1=1 & t=0 { export sfr1923tq; }
 
 
 
@@ -166,362 +215,116 @@ efa8: disp0031 [reg0004 * scale] is reg0004 & scale & mode1213=3 & mode1011=2 & 
 efa8: disp0031 (reg1418) [reg0004 * scale] is reg1418 & reg0004 & scale & mode1213=3 & mode1011=3 & op0506=0 ; disp0031 { local tmp:4 = disp0031 + reg1418 + (reg0004 * scale); export *[ram]:8 tmp; }
 
 
-
-
-
-
-
-
-
-
-
-oper101_0000: reg0004 is reg0004 & m0=0 & s0=0 { export reg0004; }
-
-
-oper103_0100: reg0004 is reg0004 & m0=0 & s0=0 { export reg0004; }
-oper103_0100: op0004 is op0004 & m0=1 & s0=0 { export op0004; }
-
-
-oper113_0001: reg1418 is reg1418 & m1=0 & s1=0 { export reg1418; }
-oper113_0001: sfr1418 is sfr1418 & m1=0 & s1=1 { export sfr1418; }
-
-
-oper301_0000: reg0004 is reg0004 & m0=0 & s0=0 { export reg0004; }
-
-
-oper301_0101: reg0004 is reg0004 & m0=0 & s0=0 { export reg0004; }
-oper301_0101: sfr0004 is sfr0004 & m0=0 & s0=1 { export sfr0004; }
-oper301_0101: op0004 is op0004 & m0=1 & s0=0 { export op0004; }
-
-
-oper301_0110: reg0004 is reg0004 & m0=0 & s0=0 { export reg0004; }
-oper301_0110: op0004 is op0004 & m0=1 & s0=0 { export op0004; }
-
-
-oper301_1001: reg0004l is reg0004l & m0=0 & s0=0 { export reg0004l; }
-oper301_1001: sfr0004l is sfr0004l & m0=0 & s0=1 { export sfr0004l; }
-
-
-oper301_1111: reg0004l is reg0004l & m0=0 & s0=0 { export reg0004l; }
-oper301_1111: sfr0004l is sfr0004l & m0=0 & s0=1 { export sfr0004l; }
-oper301_1111: op0004 is op0004 & m0=1 & s0=0 { export op0004; }
-
-
-oper302_0000: reg0004 is reg0004 & m0=0 & s0=0 { export reg0004; }
-
-
-oper302_0100: reg0004 is reg0004 & m0=0 & s0=0 { export reg0004; }
-oper302_0100: op0004 is op0004 & m0=1 & s0=0 { export op0004; }
-
-
-oper302_0101: reg0004 is reg0004 & m0=0 & s0=0 { export reg0004; }
-oper302_0101: sfr0004 is sfr0004 & m0=0 & s0=1 { export sfr0004; }
-oper302_0101: op0004 is op0004 & m0=1 & s0=0 { export op0004; }
-
-
-oper302_0110: reg0004 is reg0004 & m0=0 & s0=0 { export reg0004; }
-oper302_0110: op0004 is op0004 & m0=1 & s0=0 { export op0004; }
-
-
-oper302_1101: reg0004l is reg0004l & m0=0 & s0=0 { export reg0004l; }
-oper302_1101: sfr0004l is sfr0004l & m0=0 & s0=1 { export sfr0004l; }
-oper302_1101: op0004 is op0004 & m0=1 & s0=0 { export op0004; }
-
-
-oper302_1111: reg0004l is reg0004l & m0=0 & s0=0 { export reg0004l; }
-oper302_1111: sfr0004l is sfr0004l & m0=0 & s0=1 { export sfr0004l; }
-oper302_1111: op0004 is op0004 & m0=1 & s0=0 { export op0004; }
-
-
-oper302_3101: reg0004tq is reg0004tq & m0=0 & s0=0 { export reg0004tq; }
-oper302_3101: sfr0004tq is sfr0004tq & m0=0 & s0=1 { export sfr0004tq; }
-oper302_3101: op0004 is op0004 & m0=1 & s0=0 { export op0004; }
-
-
-oper302_3111: reg0004tq is reg0004tq & m0=0 & s0=0 { export reg0004tq; }
-oper302_3111: sfr0004tq is sfr0004tq & m0=0 & s0=1 { export sfr0004tq; }
-oper302_3111: op0004 is op0004 & m0=1 & s0=0 { export op0004; }
-
-
-oper303_0000: reg0004 is reg0004 & m0=0 & s0=0 { export reg0004; }
-
-
-oper303_0001: reg0004 is reg0004 & m0=0 & s0=0 { export reg0004; }
-oper303_0001: sfr0004 is sfr0004 & m0=0 & s0=1 { export sfr0004; }
-
-
-oper303_0100: reg0004 is reg0004 & m0=0 & s0=0 { export reg0004; }
-oper303_0100: op0004 is op0004 & m0=1 & s0=0 { export op0004; }
-
-
-oper303_0101: reg0004 is reg0004 & m0=0 & s0=0 { export reg0004; }
-oper303_0101: sfr0004 is sfr0004 & m0=0 & s0=1 { export sfr0004; }
-oper303_0101: op0004 is op0004 & m0=1 & s0=0 { export op0004; }
-
-
-oper303_0110: reg0004 is reg0004 & m0=0 & s0=0 { export reg0004; }
-oper303_0110: op0004 is op0004 & m0=1 & s0=0 { export op0004; }
-
-
-oper303_1111: reg0004l is reg0004l & m0=0 & s0=0 { export reg0004l; }
-oper303_1111: sfr0004l is sfr0004l & m0=0 & s0=1 { export sfr0004l; }
-oper303_1111: op0004 is op0004 & m0=1 & s0=0 { export op0004; }
-
-
-oper303_3111: reg0004tq is reg0004tq & m0=0 & s0=0 { export reg0004tq; }
-oper303_3111: sfr0004tq is sfr0004tq & m0=0 & s0=1 { export sfr0004tq; }
-oper303_3111: op0004 is op0004 & m0=1 & s0=0 { export op0004; }
-
-
-oper312_0000: reg1923 is reg1923 & m2=0 { export reg1923; }
-
-
-oper312_0001: reg1923 is reg1923 & m2=0 { export reg1923; }
-oper312_0001: sfr1923 is sfr1923 & m2=1 { export sfr1923; }
-
-
-oper312_0010: reg1923 is reg1923 & m2=0 { export reg1923; }
-
-
-oper312_0101: reg1418 is reg1418 & m1=0 & s1=0 { export reg1418; }
-oper312_0101: sfr1418 is sfr1418 & m1=0 & s1=1 { export sfr1418; }
-oper312_0101: op1418 is op1418 & m1=1 & s1=0 { export op1418; }
-
-
-oper312_0110: reg1418 is reg1418 & m1=0 & s1=0 { export reg1418; }
-oper312_0110: op1418 is op1418 & m1=1 & s1=0 { export op1418; }
-
-
-oper312_1001: reg1923l is reg1923l & m2=0 { export reg1923l; }
-oper312_1001: sfr1923l is sfr1923l & m2=1 { export sfr1923l; }
-
-
-oper312_1011: reg1923l is reg1923l & m2=0 { export reg1923l; }
-oper312_1011: sfr1923l is sfr1923l & m2=1 { export sfr1923l; }
-
-
-oper312_1111: reg1418l is reg1418l & m1=0 & s1=0 { export reg1418l; }
-oper312_1111: sfr1418l is sfr1418l & m1=0 & s1=1 { export sfr1418l; }
-oper312_1111: op1418 is op1418 & m1=1 & s1=0 { export op1418; }
-
-
-oper312_3001: reg1923tq is reg1923tq & m2=0 { export reg1923tq; }
-oper312_3001: sfr1923tq is sfr1923tq & m2=1 { export sfr1923tq; }
-
-
-oper312_3011: reg1923tq is reg1923tq & m2=0 { export reg1923tq; }
-oper312_3011: sfr1923tq is sfr1923tq & m2=1 { export sfr1923tq; }
-
-
-oper313_0000: reg1418 is reg1418 & m1=0 & s1=0 { export reg1418; }
-
-
-oper313_0100: reg1418 is reg1418 & m1=0 & s1=0 { export reg1418; }
-oper313_0100: op1418 is op1418 & m1=1 & s1=0 { export op1418; }
-
-
-oper313_0101: reg1418 is reg1418 & m1=0 & s1=0 { export reg1418; }
-oper313_0101: sfr1418 is sfr1418 & m1=0 & s1=1 { export sfr1418; }
-oper313_0101: op1418 is op1418 & m1=1 & s1=0 { export op1418; }
-
-
-oper313_0110: reg1418 is reg1418 & m1=0 & s1=0 { export reg1418; }
-oper313_0110: op1418 is op1418 & m1=1 & s1=0 { export op1418; }
-
-
-oper313_1101: reg1418l is reg1418l & m1=0 & s1=0 { export reg1418l; }
-oper313_1101: sfr1418l is sfr1418l & m1=0 & s1=1 { export sfr1418l; }
-oper313_1101: op1418 is op1418 & m1=1 & s1=0 { export op1418; }
-
-
-oper313_1111: reg1418l is reg1418l & m1=0 & s1=0 { export reg1418l; }
-oper313_1111: sfr1418l is sfr1418l & m1=0 & s1=1 { export sfr1418l; }
-oper313_1111: op1418 is op1418 & m1=1 & s1=0 { export op1418; }
-
-
-oper313_3111: reg1418tq is reg1418tq & m1=0 & s1=0 { export reg1418tq; }
-oper313_3111: sfr1418tq is sfr1418tq & m1=0 & s1=1 { export sfr1418tq; }
-oper313_3111: op1418 is op1418 & m1=1 & s1=0 { export op1418; }
-
-
-oper323_0000: reg1923 is reg1923 & m2=0 { export reg1923; }
-
-
-oper323_0001: reg1923 is reg1923 & m2=0 { export reg1923; }
-oper323_0001: sfr1923 is sfr1923 & m2=1 { export sfr1923; }
-
-
-oper323_0010: reg1923 is reg1923 & m2=0 { export reg1923; }
-
-
-oper323_0100: reg1923 is reg1923 & m2=0 { export reg1923; }
-oper323_0100: op1923 is op1923 & m2=1 { export op1923; }
-
-
-oper323_1001: reg1923l is reg1923l & m2=0 { export reg1923l; }
-oper323_1001: sfr1923l is sfr1923l & m2=1 { export sfr1923l; }
-
-
-oper323_1011: reg1923l is reg1923l & m2=0 { export reg1923l; }
-oper323_1011: sfr1923l is sfr1923l & m2=1 { export sfr1923l; }
-
-
-oper323_3011: reg1923tq is reg1923tq & m2=0 { export reg1923tq; }
-oper323_3011: sfr1923tq is sfr1923tq & m2=1 { export sfr1923tq; }
-
-
-oper402_0000: reg0004 is reg0004 & m0=0 & s0=0 { export reg0004; }
-
-
-oper412_0000: reg1923 is reg1923 & m2=0 { export reg1923; }
-
-
-oper502_0000: reg0004 is reg0004 & m0=0 & s0=0 { export reg0004; }
-
-
-oper512_0000: reg1923 is reg1923 & m2=0 { export reg1923; }
-
-
-oper602_0000: reg0004 is reg0004 & m0=0 & s0=0 { export reg0004; }
-
-
-oper612_0000: reg1923 is reg1923 & m2=0 { export reg1923; }
-
-
-oper702_1001: reg0004l is reg0004l & m0=0 & s0=0 { export reg0004l; }
-oper702_1001: sfr0004l is sfr0004l & m0=0 & s0=1 { export sfr0004l; }
-
-
-oper712_1001: reg1923l is reg1923l & m2=0 { export reg1923l; }
-oper712_1001: sfr1923l is sfr1923l & m2=1 { export sfr1923l; }
-
-
-oper802_3001: reg0004tq is reg0004tq & m0=0 & s0=0 { export reg0004tq; }
-oper802_3001: sfr0004tq is sfr0004tq & m0=0 & s0=1 { export sfr0004tq; }
-
-
-oper812_3001: reg1923tq is reg1923tq & m2=0 { export reg1923tq; }
-oper812_3001: sfr1923tq is sfr1923tq & m2=1 { export sfr1923tq; }
-
-
-oper902_3001: reg0004tq is reg0004tq & m0=0 & s0=0 { export reg0004tq; }
-oper902_3001: sfr0004tq is sfr0004tq & m0=0 & s0=1 { export sfr0004tq; }
-
-
-oper912_3001: reg1923tq is reg1923tq & m2=0 { export reg1923tq; }
-oper912_3001: sfr1923tq is sfr1923tq & m2=1 { export sfr1923tq; }
-
-
 # addc
-:addc oper303_0101, oper313_0101, oper323_0001 is op2431=0x5b & op0710=0x0 & oper303_0101 & oper313_0101 & oper323_0001 unimpl
+:addc regS1, regS2, regSD is op2431=0x5b & op0710=0x0 & regS1 & regS2 & regSD unimpl
 
 
 # addi
-:addi oper303_0101, oper313_0101, oper323_0001 is op2431=0x59 & op0710=0x1 & oper303_0101 & oper313_0101 & oper323_0001 unimpl
+:addi regS1, regS2, regSD is op2431=0x59 & op0710=0x1 & regS1 & regS2 & regSD unimpl
 
 
 # addie
-:addie oper303_0101, oper313_0101, oper323_0001 is op2431=0x7a & op0710=0x1 & oper303_0101 & oper313_0101 & oper323_0001 unimpl
+:addie regS1, regS2, regSD is op2431=0x7a & op0710=0x1 & regS1 & regS2 & regSD unimpl
 
 
 # addig
-:addig oper303_0101, oper313_0101, oper323_0001 is op2431=0x79 & op0710=0x1 & oper303_0101 & oper313_0101 & oper323_0001 unimpl
+:addig regS1, regS2, regSD is op2431=0x79 & op0710=0x1 & regS1 & regS2 & regSD unimpl
 
 
 # addige
-:addige oper303_0101, oper313_0101, oper323_0001 is op2431=0x7b & op0710=0x1 & oper303_0101 & oper313_0101 & oper323_0001 unimpl
+:addige regS1, regS2, regSD is op2431=0x7b & op0710=0x1 & regS1 & regS2 & regSD unimpl
 
 
 # addil
-:addil oper303_0101, oper313_0101, oper323_0001 is op2431=0x7c & op0710=0x1 & oper303_0101 & oper313_0101 & oper323_0001 unimpl
+:addil regS1, regS2, regSD is op2431=0x7c & op0710=0x1 & regS1 & regS2 & regSD unimpl
 
 
 # addile
-:addile oper303_0101, oper313_0101, oper323_0001 is op2431=0x7e & op0710=0x1 & oper303_0101 & oper313_0101 & oper323_0001 unimpl
+:addile regS1, regS2, regSD is op2431=0x7e & op0710=0x1 & regS1 & regS2 & regSD unimpl
 
 
 # addine
-:addine oper303_0101, oper313_0101, oper323_0001 is op2431=0x7d & op0710=0x1 & oper303_0101 & oper313_0101 & oper323_0001 unimpl
+:addine regS1, regS2, regSD is op2431=0x7d & op0710=0x1 & regS1 & regS2 & regSD unimpl
 
 
 # addino
-:addino oper303_0101, oper313_0101, oper323_0001 is op2431=0x78 & op0710=0x1 & oper303_0101 & oper313_0101 & oper323_0001 unimpl
+:addino regS1, regS2, regSD is op2431=0x78 & op0710=0x1 & regS1 & regS2 & regSD unimpl
 
 
 # addio
-:addio oper303_0101, oper313_0101, oper323_0001 is op2431=0x7f & op0710=0x1 & oper303_0101 & oper313_0101 & oper323_0001 unimpl
+:addio regS1, regS2, regSD is op2431=0x7f & op0710=0x1 & regS1 & regS2 & regSD unimpl
 
 
 # addo
-:addo oper303_0101, oper313_0101, oper323_0001 is op2431=0x59 & op0710=0x0 & oper303_0101 & oper313_0101 & oper323_0001 unimpl
+:addo regS1, regS2, regSD is op2431=0x59 & op0710=0x0 & regS1 & regS2 & regSD unimpl
 
 
 # addoe
-:addoe oper303_0101, oper313_0101, oper323_0001 is op2431=0x7a & op0710=0x0 & oper303_0101 & oper313_0101 & oper323_0001 unimpl
+:addoe regS1, regS2, regSD is op2431=0x7a & op0710=0x0 & regS1 & regS2 & regSD unimpl
 
 
 # addog
-:addog oper303_0101, oper313_0101, oper323_0001 is op2431=0x79 & op0710=0x0 & oper303_0101 & oper313_0101 & oper323_0001 unimpl
+:addog regS1, regS2, regSD is op2431=0x79 & op0710=0x0 & regS1 & regS2 & regSD unimpl
 
 
 # addoge
-:addoge oper303_0101, oper313_0101, oper323_0001 is op2431=0x7b & op0710=0x0 & oper303_0101 & oper313_0101 & oper323_0001 unimpl
+:addoge regS1, regS2, regSD is op2431=0x7b & op0710=0x0 & regS1 & regS2 & regSD unimpl
 
 
 # addol
-:addol oper303_0101, oper313_0101, oper323_0001 is op2431=0x7c & op0710=0x0 & oper303_0101 & oper313_0101 & oper323_0001 unimpl
+:addol regS1, regS2, regSD is op2431=0x7c & op0710=0x0 & regS1 & regS2 & regSD unimpl
 
 
 # addole
-:addole oper303_0101, oper313_0101, oper323_0001 is op2431=0x7e & op0710=0x0 & oper303_0101 & oper313_0101 & oper323_0001 unimpl
+:addole regS1, regS2, regSD is op2431=0x7e & op0710=0x0 & regS1 & regS2 & regSD unimpl
 
 
 # addone
-:addone oper303_0101, oper313_0101, oper323_0001 is op2431=0x7d & op0710=0x0 & oper303_0101 & oper313_0101 & oper323_0001 unimpl
+:addone regS1, regS2, regSD is op2431=0x7d & op0710=0x0 & regS1 & regS2 & regSD unimpl
 
 
 # addono
-:addono oper303_0101, oper313_0101, oper323_0001 is op2431=0x78 & op0710=0x0 & oper303_0101 & oper313_0101 & oper323_0001 unimpl
+:addono regS1, regS2, regSD is op2431=0x78 & op0710=0x0 & regS1 & regS2 & regSD unimpl
 
 
 # addoo
-:addoo oper303_0101, oper313_0101, oper323_0001 is op2431=0x7f & op0710=0x0 & oper303_0101 & oper313_0101 & oper323_0001 unimpl
+:addoo regS1, regS2, regSD is op2431=0x7f & op0710=0x0 & regS1 & regS2 & regSD unimpl
 
 
 # addr
-:addr oper303_0110, oper313_0110, oper323_0010 is op2431=0x78 & op0710=0xf & oper303_0110 & oper313_0110 & oper323_0010 unimpl
+:addr regS1, regS2, regSD is op2431=0x78 & op0710=0xf & regS1 & regS2 & regSD unimpl
 
 
 # addrl
-:addrl oper303_1111, oper313_1111, oper323_1011 is op2431=0x79 & op0710=0xf & oper303_1111 & oper313_1111 & oper323_1011 unimpl
+:addrl regS1l, regS2l, regSDl is op2431=0x79 & op0710=0xf & regS1l & regS2l & regSDl unimpl
 
 
 # alterbit
-:alterbit oper303_0101, oper313_0101, oper323_0001 is op2431=0x58 & op0710=0xf & oper303_0101 & oper313_0101 & oper323_0001 unimpl
+:alterbit regS1, regS2, regSD is op2431=0x58 & op0710=0xf & regS1 & regS2 & regSD unimpl
 
 
 # and
-:and oper303_0101, oper313_0101, oper323_0001 is op2431=0x58 & op0710=0x1 & oper303_0101 & oper313_0101 & oper323_0001 unimpl
+:and regS1, regS2, regSD is op2431=0x58 & op0710=0x1 & regS1 & regS2 & regSD unimpl
 
 
 # andnot
-:andnot oper303_0101, oper313_0101, oper323_0001 is op2431=0x58 & op0710=0x2 & oper303_0101 & oper313_0101 & oper323_0001 unimpl
+:andnot regS1, regS2, regSD is op2431=0x58 & op0710=0x2 & regS1 & regS2 & regSD unimpl
 
 
 # atadd
-:atadd oper303_0001, oper313_0101, oper323_0001 is op2431=0x61 & op0710=0x2 & oper303_0001 & oper313_0101 & oper323_0001 unimpl
+:atadd regS1, regS2, regSD is op2431=0x61 & op0710=0x2 & regS1 & regS2 & regSD unimpl
 
 
 # atanr
-:atanr oper303_0110, oper313_0110, oper323_0010 is op2431=0x68 & op0710=0x0 & oper303_0110 & oper313_0110 & oper323_0010 unimpl
+:atanr regS1, regS2, regSD is op2431=0x68 & op0710=0x0 & regS1 & regS2 & regSD unimpl
 
 
 # atanrl
-:atanrl oper303_1111, oper313_1111, oper323_1011 is op2431=0x69 & op0710=0x0 & oper303_1111 & oper313_1111 & oper323_1011 unimpl
+:atanrl regS1l, regS2l, regSDl is op2431=0x69 & op0710=0x0 & regS1l & regS2l & regSDl unimpl
 
 
 # atmod
-:atmod oper303_0001, oper313_0101, oper323_0000 is op2431=0x61 & op0710=0x0 & oper303_0001 & oper313_0101 & oper323_0000 unimpl
+:atmod regS1, regS2, regSD is op2431=0x61 & op0710=0x0 & regS1 & regS2 & regSD unimpl
 
 
 # b
@@ -533,15 +336,15 @@ oper912_3001: sfr1923tq is sfr1923tq & m2=1 { export sfr1923tq; }
 
 
 # balx
-:balx efa1, oper412_0000 is ( op2431=0x85 & op0710=0x0 & oper412_0000 ) ... & efa1 unimpl
+:balx efa1, reg1923 is ( op2431=0x85 & reg1923 ) ... & efa1 unimpl
 
 
 # bbc
-:bbc oper103_0100, oper113_0001, disp0212 is op2431=0x30 & oper103_0100 & oper113_0001 & disp0212 unimpl
+:bbc cobrS1, cobrS2, disp0212 is op2431=0x30 & cobrS1 & cobrS2 & disp0212 unimpl
 
 
 # bbs
-:bbs oper103_0100, oper113_0001, disp0212 is op2431=0x37 & oper103_0100 & oper113_0001 & disp0212 unimpl
+:bbs cobrS1, cobrS2, disp0212 is op2431=0x37 & cobrS1 & cobrS2 & disp0212 unimpl
 
 
 # be
@@ -577,11 +380,11 @@ oper912_3001: sfr1923tq is sfr1923tq & m2=1 { export sfr1923tq; }
 
 
 # bswap
-:bswap oper302_0101, oper312_0001 is op2431=0x5a & op0710=0xd & oper302_0101 & oper312_0001 unimpl
+:bswap regS1, regSD is m1=0x1 & op2431=0x5a & op0710=0xd & regS1 & regSD unimpl
 
 
 # bx
-:bx efa1 is ( op2431=0x84 & op0710=0x0 ) ... & efa1 unimpl
+:bx efa1 is ( op2431=0x84 ) ... & efa1 unimpl
 
 
 # call
@@ -589,263 +392,263 @@ oper912_3001: sfr1923tq is sfr1923tq & m2=1 { export sfr1923tq; }
 
 
 # calls
-:calls oper301_0101 is op2431=0x66 & op0710=0x0 & oper301_0101 unimpl
+:calls regS1 is m1=0x1 & m2=0x1 & op2431=0x66 & op0710=0x0 & regS1 unimpl
 
 
 # callx
-:callx efa1 is ( op2431=0x86 & op0710=0x0 ) ... & efa1 unimpl
+:callx efa1 is ( op2431=0x86 ) ... & efa1 unimpl
 
 
 # chkbit
-:chkbit oper302_0101, oper312_0101 is op2431=0x5a & op0710=0xe & oper302_0101 & oper312_0101 unimpl
+:chkbit regS1, regS2 is m2=0x1 & op2431=0x5a & op0710=0xe & regS1 & regS2 unimpl
 
 
 # classr
-:classr oper301_0110 is op2431=0x68 & op0710=0xf & oper301_0110 unimpl
+:classr regS1 is m1=0x1 & m2=0x1 & op2431=0x68 & op0710=0xf & regS1 unimpl
 
 
 # classrl
-:classrl oper301_1111 is op2431=0x69 & op0710=0xf & oper301_1111 unimpl
+:classrl regS1l is m1=0x1 & m2=0x1 & op2431=0x69 & op0710=0xf & regS1l unimpl
 
 
 # clrbit
-:clrbit oper303_0101, oper313_0101, oper323_0001 is op2431=0x58 & op0710=0xc & oper303_0101 & oper313_0101 & oper323_0001 unimpl
+:clrbit regS1, regS2, regSD is op2431=0x58 & op0710=0xc & regS1 & regS2 & regSD unimpl
 
 
 # cmpdeci
-:cmpdeci oper303_0101, oper313_0101, oper323_0001 is op2431=0x5a & op0710=0x7 & oper303_0101 & oper313_0101 & oper323_0001 unimpl
+:cmpdeci regS1, regS2, regSD is op2431=0x5a & op0710=0x7 & regS1 & regS2 & regSD unimpl
 
 
 # cmpdeco
-:cmpdeco oper303_0101, oper313_0101, oper323_0001 is op2431=0x5a & op0710=0x6 & oper303_0101 & oper313_0101 & oper323_0001 unimpl
+:cmpdeco regS1, regS2, regSD is op2431=0x5a & op0710=0x6 & regS1 & regS2 & regSD unimpl
 
 
 # cmpi
-:cmpi oper302_0101, oper312_0101 is op2431=0x5a & op0710=0x1 & oper302_0101 & oper312_0101 unimpl
+:cmpi regS1, regS2 is m2=0x1 & op2431=0x5a & op0710=0x1 & regS1 & regS2 unimpl
 
 
 # cmpib
-:cmpib oper302_0101, oper312_0101 is op2431=0x59 & op0710=0x5 & oper302_0101 & oper312_0101 unimpl
+:cmpib regS1, regS2 is m2=0x1 & op2431=0x59 & op0710=0x5 & regS1 & regS2 unimpl
 
 
 # cmpibe
-:cmpibe oper103_0100, oper113_0001, disp0212 is op2431=0x3a & oper103_0100 & oper113_0001 & disp0212 unimpl
+:cmpibe cobrS1, cobrS2, disp0212 is op2431=0x3a & cobrS1 & cobrS2 & disp0212 unimpl
 
 
 # cmpibg
-:cmpibg oper103_0100, oper113_0001, disp0212 is op2431=0x39 & oper103_0100 & oper113_0001 & disp0212 unimpl
+:cmpibg cobrS1, cobrS2, disp0212 is op2431=0x39 & cobrS1 & cobrS2 & disp0212 unimpl
 
 
 # cmpibge
-:cmpibge oper103_0100, oper113_0001, disp0212 is op2431=0x3b & oper103_0100 & oper113_0001 & disp0212 unimpl
+:cmpibge cobrS1, cobrS2, disp0212 is op2431=0x3b & cobrS1 & cobrS2 & disp0212 unimpl
 
 
 # cmpibl
-:cmpibl oper103_0100, oper113_0001, disp0212 is op2431=0x3c & oper103_0100 & oper113_0001 & disp0212 unimpl
+:cmpibl cobrS1, cobrS2, disp0212 is op2431=0x3c & cobrS1 & cobrS2 & disp0212 unimpl
 
 
 # cmpible
-:cmpible oper103_0100, oper113_0001, disp0212 is op2431=0x3e & oper103_0100 & oper113_0001 & disp0212 unimpl
+:cmpible cobrS1, cobrS2, disp0212 is op2431=0x3e & cobrS1 & cobrS2 & disp0212 unimpl
 
 
 # cmpibne
-:cmpibne oper103_0100, oper113_0001, disp0212 is op2431=0x3d & oper103_0100 & oper113_0001 & disp0212 unimpl
+:cmpibne cobrS1, cobrS2, disp0212 is op2431=0x3d & cobrS1 & cobrS2 & disp0212 unimpl
 
 
 # cmpibno
-:cmpibno oper103_0100, oper113_0001, disp0212 is op2431=0x38 & oper103_0100 & oper113_0001 & disp0212 unimpl
+:cmpibno cobrS1, cobrS2, disp0212 is op2431=0x38 & cobrS1 & cobrS2 & disp0212 unimpl
 
 
 # cmpibo
-:cmpibo oper103_0100, oper113_0001, disp0212 is op2431=0x3f & oper103_0100 & oper113_0001 & disp0212 unimpl
+:cmpibo cobrS1, cobrS2, disp0212 is op2431=0x3f & cobrS1 & cobrS2 & disp0212 unimpl
 
 
 # cmpinci
-:cmpinci oper303_0101, oper313_0101, oper323_0001 is op2431=0x5a & op0710=0x5 & oper303_0101 & oper313_0101 & oper323_0001 unimpl
+:cmpinci regS1, regS2, regSD is op2431=0x5a & op0710=0x5 & regS1 & regS2 & regSD unimpl
 
 
 # cmpinco
-:cmpinco oper303_0101, oper313_0101, oper323_0001 is op2431=0x5a & op0710=0x4 & oper303_0101 & oper313_0101 & oper323_0001 unimpl
+:cmpinco regS1, regS2, regSD is op2431=0x5a & op0710=0x4 & regS1 & regS2 & regSD unimpl
 
 
 # cmpis
-:cmpis oper302_0101, oper312_0101 is op2431=0x59 & op0710=0x7 & oper302_0101 & oper312_0101 unimpl
+:cmpis regS1, regS2 is m2=0x1 & op2431=0x59 & op0710=0x7 & regS1 & regS2 unimpl
 
 
 # cmpo
-:cmpo oper302_0101, oper312_0101 is op2431=0x5a & op0710=0x0 & oper302_0101 & oper312_0101 unimpl
+:cmpo regS1, regS2 is m2=0x1 & op2431=0x5a & op0710=0x0 & regS1 & regS2 unimpl
 
 
 # cmpob
-:cmpob oper302_0101, oper312_0101 is op2431=0x59 & op0710=0x4 & oper302_0101 & oper312_0101 unimpl
+:cmpob regS1, regS2 is m2=0x1 & op2431=0x59 & op0710=0x4 & regS1 & regS2 unimpl
 
 
 # cmpobe
-:cmpobe oper103_0100, oper113_0001, disp0212 is op2431=0x32 & oper103_0100 & oper113_0001 & disp0212 unimpl
+:cmpobe cobrS1, cobrS2, disp0212 is op2431=0x32 & cobrS1 & cobrS2 & disp0212 unimpl
 
 
 # cmpobg
-:cmpobg oper103_0100, oper113_0001, disp0212 is op2431=0x31 & oper103_0100 & oper113_0001 & disp0212 unimpl
+:cmpobg cobrS1, cobrS2, disp0212 is op2431=0x31 & cobrS1 & cobrS2 & disp0212 unimpl
 
 
 # cmpobge
-:cmpobge oper103_0100, oper113_0001, disp0212 is op2431=0x33 & oper103_0100 & oper113_0001 & disp0212 unimpl
+:cmpobge cobrS1, cobrS2, disp0212 is op2431=0x33 & cobrS1 & cobrS2 & disp0212 unimpl
 
 
 # cmpobl
-:cmpobl oper103_0100, oper113_0001, disp0212 is op2431=0x34 & oper103_0100 & oper113_0001 & disp0212 unimpl
+:cmpobl cobrS1, cobrS2, disp0212 is op2431=0x34 & cobrS1 & cobrS2 & disp0212 unimpl
 
 
 # cmpoble
-:cmpoble oper103_0100, oper113_0001, disp0212 is op2431=0x36 & oper103_0100 & oper113_0001 & disp0212 unimpl
+:cmpoble cobrS1, cobrS2, disp0212 is op2431=0x36 & cobrS1 & cobrS2 & disp0212 unimpl
 
 
 # cmpobne
-:cmpobne oper103_0100, oper113_0001, disp0212 is op2431=0x35 & oper103_0100 & oper113_0001 & disp0212 unimpl
+:cmpobne cobrS1, cobrS2, disp0212 is op2431=0x35 & cobrS1 & cobrS2 & disp0212 unimpl
 
 
 # cmpor
-:cmpor oper302_0110, oper312_0110 is op2431=0x68 & op0710=0x4 & oper302_0110 & oper312_0110 unimpl
+:cmpor regS1, regS2 is m2=0x1 & op2431=0x68 & op0710=0x4 & regS1 & regS2 unimpl
 
 
 # cmporl
-:cmporl oper302_1111, oper312_1111 is op2431=0x69 & op0710=0x4 & oper302_1111 & oper312_1111 unimpl
+:cmporl regS1l, regS2l is m2=0x1 & op2431=0x69 & op0710=0x4 & regS1l & regS2l unimpl
 
 
 # cmpos
-:cmpos oper302_0101, oper312_0101 is op2431=0x59 & op0710=0x6 & oper302_0101 & oper312_0101 unimpl
+:cmpos regS1, regS2 is m2=0x1 & op2431=0x59 & op0710=0x6 & regS1 & regS2 unimpl
 
 
 # cmpr
-:cmpr oper302_0110, oper312_0110 is op2431=0x68 & op0710=0x5 & oper302_0110 & oper312_0110 unimpl
+:cmpr regS1, regS2 is m2=0x1 & op2431=0x68 & op0710=0x5 & regS1 & regS2 unimpl
 
 
 # cmprl
-:cmprl oper302_1111, oper312_1111 is op2431=0x69 & op0710=0x5 & oper302_1111 & oper312_1111 unimpl
+:cmprl regS1l, regS2l is m2=0x1 & op2431=0x69 & op0710=0x5 & regS1l & regS2l unimpl
 
 
 # cmpstr
-:cmpstr oper303_0000, oper313_0000, oper323_0100 is op2431=0x60 & op0710=0x3 & oper303_0000 & oper313_0000 & oper323_0100 unimpl
+:cmpstr regS1, regS2, regSD is op2431=0x60 & op0710=0x3 & regS1 & regS2 & regSD unimpl
 
 
 # concmpi
-:concmpi oper302_0101, oper312_0101 is op2431=0x5a & op0710=0x3 & oper302_0101 & oper312_0101 unimpl
+:concmpi regS1, regS2 is m2=0x1 & op2431=0x5a & op0710=0x3 & regS1 & regS2 unimpl
 
 
 # concmpo
-:concmpo oper302_0101, oper312_0101 is op2431=0x5a & op0710=0x2 & oper302_0101 & oper312_0101 unimpl
+:concmpo regS1, regS2 is m2=0x1 & op2431=0x5a & op0710=0x2 & regS1 & regS2 unimpl
 
 
 # condrec
-:condrec oper302_0000, oper312_0000 is op2431=0x64 & op0710=0x6 & oper302_0000 & oper312_0000 unimpl
+:condrec regS1, regSD is m1=0x1 & op2431=0x64 & op0710=0x6 & regS1 & regSD unimpl
 
 
 # condwait
-:condwait oper301_0000 is op2431=0x66 & op0710=0x8 & oper301_0000 unimpl
+:condwait regS1 is m1=0x1 & m2=0x1 & op2431=0x66 & op0710=0x8 & regS1 unimpl
 
 
 # cosr
-:cosr oper302_0110, oper312_0010 is op2431=0x68 & op0710=0xd & oper302_0110 & oper312_0010 unimpl
+:cosr regS1, regSD is m1=0x1 & op2431=0x68 & op0710=0xd & regS1 & regSD unimpl
 
 
 # cosrl
-:cosrl oper302_1111, oper312_1011 is op2431=0x69 & op0710=0xd & oper302_1111 & oper312_1011 unimpl
+:cosrl regS1l, regSDl is m1=0x1 & op2431=0x69 & op0710=0xd & regS1l & regSDl unimpl
 
 
 # cpyrsre
-:cpyrsre oper303_3111, oper313_3111, oper323_3011 is op2431=0x6e & op0710=0x3 & oper303_3111 & oper313_3111 & oper323_3011 unimpl
+:cpyrsre regS1tq, regS2tq, regSDtq is op2431=0x6e & op0710=0x3 & regS1tq & regS2tq & regSDtq unimpl
 
 
 # cpysre
-:cpysre oper303_3111, oper313_3111, oper323_3011 is op2431=0x6e & op0710=0x2 & oper303_3111 & oper313_3111 & oper323_3011 unimpl
+:cpysre regS1tq, regS2tq, regSDtq is op2431=0x6e & op0710=0x2 & regS1tq & regS2tq & regSDtq unimpl
 
 
 # cvtadr
-:cvtadr oper302_0100, oper312_1001 is op2431=0x67 & op0710=0x2 & oper302_0100 & oper312_1001 unimpl
+:cvtadr regS1, regSDl is m1=0x1 & op2431=0x67 & op0710=0x2 & regS1 & regSDl unimpl
 
 
 # cvtilr
-:cvtilr oper302_0100, oper312_0010 is op2431=0x67 & op0710=0x5 & oper302_0100 & oper312_0010 unimpl
+:cvtilr regS1, regSD is m1=0x1 & op2431=0x67 & op0710=0x5 & regS1 & regSD unimpl
 
 
 # cvtir
-:cvtir oper302_0100, oper312_0010 is op2431=0x67 & op0710=0x4 & oper302_0100 & oper312_0010 unimpl
+:cvtir regS1, regSD is m1=0x1 & op2431=0x67 & op0710=0x4 & regS1 & regSD unimpl
 
 
 # cvtri
-:cvtri oper302_0110, oper312_0000 is op2431=0x6c & op0710=0x0 & oper302_0110 & oper312_0000 unimpl
+:cvtri regS1, regSD is m1=0x1 & op2431=0x6c & op0710=0x0 & regS1 & regSD unimpl
 
 
 # cvtril
-:cvtril oper302_0110, oper312_1001 is op2431=0x6c & op0710=0x1 & oper302_0110 & oper312_1001 unimpl
+:cvtril regS1, regSDl is m1=0x1 & op2431=0x6c & op0710=0x1 & regS1 & regSDl unimpl
 
 
 # cvtzri
-:cvtzri oper302_0110, oper312_0000 is op2431=0x6c & op0710=0x2 & oper302_0110 & oper312_0000 unimpl
+:cvtzri regS1, regSD is m1=0x1 & op2431=0x6c & op0710=0x2 & regS1 & regSD unimpl
 
 
 # cvtzril
-:cvtzril oper302_0110, oper312_1001 is op2431=0x6c & op0710=0x3 & oper302_0110 & oper312_1001 unimpl
+:cvtzril regS1, regSDl is m1=0x1 & op2431=0x6c & op0710=0x3 & regS1 & regSDl unimpl
 
 
 # daddc
-:daddc oper303_0101, oper313_0101, oper323_0001 is op2431=0x64 & op0710=0x2 & oper303_0101 & oper313_0101 & oper323_0001 unimpl
+:daddc regS1, regS2, regSD is op2431=0x64 & op0710=0x2 & regS1 & regS2 & regSD unimpl
 
 
 # dcctl
-:dcctl oper303_0101, oper313_0101, oper323_0100 is op2431=0x65 & op0710=0xc & oper303_0101 & oper313_0101 & oper323_0100 unimpl
+:dcctl regS1, regS2, regSD is op2431=0x65 & op0710=0xc & regS1 & regS2 & regSD unimpl
 
 
 # dcinva
-:dcinva efa1 is ( op2431=0xac & op0710=0x0 ) ... & efa1 unimpl
+:dcinva efa1 is ( op2431=0xac ) ... & efa1 unimpl
 
 
 # divi
-:divi oper303_0101, oper313_0101, oper323_0001 is op2431=0x74 & op0710=0xb & oper303_0101 & oper313_0101 & oper323_0001 unimpl
+:divi regS1, regS2, regSD is op2431=0x74 & op0710=0xb & regS1 & regS2 & regSD unimpl
 
 
 # divo
-:divo oper303_0101, oper313_0101, oper323_0001 is op2431=0x70 & op0710=0xb & oper303_0101 & oper313_0101 & oper323_0001 unimpl
+:divo regS1, regS2, regSD is op2431=0x70 & op0710=0xb & regS1 & regS2 & regSD unimpl
 
 
 # divr
-:divr oper303_0110, oper313_0110, oper323_0010 is op2431=0x78 & op0710=0xb & oper303_0110 & oper313_0110 & oper323_0010 unimpl
+:divr regS1, regS2, regSD is op2431=0x78 & op0710=0xb & regS1 & regS2 & regSD unimpl
 
 
 # divrl
-:divrl oper303_1111, oper313_1111, oper323_1011 is op2431=0x79 & op0710=0xb & oper303_1111 & oper313_1111 & oper323_1011 unimpl
+:divrl regS1l, regS2l, regSDl is op2431=0x79 & op0710=0xb & regS1l & regS2l & regSDl unimpl
 
 
 # dmovt
-:dmovt oper302_0101, oper312_0001 is op2431=0x64 & op0710=0x4 & oper302_0101 & oper312_0001 unimpl
+:dmovt regS1, regSD is m1=0x1 & op2431=0x64 & op0710=0x4 & regS1 & regSD unimpl
 
 
 # dsubc
-:dsubc oper303_0101, oper313_0101, oper323_0001 is op2431=0x64 & op0710=0x3 & oper303_0101 & oper313_0101 & oper323_0001 unimpl
+:dsubc regS1, regS2, regSD is op2431=0x64 & op0710=0x3 & regS1 & regS2 & regSD unimpl
 
 
 # ediv
-:ediv oper303_0101, oper313_1101, oper323_0001 is op2431=0x67 & op0710=0x1 & oper303_0101 & oper313_1101 & oper323_0001 unimpl
+:ediv regS1, regS2l, regSD is op2431=0x67 & op0710=0x1 & regS1 & regS2l & regSD unimpl
 
 
 # emul
-:emul oper303_0101, oper313_0101, oper323_1001 is op2431=0x67 & op0710=0x0 & oper303_0101 & oper313_0101 & oper323_1001 unimpl
+:emul regS1, regS2, regSDl is op2431=0x67 & op0710=0x0 & regS1 & regS2 & regSDl unimpl
 
 
 # eshro
-:eshro oper303_0101, oper313_0101, oper323_0001 is op2431=0x5d & op0710=0x8 & oper303_0101 & oper313_0101 & oper323_0001 unimpl
+:eshro regS1, regS2, regSD is op2431=0x5d & op0710=0x8 & regS1 & regS2 & regSD unimpl
 
 
 # expr
-:expr oper302_0110, oper312_0010 is op2431=0x68 & op0710=0x9 & oper302_0110 & oper312_0010 unimpl
+:expr regS1, regSD is m1=0x1 & op2431=0x68 & op0710=0x9 & regS1 & regSD unimpl
 
 
 # exprl
-:exprl oper302_1111, oper312_1011 is op2431=0x69 & op0710=0x9 & oper302_1111 & oper312_1011 unimpl
+:exprl regS1l, regSDl is m1=0x1 & op2431=0x69 & op0710=0x9 & regS1l & regSDl unimpl
 
 
 # extract
-:extract oper303_0101, oper313_0101, oper323_0000 is op2431=0x65 & op0710=0x1 & oper303_0101 & oper313_0101 & oper323_0000 unimpl
+:extract regS1, regS2, regSD is op2431=0x65 & op0710=0x1 & regS1 & regS2 & regSD unimpl
 
 
 # faulte
@@ -881,239 +684,239 @@ oper912_3001: sfr1923tq is sfr1923tq & m2=1 { export sfr1923tq; }
 
 
 # fill
-:fill oper303_0000, oper313_0100, oper323_0100 is op2431=0x61 & op0710=0x7 & oper303_0000 & oper313_0100 & oper323_0100 unimpl
+:fill regS1, regS2, regSD is op2431=0x61 & op0710=0x7 & regS1 & regS2 & regSD unimpl
 
 
 # flushreg
-:flushreg  is op2431=0x66 & op0710=0xd unimpl
+:flushreg  is m0=0x1 & m1=0x1 & m2=0x1 & op2431=0x66 & op0710=0xd unimpl
 
 
 # fmark
-:fmark  is op2431=0x66 & op0710=0xc unimpl
+:fmark  is m0=0x1 & m1=0x1 & m2=0x1 & op2431=0x66 & op0710=0xc unimpl
 
 
 # halt
-:halt oper301_0101 is op2431=0x65 & op0710=0xd & oper301_0101 unimpl
+:halt regS1 is m0=0x1 & m1=0x1 & m2=0x1 & op2431=0x65 & op0710=0xd & regS1 unimpl
 
 
 # icctl
-:icctl oper303_0101, oper313_0101, oper323_0001 is op2431=0x65 & op0710=0xb & oper303_0101 & oper313_0101 & oper323_0001 unimpl
+:icctl regS1, regS2, regSD is op2431=0x65 & op0710=0xb & regS1 & regS2 & regSD unimpl
 
 
 # inspacc
-:inspacc oper302_0000, oper312_0000 is op2431=0x61 & op0710=0x3 & oper302_0000 & oper312_0000 unimpl
+:inspacc regS1, regSD is m1=0x1 & op2431=0x61 & op0710=0x3 & regS1 & regSD unimpl
 
 
 # intctl
-:intctl oper302_0101, oper312_0001 is op2431=0x65 & op0710=0x8 & oper302_0101 & oper312_0001 unimpl
+:intctl regS1, regSD is m1=0x1 & op2431=0x65 & op0710=0x8 & regS1 & regSD unimpl
 
 
 # intdis
-:intdis  is op2431=0x5b & op0710=0x4 unimpl
+:intdis  is m0=0x1 & m1=0x1 & m2=0x1 & op2431=0x5b & op0710=0x4 unimpl
 
 
 # inten
-:inten  is op2431=0x5b & op0710=0x5 unimpl
+:inten  is m0=0x1 & m1=0x1 & m2=0x1 & op2431=0x5b & op0710=0x5 unimpl
 
 
 # ld
-:ld efa4, oper612_0000 is ( op2431=0x90 & op0710=0x0 & oper612_0000 ) ... & efa4 unimpl
+:ld efa4, reg1923 is ( op2431=0x90 & reg1923 ) ... & efa4 unimpl
 
 
 # lda
-:lda efa1, oper412_0000 is ( op2431=0x8c & op0710=0x0 & oper412_0000 ) ... & efa1 unimpl
+:lda efa1, reg1923 is ( op2431=0x8c & reg1923 ) ... & efa1 unimpl
 
 
 # ldib
-:ldib efa1, oper412_0000 is ( op2431=0xc0 & op0710=0x0 & oper412_0000 ) ... & efa1 unimpl
+:ldib efa1, reg1923 is ( op2431=0xc0 & reg1923 ) ... & efa1 unimpl
 
 
 # ldis
-:ldis efa2, oper512_0000 is ( op2431=0xc8 & op0710=0x0 & oper512_0000 ) ... & efa2 unimpl
+:ldis efa2, reg1923 is ( op2431=0xc8 & reg1923 ) ... & efa2 unimpl
 
 
 # ldl
-:ldl efa8, oper712_1001 is ( op2431=0x98 & op0710=0x0 & oper712_1001 ) ... & efa8 unimpl
+:ldl efa8, reg1923l is ( op2431=0x98 & reg1923l ) ... & efa8 unimpl
 
 
 # ldob
-:ldob efa1, oper412_0000 is ( op2431=0x80 & op0710=0x0 & oper412_0000 ) ... & efa1 unimpl
+:ldob efa1, reg1923 is ( op2431=0x80 & reg1923 ) ... & efa1 unimpl
 
 
 # ldos
-:ldos efa2, oper512_0000 is ( op2431=0x88 & op0710=0x0 & oper512_0000 ) ... & efa2 unimpl
+:ldos efa2, reg1923 is ( op2431=0x88 & reg1923 ) ... & efa2 unimpl
 
 
 # ldphy
-:ldphy oper302_0000, oper312_0000 is op2431=0x61 & op0710=0x4 & oper302_0000 & oper312_0000 unimpl
+:ldphy regS1, regSD is m1=0x1 & op2431=0x61 & op0710=0x4 & regS1 & regSD unimpl
 
 
 # ldq
-:ldq efa16, oper912_3001 is ( op2431=0xb0 & op0710=0x0 & oper912_3001 ) ... & efa16 unimpl
+:ldq efa16, reg1923tq is ( op2431=0xb0 & reg1923tq ) ... & efa16 unimpl
 
 
 # ldt
-:ldt efa12, oper812_3001 is ( op2431=0xa0 & op0710=0x0 & oper812_3001 ) ... & efa12 unimpl
+:ldt efa12, reg1923tq is ( op2431=0xa0 & reg1923tq ) ... & efa12 unimpl
 
 
 # ldtime
-:ldtime oper301_1001 is op2431=0x67 & op0710=0x3 & oper301_1001 unimpl
+:ldtime regSDl is m0=0x1 & m1=0x1 & op2431=0x67 & op0710=0x3 & regSDl unimpl
 
 
 # logbnr
-:logbnr oper302_0110, oper312_0010 is op2431=0x68 & op0710=0xa & oper302_0110 & oper312_0010 unimpl
+:logbnr regS1, regSD is m1=0x1 & op2431=0x68 & op0710=0xa & regS1 & regSD unimpl
 
 
 # logbnrl
-:logbnrl oper302_1111, oper312_1011 is op2431=0x69 & op0710=0xa & oper302_1111 & oper312_1011 unimpl
+:logbnrl regS1l, regSDl is m1=0x1 & op2431=0x69 & op0710=0xa & regS1l & regSDl unimpl
 
 
 # logepr
-:logepr oper303_0110, oper313_0110, oper323_0010 is op2431=0x68 & op0710=0x1 & oper303_0110 & oper313_0110 & oper323_0010 unimpl
+:logepr regS1, regS2, regSD is op2431=0x68 & op0710=0x1 & regS1 & regS2 & regSD unimpl
 
 
 # logeprl
-:logeprl oper303_1111, oper313_1111, oper323_1011 is op2431=0x69 & op0710=0x1 & oper303_1111 & oper313_1111 & oper323_1011 unimpl
+:logeprl regS1l, regS2l, regSDl is op2431=0x69 & op0710=0x1 & regS1l & regS2l & regSDl unimpl
 
 
 # logr
-:logr oper303_0110, oper313_0110, oper323_0010 is op2431=0x68 & op0710=0x2 & oper303_0110 & oper313_0110 & oper323_0010 unimpl
+:logr regS1, regS2, regSD is op2431=0x68 & op0710=0x2 & regS1 & regS2 & regSD unimpl
 
 
 # logrl
-:logrl oper303_1111, oper313_1111, oper323_1011 is op2431=0x69 & op0710=0x2 & oper303_1111 & oper313_1111 & oper323_1011 unimpl
+:logrl regS1l, regS2l, regSDl is op2431=0x69 & op0710=0x2 & regS1l & regS2l & regSDl unimpl
 
 
 # mark
-:mark  is op2431=0x66 & op0710=0xb unimpl
+:mark  is m0=0x1 & m1=0x1 & m2=0x1 & op2431=0x66 & op0710=0xb unimpl
 
 
 # modac
-:modac oper303_0101, oper313_0101, oper323_0001 is op2431=0x64 & op0710=0x5 & oper303_0101 & oper313_0101 & oper323_0001 unimpl
+:modac regS1, regS2, regSD is op2431=0x64 & op0710=0x5 & regS1 & regS2 & regSD unimpl
 
 
 # modi
-:modi oper303_0101, oper313_0101, oper323_0001 is op2431=0x74 & op0710=0x9 & oper303_0101 & oper313_0101 & oper323_0001 unimpl
+:modi regS1, regS2, regSD is op2431=0x74 & op0710=0x9 & regS1 & regS2 & regSD unimpl
 
 
 # modify
-:modify oper303_0101, oper313_0101, oper323_0000 is op2431=0x65 & op0710=0x0 & oper303_0101 & oper313_0101 & oper323_0000 unimpl
+:modify regS1, regS2, regSD is op2431=0x65 & op0710=0x0 & regS1 & regS2 & regSD unimpl
 
 
 # modpc
-:modpc oper303_0101, oper313_0101, oper323_0000 is op2431=0x65 & op0710=0x5 & oper303_0101 & oper313_0101 & oper323_0000 unimpl
+:modpc regS1, regS2, regSD is op2431=0x65 & op0710=0x5 & regS1 & regS2 & regSD unimpl
 
 
 # modtc
-:modtc oper303_0101, oper313_0101, oper323_0001 is op2431=0x65 & op0710=0x4 & oper303_0101 & oper313_0101 & oper323_0001 unimpl
+:modtc regS1, regS2, regSD is op2431=0x65 & op0710=0x4 & regS1 & regS2 & regSD unimpl
 
 
 # mov
-:mov oper302_0101, oper312_0001 is op2431=0x5c & op0710=0xc & oper302_0101 & oper312_0001 unimpl
+:mov regS1, regSD is m1=0x1 & op2431=0x5c & op0710=0xc & regS1 & regSD unimpl
 
 
 # movl
-:movl oper302_1101, oper312_1001 is op2431=0x5d & op0710=0xc & oper302_1101 & oper312_1001 unimpl
+:movl regS1l, regSDl is m1=0x1 & op2431=0x5d & op0710=0xc & regS1l & regSDl unimpl
 
 
 # movq
-:movq oper302_3101, oper312_3001 is op2431=0x5f & op0710=0xc & oper302_3101 & oper312_3001 unimpl
+:movq regS1tq, regSDtq is m1=0x1 & op2431=0x5f & op0710=0xc & regS1tq & regSDtq unimpl
 
 
 # movqstr
-:movqstr oper303_0000, oper313_0000, oper323_0100 is op2431=0x60 & op0710=0x4 & oper303_0000 & oper313_0000 & oper323_0100 unimpl
+:movqstr regS1, regS2, regSD is op2431=0x60 & op0710=0x4 & regS1 & regS2 & regSD unimpl
 
 
 # movr
-:movr oper302_0110, oper312_0010 is op2431=0x6c & op0710=0x9 & oper302_0110 & oper312_0010 unimpl
+:movr regS1, regSD is m1=0x1 & op2431=0x6c & op0710=0x9 & regS1 & regSD unimpl
 
 
 # movre
-:movre oper302_3111, oper312_3011 is op2431=0x6e & op0710=0x1 & oper302_3111 & oper312_3011 unimpl
+:movre regS1tq, regSDtq is m1=0x1 & op2431=0x6e & op0710=0x1 & regS1tq & regSDtq unimpl
 
 
 # movrl
-:movrl oper302_1111, oper312_1011 is op2431=0x6d & op0710=0x9 & oper302_1111 & oper312_1011 unimpl
+:movrl regS1l, regSDl is m1=0x1 & op2431=0x6d & op0710=0x9 & regS1l & regSDl unimpl
 
 
 # movstr
-:movstr oper303_0000, oper313_0000, oper323_0100 is op2431=0x60 & op0710=0x5 & oper303_0000 & oper313_0000 & oper323_0100 unimpl
+:movstr regS1, regS2, regSD is op2431=0x60 & op0710=0x5 & regS1 & regS2 & regSD unimpl
 
 
 # movt
-:movt oper302_3101, oper312_3001 is op2431=0x5e & op0710=0xc & oper302_3101 & oper312_3001 unimpl
+:movt regS1tq, regSDtq is m1=0x1 & op2431=0x5e & op0710=0xc & regS1tq & regSDtq unimpl
 
 
 # muli
-:muli oper303_0101, oper313_0101, oper323_0001 is op2431=0x74 & op0710=0x1 & oper303_0101 & oper313_0101 & oper323_0001 unimpl
+:muli regS1, regS2, regSD is op2431=0x74 & op0710=0x1 & regS1 & regS2 & regSD unimpl
 
 
 # mulo
-:mulo oper303_0101, oper313_0101, oper323_0001 is op2431=0x70 & op0710=0x1 & oper303_0101 & oper313_0101 & oper323_0001 unimpl
+:mulo regS1, regS2, regSD is op2431=0x70 & op0710=0x1 & regS1 & regS2 & regSD unimpl
 
 
 # mulr
-:mulr oper303_0110, oper313_0110, oper323_0010 is op2431=0x78 & op0710=0xc & oper303_0110 & oper313_0110 & oper323_0010 unimpl
+:mulr regS1, regS2, regSD is op2431=0x78 & op0710=0xc & regS1 & regS2 & regSD unimpl
 
 
 # mulrl
-:mulrl oper303_1111, oper313_1111, oper323_1011 is op2431=0x79 & op0710=0xc & oper303_1111 & oper313_1111 & oper323_1011 unimpl
+:mulrl regS1l, regS2l, regSDl is op2431=0x79 & op0710=0xc & regS1l & regS2l & regSDl unimpl
 
 
 # nand
-:nand oper303_0101, oper313_0101, oper323_0001 is op2431=0x58 & op0710=0xe & oper303_0101 & oper313_0101 & oper323_0001 unimpl
+:nand regS1, regS2, regSD is op2431=0x58 & op0710=0xe & regS1 & regS2 & regSD unimpl
 
 
 # nor
-:nor oper303_0101, oper313_0101, oper323_0001 is op2431=0x58 & op0710=0x8 & oper303_0101 & oper313_0101 & oper323_0001 unimpl
+:nor regS1, regS2, regSD is op2431=0x58 & op0710=0x8 & regS1 & regS2 & regSD unimpl
 
 
 # not
-:not oper302_0101, oper312_0001 is op2431=0x58 & op0710=0xa & oper302_0101 & oper312_0001 unimpl
+:not regS1, regSD is m1=0x1 & op2431=0x58 & op0710=0xa & regS1 & regSD unimpl
 
 
 # notand
-:notand oper303_0101, oper313_0101, oper323_0001 is op2431=0x58 & op0710=0x4 & oper303_0101 & oper313_0101 & oper323_0001 unimpl
+:notand regS1, regS2, regSD is op2431=0x58 & op0710=0x4 & regS1 & regS2 & regSD unimpl
 
 
 # notbit
-:notbit oper303_0101, oper313_0101, oper323_0001 is op2431=0x58 & op0710=0x0 & oper303_0101 & oper313_0101 & oper323_0001 unimpl
+:notbit regS1, regS2, regSD is op2431=0x58 & op0710=0x0 & regS1 & regS2 & regSD unimpl
 
 
 # notor
-:notor oper303_0101, oper313_0101, oper323_0001 is op2431=0x58 & op0710=0xd & oper303_0101 & oper313_0101 & oper323_0001 unimpl
+:notor regS1, regS2, regSD is op2431=0x58 & op0710=0xd & regS1 & regS2 & regSD unimpl
 
 
 # or
-:or oper303_0101, oper313_0101, oper323_0001 is op2431=0x58 & op0710=0x7 & oper303_0101 & oper313_0101 & oper323_0001 unimpl
+:or regS1, regS2, regSD is op2431=0x58 & op0710=0x7 & regS1 & regS2 & regSD unimpl
 
 
 # ornot
-:ornot oper303_0101, oper313_0101, oper323_0001 is op2431=0x58 & op0710=0xb & oper303_0101 & oper313_0101 & oper323_0001 unimpl
+:ornot regS1, regS2, regSD is op2431=0x58 & op0710=0xb & regS1 & regS2 & regSD unimpl
 
 
 # receive
-:receive oper302_0000, oper312_0000 is op2431=0x65 & op0710=0x6 & oper302_0000 & oper312_0000 unimpl
+:receive regS1, regSD is m1=0x1 & op2431=0x65 & op0710=0x6 & regS1 & regSD unimpl
 
 
 # remi
-:remi oper303_0101, oper313_0101, oper323_0001 is op2431=0x74 & op0710=0x8 & oper303_0101 & oper313_0101 & oper323_0001 unimpl
+:remi regS1, regS2, regSD is op2431=0x74 & op0710=0x8 & regS1 & regS2 & regSD unimpl
 
 
 # remo
-:remo oper303_0101, oper313_0101, oper323_0001 is op2431=0x70 & op0710=0x8 & oper303_0101 & oper313_0101 & oper323_0001 unimpl
+:remo regS1, regS2, regSD is op2431=0x70 & op0710=0x8 & regS1 & regS2 & regSD unimpl
 
 
 # remr
-:remr oper303_0110, oper313_0110, oper323_0010 is op2431=0x68 & op0710=0x3 & oper303_0110 & oper313_0110 & oper323_0010 unimpl
+:remr regS1, regS2, regSD is op2431=0x68 & op0710=0x3 & regS1 & regS2 & regSD unimpl
 
 
 # remrl
-:remrl oper303_1111, oper313_1111, oper323_1011 is op2431=0x69 & op0710=0x3 & oper303_1111 & oper313_1111 & oper323_1011 unimpl
+:remrl regS1l, regS2l, regSDl is op2431=0x69 & op0710=0x3 & regS1l & regS2l & regSDl unimpl
 
 
 # resumprcs
-:resumprcs oper301_0000 is op2431=0x66 & op0710=0x4 & oper301_0000 unimpl
+:resumprcs regS1 is m1=0x1 & m2=0x1 & op2431=0x66 & op0710=0x4 & regS1 unimpl
 
 
 # ret
@@ -1121,267 +924,267 @@ oper912_3001: sfr1923tq is sfr1923tq & m2=1 { export sfr1923tq; }
 
 
 # rotate
-:rotate oper303_0101, oper313_0101, oper323_0001 is op2431=0x59 & op0710=0xd & oper303_0101 & oper313_0101 & oper323_0001 unimpl
+:rotate regS1, regS2, regSD is op2431=0x59 & op0710=0xd & regS1 & regS2 & regSD unimpl
 
 
 # roundr
-:roundr oper302_0110, oper312_0010 is op2431=0x68 & op0710=0xb & oper302_0110 & oper312_0010 unimpl
+:roundr regS1, regSD is m1=0x1 & op2431=0x68 & op0710=0xb & regS1 & regSD unimpl
 
 
 # roundrl
-:roundrl oper302_1111, oper312_1011 is op2431=0x69 & op0710=0xb & oper302_1111 & oper312_1011 unimpl
+:roundrl regS1l, regSDl is m1=0x1 & op2431=0x69 & op0710=0xb & regS1l & regSDl unimpl
 
 
 # saveprcs
-:saveprcs  is op2431=0x66 & op0710=0x6 unimpl
+:saveprcs  is m0=0x1 & m1=0x1 & m2=0x1 & op2431=0x66 & op0710=0x6 unimpl
 
 
 # scaler
-:scaler oper303_0100, oper313_0110, oper323_0010 is op2431=0x67 & op0710=0x7 & oper303_0100 & oper313_0110 & oper323_0010 unimpl
+:scaler regS1, regS2, regSD is op2431=0x67 & op0710=0x7 & regS1 & regS2 & regSD unimpl
 
 
 # scalerl
-:scalerl oper303_0100, oper313_1111, oper323_1011 is op2431=0x67 & op0710=0x6 & oper303_0100 & oper313_1111 & oper323_1011 unimpl
+:scalerl regS1, regS2l, regSDl is op2431=0x67 & op0710=0x6 & regS1 & regS2l & regSDl unimpl
 
 
 # scanbit
-:scanbit oper302_0101, oper312_0001 is op2431=0x64 & op0710=0x1 & oper302_0101 & oper312_0001 unimpl
+:scanbit regS1, regSD is m1=0x1 & op2431=0x64 & op0710=0x1 & regS1 & regSD unimpl
 
 
 # scanbyte
-:scanbyte oper302_0101, oper312_0101 is op2431=0x5a & op0710=0xc & oper302_0101 & oper312_0101 unimpl
+:scanbyte regS1, regS2 is m2=0x1 & op2431=0x5a & op0710=0xc & regS1 & regS2 unimpl
 
 
 # schedprcs
-:schedprcs oper301_0000 is op2431=0x66 & op0710=0x5 & oper301_0000 unimpl
+:schedprcs regS1 is m1=0x1 & m2=0x1 & op2431=0x66 & op0710=0x5 & regS1 unimpl
 
 
 # sdma
-:sdma oper303_0101, oper313_0101, oper323_0100 is op2431=0x63 & op0710=0x0 & oper303_0101 & oper313_0101 & oper323_0100 unimpl
+:sdma regS1, regS2, regSD is op2431=0x63 & op0710=0x0 & regS1 & regS2 & regSD unimpl
 
 
 # sele
-:sele oper303_0101, oper313_0101, oper323_0001 is op2431=0x7a & op0710=0x4 & oper303_0101 & oper313_0101 & oper323_0001 unimpl
+:sele regS1, regS2, regSD is op2431=0x7a & op0710=0x4 & regS1 & regS2 & regSD unimpl
 
 
 # selg
-:selg oper303_0101, oper313_0101, oper323_0001 is op2431=0x79 & op0710=0x4 & oper303_0101 & oper313_0101 & oper323_0001 unimpl
+:selg regS1, regS2, regSD is op2431=0x79 & op0710=0x4 & regS1 & regS2 & regSD unimpl
 
 
 # selge
-:selge oper303_0101, oper313_0101, oper323_0001 is op2431=0x7b & op0710=0x4 & oper303_0101 & oper313_0101 & oper323_0001 unimpl
+:selge regS1, regS2, regSD is op2431=0x7b & op0710=0x4 & regS1 & regS2 & regSD unimpl
 
 
 # sell
-:sell oper303_0101, oper313_0101, oper323_0001 is op2431=0x7c & op0710=0x4 & oper303_0101 & oper313_0101 & oper323_0001 unimpl
+:sell regS1, regS2, regSD is op2431=0x7c & op0710=0x4 & regS1 & regS2 & regSD unimpl
 
 
 # selle
-:selle oper303_0101, oper313_0101, oper323_0001 is op2431=0x7e & op0710=0x4 & oper303_0101 & oper313_0101 & oper323_0001 unimpl
+:selle regS1, regS2, regSD is op2431=0x7e & op0710=0x4 & regS1 & regS2 & regSD unimpl
 
 
 # selne
-:selne oper303_0101, oper313_0101, oper323_0001 is op2431=0x7d & op0710=0x4 & oper303_0101 & oper313_0101 & oper323_0001 unimpl
+:selne regS1, regS2, regSD is op2431=0x7d & op0710=0x4 & regS1 & regS2 & regSD unimpl
 
 
 # selno
-:selno oper303_0101, oper313_0101, oper323_0001 is op2431=0x78 & op0710=0x4 & oper303_0101 & oper313_0101 & oper323_0001 unimpl
+:selno regS1, regS2, regSD is op2431=0x78 & op0710=0x4 & regS1 & regS2 & regSD unimpl
 
 
 # selo
-:selo oper303_0101, oper313_0101, oper323_0001 is op2431=0x7f & op0710=0x4 & oper303_0101 & oper313_0101 & oper323_0001 unimpl
+:selo regS1, regS2, regSD is op2431=0x7f & op0710=0x4 & regS1 & regS2 & regSD unimpl
 
 
 # send
-:send oper303_0000, oper313_0100, oper323_0000 is op2431=0x66 & op0710=0x2 & oper303_0000 & oper313_0100 & oper323_0000 unimpl
+:send regS1, regS2, regSD is op2431=0x66 & op0710=0x2 & regS1 & regS2 & regSD unimpl
 
 
 # sendserv
-:sendserv oper301_0000 is op2431=0x66 & op0710=0x3 & oper301_0000 unimpl
+:sendserv regS1 is m1=0x1 & m2=0x1 & op2431=0x66 & op0710=0x3 & regS1 unimpl
 
 
 # setbit
-:setbit oper303_0101, oper313_0101, oper323_0001 is op2431=0x58 & op0710=0x3 & oper303_0101 & oper313_0101 & oper323_0001 unimpl
+:setbit regS1, regS2, regSD is op2431=0x58 & op0710=0x3 & regS1 & regS2 & regSD unimpl
 
 
 # shli
-:shli oper303_0101, oper313_0101, oper323_0001 is op2431=0x59 & op0710=0xe & oper303_0101 & oper313_0101 & oper323_0001 unimpl
+:shli regS1, regS2, regSD is op2431=0x59 & op0710=0xe & regS1 & regS2 & regSD unimpl
 
 
 # shlo
-:shlo oper303_0101, oper313_0101, oper323_0001 is op2431=0x59 & op0710=0xc & oper303_0101 & oper313_0101 & oper323_0001 unimpl
+:shlo regS1, regS2, regSD is op2431=0x59 & op0710=0xc & regS1 & regS2 & regSD unimpl
 
 
 # shrdi
-:shrdi oper303_0101, oper313_0101, oper323_0001 is op2431=0x59 & op0710=0xa & oper303_0101 & oper313_0101 & oper323_0001 unimpl
+:shrdi regS1, regS2, regSD is op2431=0x59 & op0710=0xa & regS1 & regS2 & regSD unimpl
 
 
 # shri
-:shri oper303_0101, oper313_0101, oper323_0001 is op2431=0x59 & op0710=0xb & oper303_0101 & oper313_0101 & oper323_0001 unimpl
+:shri regS1, regS2, regSD is op2431=0x59 & op0710=0xb & regS1 & regS2 & regSD unimpl
 
 
 # shro
-:shro oper303_0101, oper313_0101, oper323_0001 is op2431=0x59 & op0710=0x8 & oper303_0101 & oper313_0101 & oper323_0001 unimpl
+:shro regS1, regS2, regSD is op2431=0x59 & op0710=0x8 & regS1 & regS2 & regSD unimpl
 
 
 # signal
-:signal oper301_0000 is op2431=0x66 & op0710=0xa & oper301_0000 unimpl
+:signal regS1 is m1=0x1 & m2=0x1 & op2431=0x66 & op0710=0xa & regS1 unimpl
 
 
 # sinr
-:sinr oper302_0110, oper312_0010 is op2431=0x68 & op0710=0xc & oper302_0110 & oper312_0010 unimpl
+:sinr regS1, regSD is m1=0x1 & op2431=0x68 & op0710=0xc & regS1 & regSD unimpl
 
 
 # sinrl
-:sinrl oper302_1111, oper312_1011 is op2431=0x69 & op0710=0xc & oper302_1111 & oper312_1011 unimpl
+:sinrl regS1l, regSDl is m1=0x1 & op2431=0x69 & op0710=0xc & regS1l & regSDl unimpl
 
 
 # spanbit
-:spanbit oper302_0101, oper312_0001 is op2431=0x64 & op0710=0x0 & oper302_0101 & oper312_0001 unimpl
+:spanbit regS1, regSD is m1=0x1 & op2431=0x64 & op0710=0x0 & regS1 & regSD unimpl
 
 
 # sqrtr
-:sqrtr oper302_0110, oper312_0010 is op2431=0x68 & op0710=0x8 & oper302_0110 & oper312_0010 unimpl
+:sqrtr regS1, regSD is m1=0x1 & op2431=0x68 & op0710=0x8 & regS1 & regSD unimpl
 
 
 # sqrtrl
-:sqrtrl oper302_1111, oper312_1011 is op2431=0x69 & op0710=0x8 & oper302_1111 & oper312_1011 unimpl
+:sqrtrl regS1l, regSDl is m1=0x1 & op2431=0x69 & op0710=0x8 & regS1l & regSDl unimpl
 
 
 # st
-:st oper602_0000, efa4 is ( op2431=0x92 & op0710=0x0 & oper602_0000 ) ... & efa4 unimpl
+:st reg1923, efa4 is ( op2431=0x92 & reg1923 ) ... & efa4 unimpl
 
 
 # stib
-:stib oper402_0000, efa1 is ( op2431=0xc2 & op0710=0x0 & oper402_0000 ) ... & efa1 unimpl
+:stib reg1923, efa1 is ( op2431=0xc2 & reg1923 ) ... & efa1 unimpl
 
 
 # stis
-:stis oper502_0000, efa2 is ( op2431=0xca & op0710=0x0 & oper502_0000 ) ... & efa2 unimpl
+:stis reg1923, efa2 is ( op2431=0xca & reg1923 ) ... & efa2 unimpl
 
 
 # stl
-:stl oper702_1001, efa8 is ( op2431=0x9a & op0710=0x0 & oper702_1001 ) ... & efa8 unimpl
+:stl reg1923l, efa8 is ( op2431=0x9a & reg1923l ) ... & efa8 unimpl
 
 
 # stob
-:stob oper402_0000, efa1 is ( op2431=0x82 & op0710=0x0 & oper402_0000 ) ... & efa1 unimpl
+:stob reg1923, efa1 is ( op2431=0x82 & reg1923 ) ... & efa1 unimpl
 
 
 # stos
-:stos oper502_0000, efa2 is ( op2431=0x8a & op0710=0x0 & oper502_0000 ) ... & efa2 unimpl
+:stos reg1923, efa2 is ( op2431=0x8a & reg1923 ) ... & efa2 unimpl
 
 
 # stq
-:stq oper902_3001, efa16 is ( op2431=0xb2 & op0710=0x0 & oper902_3001 ) ... & efa16 unimpl
+:stq reg1923tq, efa16 is ( op2431=0xb2 & reg1923tq ) ... & efa16 unimpl
 
 
 # stt
-:stt oper802_3001, efa12 is ( op2431=0xa2 & op0710=0x0 & oper802_3001 ) ... & efa12 unimpl
+:stt reg1923tq, efa12 is ( op2431=0xa2 & reg1923tq ) ... & efa12 unimpl
 
 
 # subc
-:subc oper303_0101, oper313_0101, oper323_0001 is op2431=0x5b & op0710=0x2 & oper303_0101 & oper313_0101 & oper323_0001 unimpl
+:subc regS1, regS2, regSD is op2431=0x5b & op0710=0x2 & regS1 & regS2 & regSD unimpl
 
 
 # subi
-:subi oper303_0101, oper313_0101, oper323_0001 is op2431=0x59 & op0710=0x3 & oper303_0101 & oper313_0101 & oper323_0001 unimpl
+:subi regS1, regS2, regSD is op2431=0x59 & op0710=0x3 & regS1 & regS2 & regSD unimpl
 
 
 # subie
-:subie oper303_0101, oper313_0101, oper323_0001 is op2431=0x7a & op0710=0x3 & oper303_0101 & oper313_0101 & oper323_0001 unimpl
+:subie regS1, regS2, regSD is op2431=0x7a & op0710=0x3 & regS1 & regS2 & regSD unimpl
 
 
 # subig
-:subig oper303_0101, oper313_0101, oper323_0001 is op2431=0x79 & op0710=0x3 & oper303_0101 & oper313_0101 & oper323_0001 unimpl
+:subig regS1, regS2, regSD is op2431=0x79 & op0710=0x3 & regS1 & regS2 & regSD unimpl
 
 
 # subige
-:subige oper303_0101, oper313_0101, oper323_0001 is op2431=0x7b & op0710=0x3 & oper303_0101 & oper313_0101 & oper323_0001 unimpl
+:subige regS1, regS2, regSD is op2431=0x7b & op0710=0x3 & regS1 & regS2 & regSD unimpl
 
 
 # subil
-:subil oper303_0101, oper313_0101, oper323_0001 is op2431=0x7c & op0710=0x3 & oper303_0101 & oper313_0101 & oper323_0001 unimpl
+:subil regS1, regS2, regSD is op2431=0x7c & op0710=0x3 & regS1 & regS2 & regSD unimpl
 
 
 # subile
-:subile oper303_0101, oper313_0101, oper323_0001 is op2431=0x7e & op0710=0x3 & oper303_0101 & oper313_0101 & oper323_0001 unimpl
+:subile regS1, regS2, regSD is op2431=0x7e & op0710=0x3 & regS1 & regS2 & regSD unimpl
 
 
 # subine
-:subine oper303_0101, oper313_0101, oper323_0001 is op2431=0x7d & op0710=0x3 & oper303_0101 & oper313_0101 & oper323_0001 unimpl
+:subine regS1, regS2, regSD is op2431=0x7d & op0710=0x3 & regS1 & regS2 & regSD unimpl
 
 
 # subino
-:subino oper303_0101, oper313_0101, oper323_0001 is op2431=0x78 & op0710=0x3 & oper303_0101 & oper313_0101 & oper323_0001 unimpl
+:subino regS1, regS2, regSD is op2431=0x78 & op0710=0x3 & regS1 & regS2 & regSD unimpl
 
 
 # subio
-:subio oper303_0101, oper313_0101, oper323_0001 is op2431=0x7f & op0710=0x3 & oper303_0101 & oper313_0101 & oper323_0001 unimpl
+:subio regS1, regS2, regSD is op2431=0x7f & op0710=0x3 & regS1 & regS2 & regSD unimpl
 
 
 # subo
-:subo oper303_0101, oper313_0101, oper323_0001 is op2431=0x59 & op0710=0x2 & oper303_0101 & oper313_0101 & oper323_0001 unimpl
+:subo regS1, regS2, regSD is op2431=0x59 & op0710=0x2 & regS1 & regS2 & regSD unimpl
 
 
 # suboe
-:suboe oper303_0101, oper313_0101, oper323_0001 is op2431=0x7a & op0710=0x2 & oper303_0101 & oper313_0101 & oper323_0001 unimpl
+:suboe regS1, regS2, regSD is op2431=0x7a & op0710=0x2 & regS1 & regS2 & regSD unimpl
 
 
 # subog
-:subog oper303_0101, oper313_0101, oper323_0001 is op2431=0x79 & op0710=0x2 & oper303_0101 & oper313_0101 & oper323_0001 unimpl
+:subog regS1, regS2, regSD is op2431=0x79 & op0710=0x2 & regS1 & regS2 & regSD unimpl
 
 
 # suboge
-:suboge oper303_0101, oper313_0101, oper323_0001 is op2431=0x7b & op0710=0x2 & oper303_0101 & oper313_0101 & oper323_0001 unimpl
+:suboge regS1, regS2, regSD is op2431=0x7b & op0710=0x2 & regS1 & regS2 & regSD unimpl
 
 
 # subol
-:subol oper303_0101, oper313_0101, oper323_0001 is op2431=0x7c & op0710=0x2 & oper303_0101 & oper313_0101 & oper323_0001 unimpl
+:subol regS1, regS2, regSD is op2431=0x7c & op0710=0x2 & regS1 & regS2 & regSD unimpl
 
 
 # subole
-:subole oper303_0101, oper313_0101, oper323_0001 is op2431=0x7e & op0710=0x2 & oper303_0101 & oper313_0101 & oper323_0001 unimpl
+:subole regS1, regS2, regSD is op2431=0x7e & op0710=0x2 & regS1 & regS2 & regSD unimpl
 
 
 # subone
-:subone oper303_0101, oper313_0101, oper323_0001 is op2431=0x7d & op0710=0x2 & oper303_0101 & oper313_0101 & oper323_0001 unimpl
+:subone regS1, regS2, regSD is op2431=0x7d & op0710=0x2 & regS1 & regS2 & regSD unimpl
 
 
 # subono
-:subono oper303_0101, oper313_0101, oper323_0001 is op2431=0x78 & op0710=0x2 & oper303_0101 & oper313_0101 & oper323_0001 unimpl
+:subono regS1, regS2, regSD is op2431=0x78 & op0710=0x2 & regS1 & regS2 & regSD unimpl
 
 
 # suboo
-:suboo oper303_0101, oper313_0101, oper323_0001 is op2431=0x7f & op0710=0x2 & oper303_0101 & oper313_0101 & oper323_0001 unimpl
+:suboo regS1, regS2, regSD is op2431=0x7f & op0710=0x2 & regS1 & regS2 & regSD unimpl
 
 
 # subr
-:subr oper303_0110, oper313_0110, oper323_0010 is op2431=0x78 & op0710=0xd & oper303_0110 & oper313_0110 & oper323_0010 unimpl
+:subr regS1, regS2, regSD is op2431=0x78 & op0710=0xd & regS1 & regS2 & regSD unimpl
 
 
 # subrl
-:subrl oper303_1111, oper313_1111, oper323_1011 is op2431=0x79 & op0710=0xd & oper303_1111 & oper313_1111 & oper323_1011 unimpl
+:subrl regS1l, regS2l, regSDl is op2431=0x79 & op0710=0xd & regS1l & regS2l & regSDl unimpl
 
 
 # syncf
-:syncf  is op2431=0x66 & op0710=0xf unimpl
+:syncf  is m0=0x1 & m1=0x1 & m2=0x1 & op2431=0x66 & op0710=0xf unimpl
 
 
 # synld
-:synld oper302_0000, oper312_0000 is op2431=0x61 & op0710=0x5 & oper302_0000 & oper312_0000 unimpl
+:synld regS1, regSD is m1=0x1 & op2431=0x61 & op0710=0x5 & regS1 & regSD unimpl
 
 
 # synmov
-:synmov oper302_0000, oper312_0000 is op2431=0x60 & op0710=0x0 & oper302_0000 & oper312_0000 unimpl
+:synmov regS1, regS2 is m2=0x1 & op2431=0x60 & op0710=0x0 & regS1 & regS2 unimpl
 
 
 # synmovl
-:synmovl oper302_0000, oper312_0000 is op2431=0x60 & op0710=0x1 & oper302_0000 & oper312_0000 unimpl
+:synmovl regS1, regS2 is m2=0x1 & op2431=0x60 & op0710=0x1 & regS1 & regS2 unimpl
 
 
 # synmovq
-:synmovq oper302_0000, oper312_0000 is op2431=0x60 & op0710=0x2 & oper302_0000 & oper312_0000 unimpl
+:synmovq regS1, regS2 is m2=0x1 & op2431=0x60 & op0710=0x2 & regS1 & regS2 unimpl
 
 
 # syscall
@@ -1389,47 +1192,47 @@ oper912_3001: sfr1923tq is sfr1923tq & m2=1 { export sfr1923tq; }
 
 
 # sysctl
-:sysctl oper303_0101, oper313_0101, oper323_0100 is op2431=0x65 & op0710=0x9 & oper303_0101 & oper313_0101 & oper323_0100 unimpl
+:sysctl regS1, regS2, regSD is op2431=0x65 & op0710=0x9 & regS1 & regS2 & regSD unimpl
 
 
 # tanr
-:tanr oper302_0110, oper312_0010 is op2431=0x68 & op0710=0xe & oper302_0110 & oper312_0010 unimpl
+:tanr regS1, regSD is m1=0x1 & op2431=0x68 & op0710=0xe & regS1 & regSD unimpl
 
 
 # tanrl
-:tanrl oper302_1111, oper312_1011 is op2431=0x69 & op0710=0xe & oper302_1111 & oper312_1011 unimpl
+:tanrl regS1l, regSDl is m1=0x1 & op2431=0x69 & op0710=0xe & regS1l & regSDl unimpl
 
 
 # teste
-:teste oper101_0000 is op2431=0x22 & oper101_0000 unimpl
+:teste cobrSD is op2431=0x22 & cobrSD unimpl
 
 
 # testg
-:testg oper101_0000 is op2431=0x21 & oper101_0000 unimpl
+:testg cobrSD is op2431=0x21 & cobrSD unimpl
 
 
 # testge
-:testge oper101_0000 is op2431=0x23 & oper101_0000 unimpl
+:testge cobrSD is op2431=0x23 & cobrSD unimpl
 
 
 # testl
-:testl oper101_0000 is op2431=0x24 & oper101_0000 unimpl
+:testl cobrSD is op2431=0x24 & cobrSD unimpl
 
 
 # testle
-:testle oper101_0000 is op2431=0x26 & oper101_0000 unimpl
+:testle cobrSD is op2431=0x26 & cobrSD unimpl
 
 
 # testne
-:testne oper101_0000 is op2431=0x25 & oper101_0000 unimpl
+:testne cobrSD is op2431=0x25 & cobrSD unimpl
 
 
 # testno
-:testno oper101_0000 is op2431=0x20 & oper101_0000 unimpl
+:testno cobrSD is op2431=0x20 & cobrSD unimpl
 
 
 # testo
-:testo oper101_0000 is op2431=0x27 & oper101_0000 unimpl
+:testo cobrSD is op2431=0x27 & cobrSD unimpl
 
 
 # udma
@@ -1437,14 +1240,14 @@ oper912_3001: sfr1923tq is sfr1923tq & m2=1 { export sfr1923tq; }
 
 
 # wait
-:wait oper301_0000 is op2431=0x66 & op0710=0x9 & oper301_0000 unimpl
+:wait regS1 is m1=0x1 & m2=0x1 & op2431=0x66 & op0710=0x9 & regS1 unimpl
 
 
 # xnor
-:xnor oper303_0101, oper313_0101, oper323_0001 is op2431=0x58 & op0710=0x9 & oper303_0101 & oper313_0101 & oper323_0001 unimpl
+:xnor regS1, regS2, regSD is op2431=0x58 & op0710=0x9 & regS1 & regS2 & regSD unimpl
 
 
 # xor
-:xor oper303_0101, oper313_0101, oper323_0001 is op2431=0x58 & op0710=0x6 & oper303_0101 & oper313_0101 & oper323_0001 unimpl
+:xor regS1, regS2, regSD is op2431=0x58 & op0710=0x6 & regS1 & regS2 & regSD unimpl
 
 
