@@ -157,6 +157,9 @@ regS1l: reg0004l is reg0004l & m2 & m1 & m0=0 & s1 & s0=0 { export reg0004l; }
 regS1t: reg0004t is reg0004t & m2 & m1 & m0=0 & s1 & s0=0 { export reg0004t; }
 regS1q: reg0004q is reg0004q & m2 & m1 & m0=0 & s1 & s0=0 { export reg0004q; }
 regS1: op0004 is op0004 & m2 & m1 & m0=1 & s1 & s0=0 { local tmp:4 = op0004; export tmp; }
+regS1l: op0004 is op0004 & m2 & m1 & m0=1 & s1 & s0=0 { local tmp:8 = op0004; export tmp; }
+regS1t: op0004 is op0004 & m2 & m1 & m0=1 & s1 & s0=0 { local tmp:12 = op0004; export tmp; }
+regS1q: op0004 is op0004 & m2 & m1 & m0=1 & s1 & s0=0 { local tmp:16 = op0004; export tmp; }
 regS1: sfr0004 is sfr0004 & m2 & m1 & m0=0 & s1 & s0=1 { local tmp:4 = sfr0004; export tmp; }
 regS1l: sfr0004l is sfr0004l & m2 & m1 & m0=0 & s1 & s0=1 { export sfr0004l; }
 regS1t: sfr0004t is sfr0004t & m2 & m1 & m0=0 & s1 & s0=1 { export sfr0004t; }
@@ -165,7 +168,10 @@ regS2: reg1418 is reg1418 & m2 & m1=0 & m0 & s1=0 & s0 { export reg1418; }
 regS2l: reg1418l is reg1418l & m2 & m1=0 & m0 & s1=0 & s0 { export reg1418l; }
 regS2t: reg1418t is reg1418t & m2 & m1=0 & m0 & s1=0 & s0 { export reg1418t; }
 regS2q: reg1418q is reg1418q & m2 & m1=0 & m0 & s1=0 & s0 { export reg1418q; }
-regS2: op1418 is op1418 & m2 & m1=1 & m0 & s1=0 & s0 { export op1418; }
+regS2: op1418 is op1418 & m2 & m1=1 & m0 & s1=0 & s0 { local tmp:4 = op1418; export tmp; }
+regS2l: op1418 is op1418 & m2 & m1=1 & m0 & s1=0 & s0 { local tmp:8 = op1418; export tmp; }
+regS2t: op1418 is op1418 & m2 & m1=1 & m0 & s1=0 & s0 { local tmp:12 = op1418; export tmp; }
+regS2q: op1418 is op1418 & m2 & m1=1 & m0 & s1=0 & s0 { local tmp:16 = op1418; export tmp; }
 regS2: sfr1418 is sfr1418 & m2 & m1=0 & m0 & s1=1 & s0 { export sfr1418; }
 regS2l: sfr1418l is sfr1418l & m2 & m1=0 & m0 & s1=1 & s0 { export sfr1418l; }
 regS2t: sfr1418t is sfr1418t & m2 & m1=0 & m0 & s1=1 & s0 { export sfr1418t; }
