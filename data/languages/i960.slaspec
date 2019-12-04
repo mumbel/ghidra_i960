@@ -16,35 +16,6 @@ define register offset=0 size=4 [ pfp sp rip r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r1
 define register offset=0x100 size=4 [ sf0 sf1 sf2 sf3 sf4 sf5 sf6 sf7 sf8 sf9 sf10 sf11 sf12 sf13 sf14 sf15 sf16 sf17 sf18 sf19 sf20 sf21 sf22 sf23 sf24 sf25 sf26 sf27 sf28 sf29 sf30 sf31 ];
 
 
-define register offset=0 size=8 [ rl_pfp_sp rl_rip_r3 rl_r4_r5 rl_r6_r7 rl_r8_r9 rl_r10_r11 rl_r12_r13 rl_r14_r15 rl_g0_g1 rl_g2_g3 rl_g4_g5 rl_g6_g7 rl_g8_g9 rl_g10_g11 rl_g12_g13 rl_g14_fp ];
-
-define register offset=0x100 size=8 [ sfrl_sf0_sf1 sfrl_sf2_sf3 sfrl_sf4_sf5 sfrl_sf6_sf7 sfrl_sf8_sf9 sfrl_sf10_sf11 sfrl_sf12_sf13 sfrl_sf14_sf15 sfrl_sf16_sf17 sfrl_sf18_sf19 sfrl_sf20_sf21 sfrl_sf22_sf23 sfrl_sf24_sf25 sfrl_sf26_sf27 sfrl_sf28_sf29 sfrl_sf30_sf31 ];
-
-
-#ATTN  Must be multiple of 4, results are unpredictable otherwise
-define register offset=0x0 size=12 [ rt_pfp_sp_rip ];
-define register offset=0x10 size=12 [ rt_r4_r5_r6 ];
-define register offset=0x20 size=12 [ rt_r8_r9_r10 ];
-define register offset=0x30 size=12 [ rt_r12_r13_r14 ];
-define register offset=0x40 size=12 [ rt_g0_g1_g2 ];
-define register offset=0x50 size=12 [ rt_g4_g5_g6 ];
-define register offset=0x60 size=12 [ rt_g8_g9_g10 ];
-define register offset=0x70 size=12 [ rt_g12_g13_g14 ];
-
-define register offset=0x100 size=12 [ sfrt_sf0_sf1_sf2 ];
-define register offset=0x110 size=12 [ sfrt_sf4_sf5_sf6 ];
-define register offset=0x120 size=12 [ sfrt_sf8_sf9_sf10 ];
-define register offset=0x130 size=12 [ sfrt_sf12_sf13_sf14 ];
-define register offset=0x140 size=12 [ sfrt_sf16_sf17_sf18 ];
-define register offset=0x150 size=12 [ sfrt_sf20_sf21_sf22 ];
-define register offset=0x160 size=12 [ sfrt_sf24_sf25_sf26 ];
-define register offset=0x170 size=12 [ sfrt_sf28_sf29_sf30 ];
-
-
-define register offset=0x0 size=16 [ rq_pfp_sp_rip_r3 rq_r4_r5_r6_r7 rq_r8_r9_r10_r11 rq_r12_r13_r14_r15 rq_g0_g1_g2_g3 rq_g4_g5_g6_g7 rq_g8_g9_g10_g11 rq_g12_g13_g14_fp ];
-
-define register offset=0x100 size=16 [ sfrq_sf0_sf1_sf2_sf3 sfrq_sf4_sf5_sf6_sf7 sfrq_sf8_sf9_sf10_sf11 sfrq_sf12_sf13_sf14_sf15 sfrq_sf16_sf17_sf18_sf19 sfrq_sf20_sf21_sf22_sf23 sfrq_sf24_sf25_sf26_sf27 sfrq_sf28_sf29_sf30_sf31 ];
-
 define register offset=0x200 size=4 [ pc ac ip tc ];
 
 
@@ -57,24 +28,12 @@ define token instr (32)
   op2431=(24,31)
   freg1923=(19,23)
   reg1923=(19,23)
-  reg1923l=(19,23)
-  reg1923t=(19,23)
-  reg1923q=(19,23)
   sfr1923=(19,23)
-  sfr1923l=(19,23)
-  sfr1923t=(19,23)
-  sfr1923q=(19,23)
   fp1923=(19,23)
   op1923=(19,23)
   freg1418=(14,18)
   reg1418=(14,18)
-  reg1418l=(14,18)
-  reg1418t=(14,18)
-  reg1418q=(14,18)
   sfr1418=(14,18)
-  sfr1418l=(14,18)
-  sfr1418t=(14,18)
-  sfr1418q=(14,18)
   fp1418=(14,18)
   op1418=(14,18)
   m2=(13,13)
@@ -85,13 +44,7 @@ define token instr (32)
   s0=(5,5)
   freg0004=(0,4)
   reg0004=(0,4)
-  reg0004l=(0,4)
-  reg0004t=(0,4)
-  reg0004q=(0,4)
   sfr0004=(0,4)
-  sfr0004l=(0,4)
-  sfr0004t=(0,4)
-  sfr0004q=(0,4)
   fp0004=(0,4)
   op0004=(0,4)
   sdisp0212=(2,12) signed
@@ -116,26 +69,8 @@ define token instr2 (32)
 attach variables [ reg0004 reg1418 reg1923 ]
                  [ pfp sp rip r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14 r15 g0 g1 g2 g3 g4 g5 g6 g7 g8 g9 g10 g11 g12 g13 g14 fp ];
 
-attach variables [ reg0004l reg1418l reg1923l ]
-                 [ rl_pfp_sp _ rl_rip_r3 _ rl_r4_r5 _ rl_r6_r7 _ rl_r8_r9 _ rl_r10_r11 _ rl_r12_r13 _ rl_r14_r15 _ rl_g0_g1 _ rl_g2_g3 _ rl_g4_g5 _ rl_g6_g7 _ rl_g8_g9 _ rl_g10_g11 _ rl_g12_g13 _ rl_g14_fp _ ];
-
-attach variables [ reg0004t reg1418t reg1923t ]
-                 [ rt_pfp_sp_rip _ _ _ rt_r4_r5_r6 _ _ _ rt_r8_r9_r10 _ _ _ rt_r12_r13_r14 _ _ _ rt_g0_g1_g2 _ _ _ rt_g4_g5_g6 _ _ _ rt_g8_g9_g10 _ _ _ rt_g12_g13_g14 _ _ _ ];
-
-attach variables [ reg0004q reg1418q reg1923q ]
-                 [ rq_pfp_sp_rip_r3 _ _ _ rq_r4_r5_r6_r7 _ _ _ rq_r8_r9_r10_r11 _ _ _ rq_r12_r13_r14_r15 _ _ _ rq_g0_g1_g2_g3 _ _ _ rq_g4_g5_g6_g7 _ _ _ rq_g8_g9_g10_g11 _ _ _ rq_g12_g13_g14_fp _ _ _ ];
-
 attach variables [ sfr0004 sfr1418 sfr1923 ]
                  [ sf0 sf1 sf2 sf3 sf4 sf5 sf6 sf7 sf8 sf9 sf10 sf11 sf12 sf13 sf14 sf15 sf16 sf17 sf18 sf19 sf20 sf21 sf22 sf23 sf24 sf25 sf26 sf27 sf28 sf29 sf30 sf31 ];
-
-attach variables [ sfr0004l sfr1418l sfr1923l ]
-                 [ sfrl_sf0_sf1 _ sfrl_sf2_sf3 _ sfrl_sf4_sf5 _ sfrl_sf6_sf7 _ sfrl_sf8_sf9 _ sfrl_sf10_sf11 _ sfrl_sf12_sf13 _ sfrl_sf14_sf15 _ sfrl_sf16_sf17 _ sfrl_sf18_sf19 _ sfrl_sf20_sf21 _ sfrl_sf22_sf23 _ sfrl_sf24_sf25 _ sfrl_sf26_sf27 _ sfrl_sf28_sf29 _ sfrl_sf30_sf31 _ ];
-
-attach variables [ sfr0004t sfr1418t sfr1923t ]
-                 [ sfrt_sf0_sf1_sf2 _ _ _ sfrt_sf4_sf5_sf6 _ _ _ sfrt_sf8_sf9_sf10 _ _ _ sfrt_sf12_sf13_sf14 _ _ _ sfrt_sf16_sf17_sf18 _ _ _ sfrt_sf20_sf21_sf22 _ _ _ sfrt_sf24_sf25_sf26 _ _ _ sfrt_sf28_sf29_sf30 _ _ _ ];
-
-attach variables [ sfr0004q sfr1418q sfr1923q ]
-                 [ sfrq_sf0_sf1_sf2_sf3 _ _ _ sfrq_sf4_sf5_sf6_sf7 _ _ _ sfrq_sf8_sf9_sf10_sf11 _ _ _ sfrq_sf12_sf13_sf14_sf15 _ _ _ sfrq_sf16_sf17_sf18_sf19 _ _ _ sfrq_sf20_sf21_sf22_sf23 _ _ _ sfrq_sf24_sf25_sf26_sf27 _ _ _ sfrq_sf28_sf29_sf30_sf31 _ _ _ ];
 
 attach variables [ freg0004 freg1418 freg1923 ]
                  [ fp0 fp1 fp2 fp3 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ ];
@@ -153,75 +88,24 @@ attach variables [ freg0004 freg1418 freg1923 ]
 
 
 regS1: reg0004 is reg0004 & m2 & m1 & m0=0 & s1 & s0=0 { local tmp:4 = reg0004; export tmp; }
-regS1l: reg0004l is reg0004l & m2 & m1 & m0=0 & s1 & s0=0 { export reg0004l; }
-regS1t: reg0004t is reg0004t & m2 & m1 & m0=0 & s1 & s0=0 { export reg0004t; }
-regS1q: reg0004q is reg0004q & m2 & m1 & m0=0 & s1 & s0=0 { export reg0004q; }
 regS1: op0004 is op0004 & m2 & m1 & m0=1 & s1 & s0=0 { local tmp:4 = op0004; export tmp; }
-regS1l: op0004 is op0004 & m2 & m1 & m0=1 & s1 & s0=0 { local tmp:8 = op0004; export tmp; }
-regS1t: op0004 is op0004 & m2 & m1 & m0=1 & s1 & s0=0 { local tmp:12 = op0004; export tmp; }
-regS1q: op0004 is op0004 & m2 & m1 & m0=1 & s1 & s0=0 { local tmp:16 = op0004; export tmp; }
 regS1: sfr0004 is sfr0004 & m2 & m1 & m0=0 & s1 & s0=1 { local tmp:4 = sfr0004; export tmp; }
-regS1l: sfr0004l is sfr0004l & m2 & m1 & m0=0 & s1 & s0=1 { export sfr0004l; }
-regS1t: sfr0004t is sfr0004t & m2 & m1 & m0=0 & s1 & s0=1 { export sfr0004t; }
-regS1q: sfr0004q is sfr0004q & m2 & m1 & m0=0 & s1 & s0=1 { export sfr0004q; }
 regS2: reg1418 is reg1418 & m2 & m1=0 & m0 & s1=0 & s0 { export reg1418; }
-regS2l: reg1418l is reg1418l & m2 & m1=0 & m0 & s1=0 & s0 { export reg1418l; }
-regS2t: reg1418t is reg1418t & m2 & m1=0 & m0 & s1=0 & s0 { export reg1418t; }
-regS2q: reg1418q is reg1418q & m2 & m1=0 & m0 & s1=0 & s0 { export reg1418q; }
 regS2: op1418 is op1418 & m2 & m1=1 & m0 & s1=0 & s0 { local tmp:4 = op1418; export tmp; }
-regS2l: op1418 is op1418 & m2 & m1=1 & m0 & s1=0 & s0 { local tmp:8 = op1418; export tmp; }
-regS2t: op1418 is op1418 & m2 & m1=1 & m0 & s1=0 & s0 { local tmp:12 = op1418; export tmp; }
-regS2q: op1418 is op1418 & m2 & m1=1 & m0 & s1=0 & s0 { local tmp:16 = op1418; export tmp; }
 regS2: sfr1418 is sfr1418 & m2 & m1=0 & m0 & s1=1 & s0 { export sfr1418; }
-regS2l: sfr1418l is sfr1418l & m2 & m1=0 & m0 & s1=1 & s0 { export sfr1418l; }
-regS2t: sfr1418t is sfr1418t & m2 & m1=0 & m0 & s1=1 & s0 { export sfr1418t; }
-regS2q: sfr1418q is sfr1418q & m2 & m1=0 & m0 & s1=1 & s0 { export sfr1418q; }
 regSD: reg1923 is reg1923 & m2=0 & m1 & m0 & s1 & s0 { export reg1923; }
-regSDl: reg1923l is reg1923l & m2=0 & m1 & m0 & s1 & s0 { export reg1923l; }
-regSDt: reg1923t is reg1923t & m2=0 & m1 & m0 & s1 & s0 { export reg1923t; }
-regSDq: reg1923q is reg1923q & m2=0 & m1 & m0 & s1 & s0 { export reg1923q; }
 cobrS1: reg0004 is reg0004 & m2=0 & s2=0 & t { export reg0004; }
-cobrS1l: reg0004l is reg0004 & m2=0 & s2=0 & t { export reg0004l; }
-cobrS1t: reg0004t is reg0004 & m2=0 & s2=0 & t { export reg0004t; }
-cobrS1q: reg0004q is reg0004 & m2=0 & s2=0 & t { export reg0004q; }
 cobrS2: reg1418 is reg1418 & m2=0 & s2=0 & t { export reg1418; }
-cobrS2l: reg1418l is reg1418l & m2=0 & s2=0 & t { export reg1418l; }
-cobrS2t: reg1418t is reg1418t & m2=0 & s2=0 & t { export reg1418t; }
-cobrS2q: reg1418q is reg1418q & m2=0 & s2=0 & t { export reg1418q; }
 cobrSD:  reg1923 is reg1923 & m2=0 & s2=0 & t { export reg1923; }
-cobrSDl:  reg1923l is reg1923l & m2=0 & s2=0 & t { export reg1923l; }
-cobrSDt:  reg1923t is reg1923t & m2=0 & s2=0 & t { export reg1923t; }
-cobrSDq:  reg1923q is reg1923q & m2=0 & s2=0 & t { export reg1923q; }
 cobrS1: op0004 is op0004 & m2=1 & s2=0 & t { export op0004; }
 cobrS2: reg1418 is reg1418 & m2=1 & s2=0 & t { export reg1418; }
-cobrS2l: reg1418l is reg1418l & m2=1 & s2=0 & t { export reg1418l; }
-cobrS2t: reg1418t is reg1418t & m2=1 & s2=0 & t { export reg1418t; }
-cobrS2q: reg1418q is reg1418q & m2=1 & s2=0 & t { export reg1418q; }
 cobrSD:  reg1923 is reg1923 & m2=1 & s2=0 & t { export reg1923; }
-cobrSDl:  reg1923l is reg1923l & m2=1 & s2=0 & t { export reg1923l; }
-cobrSDt:  reg1923t is reg1923t & m2=1 & s2=0 & t { export reg1923t; }
-cobrSDq:  reg1923q is reg1923q & m2=1 & s2=0 & t { export reg1923q; }
 cobrS1: reg0004 is reg0004 & m2=0 & s2=1 & t { export reg0004; }
-cobrS1l: reg0004l is reg0004l & m2=0 & s2=1 & t { export reg0004l; }
-cobrS1t: reg0004t is reg0004t & m2=0 & s2=1 & t { export reg0004t; }
-cobrS1q: reg0004q is reg0004q & m2=0 & s2=1 & t { export reg0004q; }
 cobrS2: sfr1418 is sfr1418 & m2=0 & s2=1 & t { export sfr1418; }
-cobrS2l: sfr1418l is sfr1418l & m2=0 & s2=1 & t { export sfr1418l; }
-cobrS2t: sfr1418t is sfr1418t & m2=0 & s2=1 & t { export sfr1418t; }
-cobrS2q: sfr1418q is sfr1418q & m2=0 & s2=1 & t { export sfr1418q; }
 cobrSD:  sfr1923 is sfr1923 & m2=0 & s2=1 & t { export sfr1923; }
-cobrSDl:  sfr1923l is sfr1923l & m2=0 & s2=1 & t { export sfr1923l; }
-cobrSDt:  sfr1923t is sfr1923t & m2=0 & s2=1 & t { export sfr1923t; }
-cobrSDq:  sfr1923q is sfr1923q & m2=0 & s2=1 & t { export sfr1923q; }
 cobrS1: op0004 is op0004 & m2=1 & s2=0 & t=0 { export op0004; }
 cobrS2: sfr1418 is sfr1418 & m2=1 & s2=1 & t=0 { export sfr1418; }
-cobrS2l: sfr1418l is sfr1418l & m2=1 & s2=1 & t=0 { export sfr1418l; }
-cobrS2t: sfr1418t is sfr1418t & m2=1 & s2=1 & t=0 { export sfr1418t; }
-cobrS2q: sfr1418q is sfr1418q & m2=1 & s2=1 & t=0 { export sfr1418q; }
 cobrSD:  sfr1923 is sfr1923 & m2=1 & s2=1 & t=0 { export sfr1923; }
-cobrSDl:  sfr1923l is sfr1923l & m2=1 & s2=1 & t=0 { export sfr1923l; }
-cobrSDt:  sfr1923t is sfr1923t & m2=1 & s2=1 & t=0 { export sfr1923t; }
-cobrSDq:  sfr1923q is sfr1923q & m2=1 & s2=1 & t=0 { export sfr1923q; }
 
 #TODO  floating-point needs work
 #TODO  these must export the same size, so not sure how to handle
@@ -429,8 +313,8 @@ efa8: sdisp0031 (reg1418) [reg0004 * scale] is reg1418 & reg0004 & scale & mode1
 :addr regS1, regS2, regSD is op2431=0x78 & op0710=0xf & regS1 & regS2 & regSD unimpl
 
 
-# addrl
-:addrl regS1l, regS2l, regSDl is op2431=0x79 & op0710=0xf & regS1l & regS2l & regSDl unimpl
+# addrl  8,8,8
+:addrl regS1, regS2, regSD is op2431=0x79 & op0710=0xf & regS1 & regS2 & regSD unimpl
 
 
 # alterbit
@@ -459,8 +343,8 @@ efa8: sdisp0031 (reg1418) [reg0004 * scale] is reg1418 & reg0004 & scale & mode1
 :atanr regS1, regS2, regSD is op2431=0x68 & op0710=0x0 & regS1 & regS2 & regSD unimpl
 
 
-# atanrl
-:atanrl regS1l, regS2l, regSDl is op2431=0x69 & op0710=0x0 & regS1l & regS2l & regSDl unimpl
+# atanrl  8,8,8
+:atanrl regS1, regS2, regSD is op2431=0x69 & op0710=0x0 & regS1 & regS2 & regSD unimpl
 
 
 # atmod
@@ -656,12 +540,15 @@ efa8: sdisp0031 (reg1418) [reg0004 * scale] is reg1418 & reg0004 & scale & mode1
 :classr regS1 is m1=0x1 & m2=0x1 & op2431=0x68 & op0710=0xf & regS1 unimpl
 
 
-# classrl
-:classrl regS1l is m1=0x1 & m2=0x1 & op2431=0x69 & op0710=0xf & regS1l unimpl
+# classrl  8
+:classrl regS1 is m1=0x1 & m2=0x1 & op2431=0x69 & op0710=0xf & regS1 unimpl
 
 
 # clrbit
-:clrbit regS1, regS2, regSD is op2431=0x58 & op0710=0xc & regS1 & regS2 & regSD unimpl
+:clrbit regS1, regS2, regSD is op2431=0x58 & op0710=0xc & regS1 & regS2 & regSD
+{
+	regSD = regS2 & ~(1 << regS1);
+}
 
 
 # cmpdeci
@@ -972,8 +859,8 @@ efa8: sdisp0031 (reg1418) [reg0004 * scale] is reg1418 & reg0004 & scale & mode1
 :cmpor regS1, regS2 is m2=0x1 & op2431=0x68 & op0710=0x4 & regS1 & regS2 unimpl
 
 
-# cmporl
-:cmporl regS1l, regS2l is m2=0x1 & op2431=0x69 & op0710=0x4 & regS1l & regS2l unimpl
+# cmporl  8,8
+:cmporl regS1, regS2 is m2=0x1 & op2431=0x69 & op0710=0x4 & regS1 & regS2 unimpl
 
 
 # cmpos
@@ -990,8 +877,8 @@ efa8: sdisp0031 (reg1418) [reg0004 * scale] is reg1418 & reg0004 & scale & mode1
 :cmpr regS1, regS2 is m2=0x1 & op2431=0x68 & op0710=0x5 & regS1 & regS2 unimpl
 
 
-# cmprl
-:cmprl regS1l, regS2l is m2=0x1 & op2431=0x69 & op0710=0x5 & regS1l & regS2l unimpl
+# cmprl  8,8
+:cmprl regS1, regS2 is m2=0x1 & op2431=0x69 & op0710=0x5 & regS1 & regS2 unimpl
 
 
 # cmpstr
@@ -1030,8 +917,8 @@ efa8: sdisp0031 (reg1418) [reg0004 * scale] is reg1418 & reg0004 & scale & mode1
 :cosr regS1, regSD is m1=0x1 & op2431=0x68 & op0710=0xd & regS1 & regSD unimpl
 
 
-# cosrl
-:cosrl regS1l, regSDl is m1=0x1 & op2431=0x69 & op0710=0xd & regS1l & regSDl unimpl
+# cosrl  8,8
+:cosrl regS1, regSD is m1=0x1 & op2431=0x69 & op0710=0xd & regS1 & regSD unimpl
 
 
 # cpyrsre
@@ -1044,8 +931,8 @@ efa8: sdisp0031 (reg1418) [reg0004 * scale] is reg1418 & reg0004 & scale & mode1
 # :cpysre regS1tq, regS2tq, regSDtq is op2431=0x6e & op0710=0x2 & regS1tq & regS2tq & regSDtq unimpl
 
 
-# cvtadr
-:cvtadr regS1, regSDl is m1=0x1 & op2431=0x67 & op0710=0x2 & regS1 & regSDl unimpl
+# cvtadr  4,8
+:cvtadr regS1, regSD is m1=0x1 & op2431=0x67 & op0710=0x2 & regS1 & regSD unimpl
 
 
 # cvtilr
@@ -1060,16 +947,16 @@ efa8: sdisp0031 (reg1418) [reg0004 * scale] is reg1418 & reg0004 & scale & mode1
 :cvtri regS1, regSD is m1=0x1 & op2431=0x6c & op0710=0x0 & regS1 & regSD unimpl
 
 
-# cvtril
-:cvtril regS1, regSDl is m1=0x1 & op2431=0x6c & op0710=0x1 & regS1 & regSDl unimpl
+# cvtril  4,8
+:cvtril regS1, regSD is m1=0x1 & op2431=0x6c & op0710=0x1 & regS1 & regSD unimpl
 
 
 # cvtzri
 :cvtzri regS1, regSD is m1=0x1 & op2431=0x6c & op0710=0x2 & regS1 & regSD unimpl
 
 
-# cvtzril
-:cvtzril regS1, regSDl is m1=0x1 & op2431=0x6c & op0710=0x3 & regS1 & regSDl unimpl
+# cvtzril  4,8
+:cvtzril regS1, regSD is m1=0x1 & op2431=0x6c & op0710=0x3 & regS1 & regSD unimpl
 
 
 # daddc
@@ -1103,8 +990,8 @@ efa8: sdisp0031 (reg1418) [reg0004 * scale] is reg1418 & reg0004 & scale & mode1
 :divr regS1, regS2, regSD is op2431=0x78 & op0710=0xb & regS1 & regS2 & regSD unimpl
 
 
-# divrl
-:divrl regS1l, regS2l, regSDl is op2431=0x79 & op0710=0xb & regS1l & regS2l & regSDl unimpl
+# divrl  8,8,8
+:divrl regS1, regS2, regSD is op2431=0x79 & op0710=0xb & regS1 & regS2 & regSD unimpl
 
 
 # dmovt
@@ -1115,12 +1002,17 @@ efa8: sdisp0031 (reg1418) [reg0004 * scale] is reg1418 & reg0004 & scale & mode1
 :dsubc regS1, regS2, regSD is op2431=0x64 & op0710=0x3 & regS1 & regS2 & regSD unimpl
 
 
-# ediv
-:ediv regS1, regS2l, regSD is op2431=0x67 & op0710=0x1 & regS1 & regS2l & regSD unimpl
+# ediv  4,8,4
+:ediv regS1, regS2, regSD is op2431=0x67 & op0710=0x1 & regS1 & regS2 & regSD unimpl
 
 
-# emul
-:emul regS1, regS2, regSDl is op2431=0x67 & op0710=0x0 & regS1 & regS2 & regSDl unimpl
+# emul  4,4,8
+:emul regS1, regS2, regSD is op2431=0x67 & op0710=0x0 & regS1 & regS2 & regSD
+{
+	local tmp:8 = zext(regS1) * zext(regS2);
+	local dst:4 = &regSD;
+	*[register]:8 dst = tmp;
+}
 
 
 # eshro
@@ -1131,8 +1023,8 @@ efa8: sdisp0031 (reg1418) [reg0004 * scale] is reg1418 & reg0004 & scale & mode1
 :expr regS1, regSD is m1=0x1 & op2431=0x68 & op0710=0x9 & regS1 & regSD unimpl
 
 
-# exprl
-:exprl regS1l, regSDl is m1=0x1 & op2431=0x69 & op0710=0x9 & regS1l & regSDl unimpl
+# exprl  8,8
+:exprl regS1, regSD is m1=0x1 & op2431=0x69 & op0710=0x9 & regS1 & regSD unimpl
 
 
 # extract
@@ -1236,9 +1128,10 @@ efa8: sdisp0031 (reg1418) [reg0004 * scale] is reg1418 & reg0004 & scale & mode1
 
 
 # ldl
-:ldl efa8, reg1923l is ( op2431=0x98 & reg1923l ) ... & efa8
+:ldl efa8, reg1923 is ( op2431=0x98 & reg1923 ) ... & efa8
 {
-	reg1923l = efa8;
+	local dst:4 = &reg1923;
+	*[register]:8 dst = efa8;
 }
 
 
@@ -1261,45 +1154,47 @@ efa8: sdisp0031 (reg1418) [reg0004 * scale] is reg1418 & reg0004 & scale & mode1
 
 
 # ldq
-:ldq efa16, reg1923q is ( op2431=0xb0 & reg1923q ) ... & efa16
+:ldq efa16, reg1923 is ( op2431=0xb0 & reg1923 ) ... & efa16
 {
-	reg1923q = efa16;
+	local dst:4 = &reg1923;
+	*[register]:16 dst = efa16;
 }
 
 
 # ldt
-:ldt efa12, reg1923t is ( op2431=0xa0 & reg1923t ) ... & efa12
+:ldt efa12, reg1923 is ( op2431=0xa0 & reg1923 ) ... & efa12
 {
-	reg1923t = efa12;
+	local dst:4 = &reg1923;
+	*[register]:12 dst = efa12;
 }
 
 
-# ldtime
-:ldtime regSDl is m0=0x1 & m1=0x1 & op2431=0x67 & op0710=0x3 & regSDl unimpl
+# ldtime  8
+:ldtime regSD is m0=0x1 & m1=0x1 & op2431=0x67 & op0710=0x3 & regSD unimpl
 
 
 # logbnr
 :logbnr regS1, regSD is m1=0x1 & op2431=0x68 & op0710=0xa & regS1 & regSD unimpl
 
 
-# logbnrl
-:logbnrl regS1l, regSDl is m1=0x1 & op2431=0x69 & op0710=0xa & regS1l & regSDl unimpl
+# logbnrl  8,8
+:logbnrl regS1, regSD is m1=0x1 & op2431=0x69 & op0710=0xa & regS1 & regSD unimpl
 
 
 # logepr
 :logepr regS1, regS2, regSD is op2431=0x68 & op0710=0x1 & regS1 & regS2 & regSD unimpl
 
 
-# logeprl
-:logeprl regS1l, regS2l, regSDl is op2431=0x69 & op0710=0x1 & regS1l & regS2l & regSDl unimpl
+# logeprl  8,8,8
+:logeprl regS1, regS2, regSD is op2431=0x69 & op0710=0x1 & regS1 & regS2 & regSD unimpl
 
 
 # logr
 :logr regS1, regS2, regSD is op2431=0x68 & op0710=0x2 & regS1 & regS2 & regSD unimpl
 
 
-# logrl
-:logrl regS1l, regS2l, regSDl is op2431=0x69 & op0710=0x2 & regS1l & regS2l & regSDl unimpl
+# logrl  8,8,8
+:logrl regS1, regS2, regSD is op2431=0x69 & op0710=0x2 & regS1 & regS2 & regSD unimpl
 
 
 # mark
@@ -1341,18 +1236,20 @@ efa8: sdisp0031 (reg1418) [reg0004 * scale] is reg1418 & reg0004 & scale & mode1
 
 
 # movl
-:movl regS1l, regSDl is m1=0x1 & op2431=0x5d & op0710=0xc & regS1l & regSDl
+:movl regS1, regSD is m1=0x1 & op2431=0x5d & op0710=0xc & regS1 & regSD
 {
-	local tmp:8 = regS1l;
-	regSDl = tmp;
+	local src:4 = &regS1;
+	local dst:4 = &regSD;
+	*[register]:8 dst = *[register]:8 src;
 }
 
 
 # movq
-:movq regS1q, regSDq is m1=0x1 & op2431=0x5f & op0710=0xc & regS1q & regSDq
+:movq regS1, regSD is m1=0x1 & op2431=0x5f & op0710=0xc & regS1 & regSD
 {
-	local tmp:16 = regS1q;
-	regSDq = tmp;
+	local src:4 = &regS1;
+	local dst:4 = &regSD;
+	*[register]:16 dst = *[register]:16 src;
 }
 
 
@@ -1369,8 +1266,8 @@ efa8: sdisp0031 (reg1418) [reg0004 * scale] is reg1418 & reg0004 & scale & mode1
 # :movre regS1tq, regSDtq is m1=0x1 & op2431=0x6e & op0710=0x1 & regS1tq & regSDtq unimpl
 
 
-# movrl
-:movrl regS1l, regSDl is m1=0x1 & op2431=0x6d & op0710=0x9 & regS1l & regSDl unimpl
+# movrl  8,8
+:movrl regS1, regSD is m1=0x1 & op2431=0x6d & op0710=0x9 & regS1 & regSD unimpl
 
 
 # movstr
@@ -1378,10 +1275,11 @@ efa8: sdisp0031 (reg1418) [reg0004 * scale] is reg1418 & reg0004 & scale & mode1
 
 
 # movt
-:movt regS1t, regSDt is m1=0x1 & op2431=0x5e & op0710=0xc & regS1t & regSDt
+:movt regS1, regSD is m1=0x1 & op2431=0x5e & op0710=0xc & regS1 & regSD
 {
-	local tmp:12 = regS1t;
-	regSDt = tmp;
+	local src:4 = &regS1;
+	local dst:4 = &regSD;
+	*[register]:12 dst = *[register]:12 src;
 }
 
 
@@ -1404,8 +1302,8 @@ efa8: sdisp0031 (reg1418) [reg0004 * scale] is reg1418 & reg0004 & scale & mode1
 :mulr regS1, regS2, regSD is op2431=0x78 & op0710=0xc & regS1 & regS2 & regSD unimpl
 
 
-# mulrl
-:mulrl regS1l, regS2l, regSDl is op2431=0x79 & op0710=0xc & regS1l & regS2l & regSDl unimpl
+# mulrl  8,8,8
+:mulrl regS1, regS2, regSD is op2431=0x79 & op0710=0xc & regS1 & regS2 & regSD unimpl
 
 
 # nand
@@ -1437,7 +1335,10 @@ efa8: sdisp0031 (reg1418) [reg0004 * scale] is reg1418 & reg0004 & scale & mode1
 
 
 # notbit
-:notbit regS1, regS2, regSD is op2431=0x58 & op0710=0x0 & regS1 & regS2 & regSD unimpl
+:notbit regS1, regS2, regSD is op2431=0x58 & op0710=0x0 & regS1 & regS2 & regSD
+{
+	regSD = regS2 ^ (1 << regS1);
+}
 
 
 # notor
@@ -1484,8 +1385,8 @@ efa8: sdisp0031 (reg1418) [reg0004 * scale] is reg1418 & reg0004 & scale & mode1
 :remr regS1, regS2, regSD is op2431=0x68 & op0710=0x3 & regS1 & regS2 & regSD unimpl
 
 
-# remrl
-:remrl regS1l, regS2l, regSDl is op2431=0x69 & op0710=0x3 & regS1l & regS2l & regSDl unimpl
+# remrl  8,8,8
+:remrl regS1, regS2, regSD is op2431=0x69 & op0710=0x3 & regS1 & regS2 & regSD unimpl
 
 
 # resumprcs
@@ -1508,8 +1409,8 @@ efa8: sdisp0031 (reg1418) [reg0004 * scale] is reg1418 & reg0004 & scale & mode1
 :roundr regS1, regSD is m1=0x1 & op2431=0x68 & op0710=0xb & regS1 & regSD unimpl
 
 
-# roundrl
-:roundrl regS1l, regSDl is m1=0x1 & op2431=0x69 & op0710=0xb & regS1l & regSDl unimpl
+# roundrl  8,8
+:roundrl regS1, regSD is m1=0x1 & op2431=0x69 & op0710=0xb & regS1 & regSD unimpl
 
 
 # saveprcs
@@ -1520,8 +1421,8 @@ efa8: sdisp0031 (reg1418) [reg0004 * scale] is reg1418 & reg0004 & scale & mode1
 :scaler regS1, regS2, regSD is op2431=0x67 & op0710=0x7 & regS1 & regS2 & regSD unimpl
 
 
-# scalerl
-:scalerl regS1, regS2l, regSDl is op2431=0x67 & op0710=0x6 & regS1 & regS2l & regSDl unimpl
+# scalerl  4,8,8
+:scalerl regS1, regS2, regSD is op2431=0x67 & op0710=0x6 & regS1 & regS2 & regSD unimpl
 
 
 # scanbit
@@ -1691,8 +1592,8 @@ efa8: sdisp0031 (reg1418) [reg0004 * scale] is reg1418 & reg0004 & scale & mode1
 :sinr regS1, regSD is m1=0x1 & op2431=0x68 & op0710=0xc & regS1 & regSD unimpl
 
 
-# sinrl
-:sinrl regS1l, regSDl is m1=0x1 & op2431=0x69 & op0710=0xc & regS1l & regSDl unimpl
+# sinrl  8,8
+:sinrl regS1, regSD is m1=0x1 & op2431=0x69 & op0710=0xc & regS1 & regSD unimpl
 
 
 # spanbit
@@ -1703,8 +1604,8 @@ efa8: sdisp0031 (reg1418) [reg0004 * scale] is reg1418 & reg0004 & scale & mode1
 :sqrtr regS1, regSD is m1=0x1 & op2431=0x68 & op0710=0x8 & regS1 & regSD unimpl
 
 
-# sqrtrl
-:sqrtrl regS1l, regSDl is m1=0x1 & op2431=0x69 & op0710=0x8 & regS1l & regSDl unimpl
+# sqrtrl  8,8
+:sqrtrl regS1, regSD is m1=0x1 & op2431=0x69 & op0710=0x8 & regS1 & regSD unimpl
 
 
 # st
@@ -1729,9 +1630,10 @@ efa8: sdisp0031 (reg1418) [reg0004 * scale] is reg1418 & reg0004 & scale & mode1
 
 
 # stl
-:stl reg1923l, efa8 is ( op2431=0x9a & reg1923l ) ... & efa8
+:stl reg1923, efa8 is ( op2431=0x9a & reg1923 ) ... & efa8
 {
-	efa8 = reg1923l;
+	local src:4 = &reg1923;
+	efa8 = *[register]:8 src;
 }
 
 
@@ -1750,16 +1652,18 @@ efa8: sdisp0031 (reg1418) [reg0004 * scale] is reg1418 & reg0004 & scale & mode1
 
 
 # stq
-:stq reg1923q, efa16 is ( op2431=0xb2 & reg1923q ) ... & efa16
+:stq reg1923, efa16 is ( op2431=0xb2 & reg1923 ) ... & efa16
 {
-	efa16 = reg1923q;
+	local src:4 = &reg1923;
+	efa16 = *[register]:16 src;
 }
 
 
 # stt
-:stt reg1923t, efa12 is ( op2431=0xa2 & reg1923t ) ... & efa12
+:stt reg1923, efa12 is ( op2431=0xa2 & reg1923 ) ... & efa12
 {
-	efa12 = reg1923t;
+	local src:4 = &reg1923;
+	efa12 = *[register]:12 src;
 }
 
 
@@ -1897,8 +1801,8 @@ efa8: sdisp0031 (reg1418) [reg0004 * scale] is reg1418 & reg0004 & scale & mode1
 :subr regS1, regS2, regSD is op2431=0x78 & op0710=0xd & regS1 & regS2 & regSD unimpl
 
 
-# subrl
-:subrl regS1l, regS2l, regSDl is op2431=0x79 & op0710=0xd & regS1l & regS2l & regSDl unimpl
+# subrl  8,8,8
+:subrl regS1, regS2, regSD is op2431=0x79 & op0710=0xd & regS1 & regS2 & regSD unimpl
 
 
 # syncf
@@ -1949,8 +1853,8 @@ efa8: sdisp0031 (reg1418) [reg0004 * scale] is reg1418 & reg0004 & scale & mode1
 :tanr regS1, regSD is m1=0x1 & op2431=0x68 & op0710=0xe & regS1 & regSD unimpl
 
 
-# tanrl
-:tanrl regS1l, regSDl is m1=0x1 & op2431=0x69 & op0710=0xe & regS1l & regSDl unimpl
+# tanrl  8,8
+:tanrl regS1, regSD is m1=0x1 & op2431=0x69 & op0710=0xe & regS1 & regSD unimpl
 
 
 # teste
