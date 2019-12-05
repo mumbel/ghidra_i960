@@ -132,9 +132,9 @@ efa: sop0031 (reg1418) [reg0004 * scale] is reg1418 & reg0004 & scale & mode1213
 
 
 
-disp0212: reloc is sop0212 [ reloc = ((sop0212 << 2) + inst_start) & 0xfffffffc; ] { local tmp:4 = reloc; export tmp; }
+disp0212: reloc is sop0212 [ reloc = ((sop0212 << 2) + inst_start) & 0xfffffffc; ] { export *[ram]:4 reloc; }
 
-disp0223: reloc is sop0223 [ reloc = ((sop0223 << 2) + inst_start) & 0xfffffffc; ] { local tmp:4 = reloc; export tmp; }
+disp0223: reloc is sop0223 [ reloc = ((sop0223 << 2) + inst_start) & 0xfffffffc; ] { export *[ram]:4 reloc; }
 
 
 
@@ -306,7 +306,7 @@ disp0223: reloc is sop0223 [ reloc = ((sop0223 << 2) + inst_start) & 0xfffffffc;
 # b
 :b disp0223 is op2431=0x8 & op0000=0x0 & disp0223
 {
-	goto disp0223;
+	goto [disp0223];
 }
 
 
@@ -315,7 +315,7 @@ disp0223: reloc is sop0223 [ reloc = ((sop0223 << 2) + inst_start) & 0xfffffffc;
 {
 	build disp0223;
 	g14 = inst_next;
-	goto disp0223;
+	goto [disp0223];
 }
 
 
@@ -334,7 +334,7 @@ disp0223: reloc is sop0223 [ reloc = ((sop0223 << 2) + inst_start) & 0xfffffffc;
 	ac[0,3] = 0;
 	if (((1<<cobrS1) & cobrS2) == 0) goto inst_next;
 	ac[1,1] = 1;
-	goto disp0212;
+	goto [disp0212];
 }
 
 
@@ -344,7 +344,7 @@ disp0223: reloc is sop0223 [ reloc = ((sop0223 << 2) + inst_start) & 0xfffffffc;
 	ac[0,3] = 0;
 	if (((1<<cobrS1) & cobrS2) != 0) goto inst_next;
 	ac[1,1] = 1;
-	goto disp0212;
+	goto [disp0212];
 }
 
 
@@ -353,7 +353,7 @@ disp0223: reloc is sop0223 [ reloc = ((sop0223 << 2) + inst_start) & 0xfffffffc;
 {
 	local acCC:1 = ac:1 & 0x07;
 	if (!(acCC & 2)) goto inst_next;
-	goto disp0223;
+	goto [disp0223];
 }
 
 
@@ -362,7 +362,7 @@ disp0223: reloc is sop0223 [ reloc = ((sop0223 << 2) + inst_start) & 0xfffffffc;
 {
 	local acCC:1 = ac:1 & 0x07;
 	if (!(acCC & 1)) goto inst_next;
-	goto disp0223;
+	goto [disp0223];
 }
 
 
@@ -371,7 +371,7 @@ disp0223: reloc is sop0223 [ reloc = ((sop0223 << 2) + inst_start) & 0xfffffffc;
 {
 	local acCC:1 = ac:1 & 0x07;
 	if (!(acCC & 3)) goto inst_next;
-	goto disp0223;
+	goto [disp0223];
 }
 
 
@@ -380,7 +380,7 @@ disp0223: reloc is sop0223 [ reloc = ((sop0223 << 2) + inst_start) & 0xfffffffc;
 {
 	local acCC:1 = ac:1 & 0x07;
 	if (!(acCC & 4)) goto inst_next;
-	goto disp0223;
+	goto [disp0223];
 }
 
 
@@ -389,7 +389,7 @@ disp0223: reloc is sop0223 [ reloc = ((sop0223 << 2) + inst_start) & 0xfffffffc;
 {
 	local acCC:1 = ac:1 & 0x07;
 	if (!(acCC & 6)) goto inst_next;
-	goto disp0223;
+	goto [disp0223];
 }
 
 
@@ -398,7 +398,7 @@ disp0223: reloc is sop0223 [ reloc = ((sop0223 << 2) + inst_start) & 0xfffffffc;
 {
 	local acCC:1 = ac:1 & 0x07;
 	if (!(acCC & 5)) goto inst_next;
-	goto disp0223;
+	goto [disp0223];
 }
 
 # bno
@@ -406,7 +406,7 @@ disp0223: reloc is sop0223 [ reloc = ((sop0223 << 2) + inst_start) & 0xfffffffc;
 {
 	local acCC:1 = ac:1 & 0x07;
 	if (acCC) goto inst_next;
-	goto disp0223;
+	goto [disp0223];
 }
 
 # bo
@@ -414,7 +414,7 @@ disp0223: reloc is sop0223 [ reloc = ((sop0223 << 2) + inst_start) & 0xfffffffc;
 {
 	local acCC:1 = ac:1 & 0x07;
 	if (!acCC) goto inst_next;
-	goto disp0223;
+	goto [disp0223];
 }
 
 # bswap
@@ -436,7 +436,7 @@ disp0223: reloc is sop0223 [ reloc = ((sop0223 << 2) + inst_start) & 0xfffffffc;
 	pfp = fp;
 	fp = (sp + ($(SALIGN) * 16 - 1)) & ~($(SALIGN) * 16 - 1);
 	sp = fp + 64;
-	call disp0223;
+	call [disp0223];
 }
 
 
@@ -526,7 +526,7 @@ disp0223: reloc is sop0223 [ reloc = ((sop0223 << 2) + inst_start) & 0xfffffffc;
 	ac[0,1] = cobrS1 s> cobrS2;
 	local acCC:1 = ac:1 & 0x07;
 	if (!(acCC & 2)) goto inst_next;
-	goto disp0212;
+	goto [disp0212];
 }
 
 
@@ -539,7 +539,7 @@ disp0223: reloc is sop0223 [ reloc = ((sop0223 << 2) + inst_start) & 0xfffffffc;
 	ac[0,1] = cobrS1 s> cobrS2;
 	local acCC:1 = ac:1 & 0x07;
 	if (!(acCC & 1)) goto inst_next;
-	goto disp0212;
+	goto [disp0212];
 }
 
 
@@ -553,7 +553,7 @@ disp0223: reloc is sop0223 [ reloc = ((sop0223 << 2) + inst_start) & 0xfffffffc;
 	ac[0,1] = cobrS1 s> cobrS2;
 	local acCC:1 = ac:1 & 0x07;
 	if (!(acCC & 3)) goto inst_next;
-	goto disp0212;
+	goto [disp0212];
 }
 
 
@@ -566,7 +566,7 @@ disp0223: reloc is sop0223 [ reloc = ((sop0223 << 2) + inst_start) & 0xfffffffc;
 	ac[0,1] = cobrS1 s> cobrS2;
 	local acCC:1 = ac:1 & 0x07;
 	if (!(acCC & 4)) goto inst_next;
-	goto disp0212;
+	goto [disp0212];
 }
 
 
@@ -579,7 +579,7 @@ disp0223: reloc is sop0223 [ reloc = ((sop0223 << 2) + inst_start) & 0xfffffffc;
 	ac[0,1] = cobrS1 s> cobrS2;
 	local acCC:1 = ac:1 & 0x07;
 	if (!(acCC & 6)) goto inst_next;
-	goto disp0212;
+	goto [disp0212];
 }
 
 
@@ -592,7 +592,7 @@ disp0223: reloc is sop0223 [ reloc = ((sop0223 << 2) + inst_start) & 0xfffffffc;
 	ac[0,1] = cobrS1 s> cobrS2;
 	local acCC:1 = ac:1 & 0x07;
 	if (!(acCC & 5)) goto inst_next;
-	goto disp0212;
+	goto [disp0212];
 }
 
 
@@ -605,7 +605,7 @@ disp0223: reloc is sop0223 [ reloc = ((sop0223 << 2) + inst_start) & 0xfffffffc;
 	ac[0,1] = cobrS1 s> cobrS2;
 	local acCC:1 = ac:1 & 0x07;
 	if (acCC) goto inst_next;
-	goto disp0212;
+	goto [disp0212];
 }
 
 
@@ -618,7 +618,7 @@ disp0223: reloc is sop0223 [ reloc = ((sop0223 << 2) + inst_start) & 0xfffffffc;
 	ac[0,1] = cobrS1 s> cobrS2;
 	local acCC:1 = ac:1 & 0x07;
 	if (!acCC) goto inst_next;
-	goto disp0212;
+	goto [disp0212];
 }
 
 
@@ -683,7 +683,7 @@ disp0223: reloc is sop0223 [ reloc = ((sop0223 << 2) + inst_start) & 0xfffffffc;
 	ac[0,1] = cobrS1 > cobrS2;
 	local acCC:1 = ac:1 & 0x07;
 	if (!(acCC & 2)) goto inst_next;
-	goto disp0212;
+	goto [disp0212];
 }
 
 
@@ -696,7 +696,7 @@ disp0223: reloc is sop0223 [ reloc = ((sop0223 << 2) + inst_start) & 0xfffffffc;
 	ac[0,1] = cobrS1 > cobrS2;
 	local acCC:1 = ac:1 & 0x07;
 	if (!(acCC & 1)) goto inst_next;
-	goto disp0212;
+	goto [disp0212];
 }
 
 
@@ -709,7 +709,7 @@ disp0223: reloc is sop0223 [ reloc = ((sop0223 << 2) + inst_start) & 0xfffffffc;
 	ac[0,1] = cobrS1 > cobrS2;
 	local acCC:1 = ac:1 & 0x07;
 	if (!(acCC & 3)) goto inst_next;
-	goto disp0212;
+	goto [disp0212];
 }
 
 # cmpobl
@@ -721,7 +721,7 @@ disp0223: reloc is sop0223 [ reloc = ((sop0223 << 2) + inst_start) & 0xfffffffc;
 	ac[0,1] = cobrS1 > cobrS2;
 	local acCC:1 = ac:1 & 0x07;
 	if (!(acCC & 4)) goto inst_next;
-	goto disp0212;
+	goto [disp0212];
 }
 
 
@@ -734,7 +734,7 @@ disp0223: reloc is sop0223 [ reloc = ((sop0223 << 2) + inst_start) & 0xfffffffc;
 	ac[0,1] = cobrS1 > cobrS2;
 	local acCC:1 = ac:1 & 0x07;
 	if (!(acCC & 6)) goto inst_next;
-	goto disp0212;
+	goto [disp0212];
 }
 
 
@@ -747,7 +747,7 @@ disp0223: reloc is sop0223 [ reloc = ((sop0223 << 2) + inst_start) & 0xfffffffc;
 	ac[0,1] = cobrS1 > cobrS2;
 	local acCC:1 = ac:1 & 0x07;
 	if (!(acCC & 5)) goto inst_next;
-	goto disp0212;
+	goto [disp0212];
 }
 
 
