@@ -18,6 +18,32 @@ define register offset=0x100 size=4 [ sf0 sf1 sf2 sf3 sf4 sf5 sf6 sf7 sf8 sf9 sf
 
 define register offset=0x200 size=4 [ pc ac ip tc ];
 
+# PC  Process Controls Register
+# PC.te [0,1] # Trace-Enable Bit
+# PC.em [1,1] # Execution-Mode Flag
+# PC.tfp [10,1] # Trace-Fault-Pending
+# PC.s [13,1] # State Flag
+# PC.p [16,5] # Priority Field
+
+# AC  Arithmetic Controls Register
+# AC.cc [0,3] # Condition Code Bits
+# AC.of [8,1] # Integer-Overflow Flag
+# AC.om [12,1] # Integer Overflow Mask Bit
+# AC.nif [15,1] # No-Imprecise-Faults Bit
+
+# 010 true
+# 000 false
+# 000 unordered
+# 001 gt
+# 010 eq
+# 011 gte
+# 100 lt
+# 101 ne
+# 110 lte
+# 111 ordered
+# 01X carry out
+# 0X1 overflow
+
 
 # 80-bit registers  extended-real format
 define register offset=0x300 size=10 [ fp0 fp1 fp2 fp3 ];
@@ -75,16 +101,6 @@ attach variables [ sfr0004 sfr1418 sfr1923 ]
 attach variables [ freg0004 freg1418 freg1923 ]
                  [ fp0 fp1 fp2 fp3 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ ];
 
-
-#TODO CC    appears to be:  (mask & cc || mask == cc)
-# 010 true
-# 000 false
-# 000 unordered
-# 001 gt
-# 010 eq
-# 100 lt
-# 01X carry out
-# 0X1 overflow
 
 #TODO  m0 m1 m2 are actually m1 m2 m3 in manual, oops
 
@@ -172,47 +188,102 @@ define pcodeop log2;
 
 
 # addc
-:addc regS1, regS2, regSD is op2431=0x5b & op0710=0x0 & regS1 & regS2 & regSD unimpl
+:addc regS1, regS2, regSD is op2431=0x5b & op0710=0x0 & regS1 & regS2 & regSD
+{
+	local tmp:5 = zext(regS1) + zext(regS2) + zext(ac[1,1]);
+	ac[0,3] = 0;
+	ac[0,1] = (regS1[31,1] == regS2[31,1]) & (regS2[31,1] != tmp[31,1]);
+	ac[1,1] = tmp[32,1];
+	regSD = tmp:4;
+}
 
 
 # addi
 :addi regS1, regS2, regSD is op2431=0x59 & op0710=0x1 & regS1 & regS2 & regSD
 {
-	#TODO  flags
+	ac[8,1] = scarry(regS1, regS2);
 	regSD = regS1 + regS2;
 }
 
 
 # addie
-:addie regS1, regS2, regSD is op2431=0x7a & op0710=0x1 & regS1 & regS2 & regSD unimpl
+:addie regS1, regS2, regSD is op2431=0x7a & op0710=0x1 & regS1 & regS2 & regSD
+{
+	local acCC:1 = ac:1 & 0x07;
+	if (!(acCC & 2)) goto inst_next;
+	ac[8,1] = scarry(regS1, regS2);
+	regSD = regS1 + regS2;
+}
 
 
 # addig
-:addig regS1, regS2, regSD is op2431=0x79 & op0710=0x1 & regS1 & regS2 & regSD unimpl
+:addig regS1, regS2, regSD is op2431=0x79 & op0710=0x1 & regS1 & regS2 & regSD
+{
+	local acCC:1 = ac:1 & 0x07;
+	if (!(acCC & 1)) goto inst_next;
+	ac[8,1] = scarry(regS1, regS2);
+	regSD = regS1 + regS2;
+}
 
 
 # addige
-:addige regS1, regS2, regSD is op2431=0x7b & op0710=0x1 & regS1 & regS2 & regSD unimpl
+:addige regS1, regS2, regSD is op2431=0x7b & op0710=0x1 & regS1 & regS2 & regSD
+{
+	local acCC:1 = ac:1 & 0x07;
+	if (!(acCC & 3)) goto inst_next;
+	ac[8,1] = scarry(regS1, regS2);
+	regSD = regS1 + regS2;
+}
 
 
 # addil
-:addil regS1, regS2, regSD is op2431=0x7c & op0710=0x1 & regS1 & regS2 & regSD unimpl
+:addil regS1, regS2, regSD is op2431=0x7c & op0710=0x1 & regS1 & regS2 & regSD
+{
+	local acCC:1 = ac:1 & 0x07;
+	if (!(acCC & 4)) goto inst_next;
+	ac[8,1] = scarry(regS1, regS2);
+	regSD = regS1 + regS2;
+}
 
 
 # addile
-:addile regS1, regS2, regSD is op2431=0x7e & op0710=0x1 & regS1 & regS2 & regSD unimpl
+:addile regS1, regS2, regSD is op2431=0x7e & op0710=0x1 & regS1 & regS2 & regSD
+{
+	local acCC:1 = ac:1 & 0x07;
+	if (!(acCC & 6)) goto inst_next;
+	ac[8,1] = scarry(regS1, regS2);
+	regSD = regS1 + regS2;
+}
 
 
 # addine
-:addine regS1, regS2, regSD is op2431=0x7d & op0710=0x1 & regS1 & regS2 & regSD unimpl
+:addine regS1, regS2, regSD is op2431=0x7d & op0710=0x1 & regS1 & regS2 & regSD
+{
+	local acCC:1 = ac:1 & 0x07;
+	if (!(acCC & 5)) goto inst_next;
+	ac[8,1] = scarry(regS1, regS2);
+	regSD = regS1 + regS2;
+}
 
 
 # addino
-:addino regS1, regS2, regSD is op2431=0x78 & op0710=0x1 & regS1 & regS2 & regSD unimpl
+:addino regS1, regS2, regSD is op2431=0x78 & op0710=0x1 & regS1 & regS2 & regSD
+{
+	local acCC:1 = ac:1 & 0x07;
+	if (acCC) goto inst_next;
+	ac[8,1] = scarry(regS1, regS2);
+	regSD = regS1 + regS2;
+}
 
 
 # addio
-:addio regS1, regS2, regSD is op2431=0x7f & op0710=0x1 & regS1 & regS2 & regSD unimpl
+:addio regS1, regS2, regSD is op2431=0x7f & op0710=0x1 & regS1 & regS2 & regSD
+{
+	local acCC:1 = ac:1 & 0x07;
+	if (!acCC) goto inst_next;
+	ac[8,1] = scarry(regS1, regS2);
+	regSD = regS1 + regS2;
+}
 
 
 # addo
@@ -306,7 +377,14 @@ define pcodeop log2;
 
 
 # alterbit
-:alterbit regS1, regS2, regSD is op2431=0x58 & op0710=0xf & regS1 & regS2 & regSD unimpl
+:alterbit regS1, regS2, regSD is op2431=0x58 & op0710=0xf & regS1 & regS2 & regSD
+{
+	local acCC:1 = ac:1 & 0x07;
+	local bitpos = 1 << regS1;
+	regSD = regS2 | bitpos;
+	if (acCC & 2) goto inst_next;
+	regSD = regSD & ~bitpos;
+}
 
 
 # and
@@ -324,7 +402,13 @@ define pcodeop log2;
 
 
 # atadd
-:atadd regS1, regS2, regSD is op2431=0x61 & op0710=0x2 & regS1 & regS2 & regSD unimpl
+:atadd regS1, regS2, regSD is op2431=0x61 & op0710=0x2 & regS1 & regS2 & regSD
+{
+	local addr:4 = regS1 & 0xfffffffc;
+	local tmp:4 = *[ram]:4 addr;
+	*[ram]:4 addr = (tmp + regS2);
+	regSD = regS2;
+}
 
 
 # atanr
@@ -340,7 +424,13 @@ define pcodeop log2;
 
 
 # atmod
-:atmod regS1, regS2, regSD is op2431=0x61 & op0710=0x0 & regS1 & regS2 & regSD unimpl
+:atmod regS1, regS2, regSD is op2431=0x61 & op0710=0x0 & regS1 & regS2 & regSD
+{
+	local addr = regS1 & 0xfffffffc;
+	local tmp:4 = *[ram]:4 addr;
+	*[ram]:4 addr = (tmp & ~regS2) | (regSD & regS2);
+	regSD = tmp;
+}
 
 
 # b
@@ -457,7 +547,11 @@ define pcodeop log2;
 }
 
 # bswap
-:bswap regS1, regSD is m1=0x1 & op2431=0x5a & op0710=0xd & regS1 & regSD unimpl
+:bswap regS1, regSD is m1=0x1 & op2431=0x5a & op0710=0xd & regS1 & regSD
+{
+	local tmp:4 = regS1;
+	regSD = ((tmp & 0xff) << 24) | ((tmp & 0xff00) << 8) | ((tmp & 0xff0000) >> 8) | ((tmp & 0xff000000) >> 24);
+}
 
 
 # bx
@@ -495,7 +589,11 @@ define pcodeop log2;
 
 
 # chkbit
-:chkbit regS1, regS2 is m2=0x1 & op2431=0x5a & op0710=0xe & regS1 & regS2 unimpl
+:chkbit regS1, regS2 is m2=0x1 & op2431=0x5a & op0710=0xe & regS1 & regS2
+{
+	ac[0,3] = 0;
+	ac[1,1] = 0 != (regS2 & (1 << regS1));
+}
 
 
 # arithmetic-status bits 3 to 6
@@ -525,7 +623,6 @@ define pcodeop log2;
 # cmpdeci
 :cmpdeci regS1, regS2, regSD is op2431=0x5a & op0710=0x7 & regS1 & regS2 & regSD
 {
-	ac[0,3] = 0;
 	ac[2,1] = regS1 s< regS2;
 	ac[1,1] = regS1 == regS2;
 	ac[0,1] = regS1 s> regS2;	
@@ -536,7 +633,6 @@ define pcodeop log2;
 # cmpdeco
 :cmpdeco regS1, regS2, regSD is op2431=0x5a & op0710=0x6 & regS1 & regS2 & regSD
 {
-	ac[0,3] = 0;
 	ac[2,1] = regS1 < regS2;
 	ac[1,1] = regS1 == regS2;
 	ac[0,1] = regS1 > regS2;	
@@ -547,7 +643,6 @@ define pcodeop log2;
 # cmpi
 :cmpi regS1, regS2 is m2=0x1 & op2431=0x5a & op0710=0x1 & regS1 & regS2
 {
-	ac[0,3] = 0;
 	ac[2,1] = regS1 s< regS2;
 	ac[1,1] = regS1 == regS2;
 	ac[0,1] = regS1 s> regS2;	
@@ -557,7 +652,6 @@ define pcodeop log2;
 # cmpib
 :cmpib regS1, regS2 is m2=0x1 & op2431=0x59 & op0710=0x5 & regS1 & regS2
 {
-	ac[0,3] = 0;
 	ac[2,1] = regS1:1 s< regS2:1;
 	ac[1,1] = regS1:1 == regS2:1;
 	ac[0,1] = regS1:1 s> regS2:1;	
@@ -567,7 +661,6 @@ define pcodeop log2;
 # cmpibe
 :cmpibe cobrS1, cobrS2, disp0212 is op2431=0x3a & cobrS1 & cobrS2 & disp0212
 {
-	ac[0,3] = 0;
 	ac[2,1] = cobrS1 s< cobrS2;
 	ac[1,1] = cobrS1 == cobrS2;
 	ac[0,1] = cobrS1 s> cobrS2;
@@ -580,7 +673,6 @@ define pcodeop log2;
 # cmpibg
 :cmpibg cobrS1, cobrS2, disp0212 is op2431=0x39 & cobrS1 & cobrS2 & disp0212
 {
-	ac[0,3] = 0;
 	ac[2,1] = cobrS1 s< cobrS2;
 	ac[1,1] = cobrS1 == cobrS2;
 	ac[0,1] = cobrS1 s> cobrS2;
@@ -594,7 +686,6 @@ define pcodeop log2;
 # cmpibge
 :cmpibge cobrS1, cobrS2, disp0212 is op2431=0x3b & cobrS1 & cobrS2 & disp0212
 {
-	ac[0,3] = 0;
 	ac[2,1] = cobrS1 s< cobrS2;
 	ac[1,1] = cobrS1 == cobrS2;
 	ac[0,1] = cobrS1 s> cobrS2;
@@ -607,7 +698,6 @@ define pcodeop log2;
 # cmpibl
 :cmpibl cobrS1, cobrS2, disp0212 is op2431=0x3c & cobrS1 & cobrS2 & disp0212
 {
-	ac[0,3] = 0;
 	ac[2,1] = cobrS1 s< cobrS2;
 	ac[1,1] = cobrS1 == cobrS2;
 	ac[0,1] = cobrS1 s> cobrS2;
@@ -620,7 +710,6 @@ define pcodeop log2;
 # cmpible
 :cmpible cobrS1, cobrS2, disp0212 is op2431=0x3e & cobrS1 & cobrS2 & disp0212
 {
-	ac[0,3] = 0;
 	ac[2,1] = cobrS1 s< cobrS2;
 	ac[1,1] = cobrS1 == cobrS2;
 	ac[0,1] = cobrS1 s> cobrS2;
@@ -633,7 +722,6 @@ define pcodeop log2;
 # cmpibne
 :cmpibne cobrS1, cobrS2, disp0212 is op2431=0x3d & cobrS1 & cobrS2 & disp0212
 {
-	ac[0,3] = 0;
 	ac[2,1] = cobrS1 s< cobrS2;
 	ac[1,1] = cobrS1 == cobrS2;
 	ac[0,1] = cobrS1 s> cobrS2;
@@ -646,7 +734,6 @@ define pcodeop log2;
 # cmpibno
 :cmpibno cobrS1, cobrS2, disp0212 is op2431=0x38 & cobrS1 & cobrS2 & disp0212
 {
-	ac[0,3] = 0;
 	ac[2,1] = cobrS1 s< cobrS2;
 	ac[1,1] = cobrS1 == cobrS2;
 	ac[0,1] = cobrS1 s> cobrS2;
@@ -659,7 +746,6 @@ define pcodeop log2;
 # cmpibo
 :cmpibo cobrS1, cobrS2, disp0212 is op2431=0x3f & cobrS1 & cobrS2 & disp0212
 {
-	ac[0,3] = 0;
 	ac[2,1] = cobrS1 s< cobrS2;
 	ac[1,1] = cobrS1 == cobrS2;
 	ac[0,1] = cobrS1 s> cobrS2;
@@ -672,7 +758,6 @@ define pcodeop log2;
 # cmpinci
 :cmpinci regS1, regS2, regSD is op2431=0x5a & op0710=0x5 & regS1 & regS2 & regSD
 {
-	ac[0,3] = 0;
 	ac[2,1] = regS1 s< regS2;
 	ac[1,1] = regS1 == regS2;
 	ac[0,1] = regS1 s> regS2;	
@@ -683,7 +768,6 @@ define pcodeop log2;
 # cmpinco
 :cmpinco regS1, regS2, regSD is op2431=0x5a & op0710=0x4 & regS1 & regS2 & regSD
 {
-	ac[0,3] = 0;
 	ac[2,1] = regS1 < regS2;
 	ac[1,1] = regS1 == regS2;
 	ac[0,1] = regS1 > regS2;	
@@ -694,7 +778,6 @@ define pcodeop log2;
 # cmpis
 :cmpis regS1, regS2 is m2=0x1 & op2431=0x59 & op0710=0x7 & regS1 & regS2
 {
-	ac[0,3] = 0;
 	ac[2,1] = regS1:2 s< regS2:2;
 	ac[1,1] = regS1:2 == regS2:2;
 	ac[0,1] = regS1:2 s> regS2:2;
@@ -704,7 +787,6 @@ define pcodeop log2;
 # cmpo
 :cmpo regS1, regS2 is m2=0x1 & op2431=0x5a & op0710=0x0 & regS1 & regS2
 {
-	ac[0,3] = 0;
 	ac[2,1] = regS1 < regS2;
 	ac[1,1] = regS1 == regS2;
 	ac[0,1] = regS1 > regS2;
@@ -714,7 +796,6 @@ define pcodeop log2;
 # cmpob
 :cmpob regS1, regS2 is m2=0x1 & op2431=0x59 & op0710=0x4 & regS1 & regS2
 {
-	ac[0,3] = 0;
 	ac[2,1] = regS1:1 < regS2:1;
 	ac[1,1] = regS1:1 == regS2:1;
 	ac[0,1] = regS1:1 > regS2:1;
@@ -724,7 +805,6 @@ define pcodeop log2;
 # cmpobe
 :cmpobe cobrS1, cobrS2, disp0212 is op2431=0x32 & cobrS1 & cobrS2 & disp0212
 {
-	ac[0,3] = 0;
 	ac[2,1] = cobrS1 < cobrS2;
 	ac[1,1] = cobrS1 == cobrS2;
 	ac[0,1] = cobrS1 > cobrS2;
@@ -737,7 +817,6 @@ define pcodeop log2;
 # cmpobg
 :cmpobg cobrS1, cobrS2, disp0212 is op2431=0x31 & cobrS1 & cobrS2 & disp0212
 {
-	ac[0,3] = 0;
 	ac[2,1] = cobrS1 < cobrS2;
 	ac[1,1] = cobrS1 == cobrS2;
 	ac[0,1] = cobrS1 > cobrS2;
@@ -750,7 +829,6 @@ define pcodeop log2;
 # cmpobge
 :cmpobge cobrS1, cobrS2, disp0212 is op2431=0x33 & cobrS1 & cobrS2 & disp0212
 {
-	ac[0,3] = 0;
 	ac[2,1] = cobrS1 < cobrS2;
 	ac[1,1] = cobrS1 == cobrS2;
 	ac[0,1] = cobrS1 > cobrS2;
@@ -762,7 +840,6 @@ define pcodeop log2;
 # cmpobl
 :cmpobl cobrS1, cobrS2, disp0212 is op2431=0x34 & cobrS1 & cobrS2 & disp0212
 {
-	ac[0,3] = 0;
 	ac[2,1] = cobrS1 < cobrS2;
 	ac[1,1] = cobrS1 == cobrS2;
 	ac[0,1] = cobrS1 > cobrS2;
@@ -775,7 +852,6 @@ define pcodeop log2;
 # cmpoble
 :cmpoble cobrS1, cobrS2, disp0212 is op2431=0x36 & cobrS1 & cobrS2 & disp0212
 {
-	ac[0,3] = 0;
 	ac[2,1] = cobrS1 < cobrS2;
 	ac[1,1] = cobrS1 == cobrS2;
 	ac[0,1] = cobrS1 > cobrS2;
@@ -788,7 +864,6 @@ define pcodeop log2;
 # cmpobne
 :cmpobne cobrS1, cobrS2, disp0212 is op2431=0x35 & cobrS1 & cobrS2 & disp0212
 {
-	ac[0,3] = 0;
 	ac[2,1] = cobrS1 < cobrS2;
 	ac[1,1] = cobrS1 == cobrS2;
 	ac[0,1] = cobrS1 > cobrS2;
@@ -816,7 +891,6 @@ define pcodeop log2;
 # cmpos
 :cmpos regS1, regS2 is m2=0x1 & op2431=0x59 & op0710=0x6 & regS1 & regS2
 {
-	ac[0,3] = 0;
 	ac[2,1] = regS1:2 < regS2:2;
 	ac[1,1] = regS1:2 == regS2:2;
 	ac[0,1] = regS1:2 > regS2:2;
@@ -840,7 +914,20 @@ define pcodeop log2;
 
 
 # cmpstr
-:cmpstr regS1, regS2, regSD is op2431=0x60 & op0710=0x3 & regS1 & regS2 & regSD unimpl
+:cmpstr regS1, regS2, regSD is op2431=0x60 & op0710=0x3 & regS1 & regS2 & regSD
+{
+	local length:4 = regSD;
+	local pos:4 = 0;
+	ac[0,3] = 2;
+    <next_byte>
+	if (length == pos) goto inst_next;
+	pos = pos + 1;
+	local tmpA:1 = *[ram]:1 (regS1 + pos);
+	local tmpB:1 = *[ram]:1 (regS2 + pos);
+	if (tmpA == tmpB) goto <next_byte>;
+	ac[0,1] = tmpA > tmpB;
+	ac[2,1] = tmpA < tmpB;
+}
 
 
 # concmpi
@@ -883,13 +970,17 @@ define pcodeop log2;
 
 
 # cpyrsre
-#TODO  tq
-# :cpyrsre regS1tq, regS2tq, regSDtq is op2431=0x6e & op0710=0x3 & regS1tq & regS2tq & regSDtq unimpl
+:cpyrsre fregS1, fregS2, fregSD is op2431=0x6e & op0710=0x3 & fregS1 & fregS2 & fregSD unimpl
 
 
 # cpysre
-#TODO  tq
-# :cpysre regS1tq, regS2tq, regSDtq is op2431=0x6e & op0710=0x2 & regS1tq & regS2tq & regSDtq unimpl
+:cpysre fregS1, fregS2, fregSD is op2431=0x6e & op0710=0x2 & fregS1 & fregS2 & fregSD
+{
+	local tmp = fregS2;
+	fregSD = abs(fregS1);
+	if (tmp f> 0) goto inst_next;
+	fregSD = f- fregSD;
+}
 
 
 # cvtadr  4,8
@@ -1215,11 +1306,26 @@ define pcodeop log2;
 
 
 # modpc
-:modpc regS1, regS2, regSD is op2431=0x65 & op0710=0x5 & regS1 & regS2 & regSD unimpl
+:modpc regS1, regS2, regSD is op2431=0x65 & op0710=0x5 & regS1 & regS2 & regSD
+{
+	local mask = regS2;
+	local src_dest = regSD;
+	regSD = pc;
+	if (0 == mask) goto inst_next;
+	pc = (mask & src_dest) | (pc & ~mask);
+}
 
 
 # modtc
-:modtc regS1, regS2, regSD is op2431=0x65 & op0710=0x4 & regS1 & regS2 & regSD unimpl
+:modtc regS1, regS2, regSD is op2431=0x65 & op0710=0x4 & regS1 & regS2 & regSD
+{
+	local mode_bits:4 = 0x000000FE;
+	local event_flags:4 = 0x0F000000;
+	local temp:4 = tc;
+	local tempa:4 = (event_flags & tc & regS1) | (mode_bits & regS1);
+	tc = (tempa & regS2) | (tc & ~tempa);
+	regSD = temp;
+}
 
 
 # mov
@@ -1246,7 +1352,16 @@ define pcodeop log2;
 
 
 # movqstr
-:movqstr regS1, regS2, regSD is op2431=0x60 & op0710=0x4 & regS1 & regS2 & regSD unimpl
+:movqstr regS1, regS2, regSD is op2431=0x60 & op0710=0x4 & regS1 & regS2 & regSD
+{
+	local length:4 = regSD;
+	local pos:4 = 0;
+    <next_byte>
+	if (pos == length) goto inst_next;
+	*[ram]:1 (regS1 + pos) = *[ram]:1 (regS2 + pos);
+	pos = pos + 1;
+	goto <next_byte>;
+}
 
 
 # movr
@@ -1266,7 +1381,22 @@ define pcodeop log2;
 
 
 # movstr
-:movstr regS1, regS2, regSD is op2431=0x60 & op0710=0x5 & regS1 & regS2 & regSD unimpl
+:movstr regS1, regS2, regSD is op2431=0x60 & op0710=0x5 & regS1 & regS2 & regSD
+{
+	local length:4 = regSD;
+	local pos:4 = 0;
+	if (regS2 > regS1) goto <prev_byte>;
+    <next_byte>
+	if (pos == length) goto inst_next;
+	*[ram]:1 (regS1 + pos) = *[ram]:1 (regS2 + pos);
+	pos = pos + 1;
+	goto <next_byte>;
+    <prev_byte>
+	if (length == 0) goto inst_next;
+	length = length - 1;
+	*[ram]:1 (regS1 + length) = *[ram]:1 (regS2 + length);
+	goto <prev_byte>;
+}
 
 
 # movt
@@ -1399,7 +1529,11 @@ define pcodeop log2;
 
 
 # rotate
-:rotate regS1, regS2, regSD is op2431=0x59 & op0710=0xd & regS1 & regS2 & regSD unimpl
+:rotate regS1, regS2, regSD is op2431=0x59 & op0710=0xd & regS1 & regS2 & regSD
+{
+	local length = regS1 % 32;
+	regSD = (regS2 << (32 - length)) | (regS2 >> length);
+}
 
 
 # roundr
