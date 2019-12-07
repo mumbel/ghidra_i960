@@ -64,7 +64,7 @@ define token instr2 (32)
   sop0031=(0,31) signed
 ;
 
-
+attach values [ scale ] [ 1 2 4 8 16 _ _ _ ];
 
 attach variables [ reg0004 reg1418 reg1923 ]
                  [ pfp sp rip r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14 r15 g0 g1 g2 g3 g4 g5 g6 g7 g8 g9 g10 g11 g12 g13 g14 fp ];
@@ -94,9 +94,30 @@ attach variables [ freg0004 freg1418 freg1923 ]
 regS1: reg0004 is reg0004 & m2 & m1 & m0=0 & s1 & s0=0 { local tmp:4 = reg0004; export tmp; }
 regS1: op0004 is op0004 & m2 & m1 & m0=1 & s1 & s0=0 { local tmp:4 = op0004; export tmp; }
 regS1: sfr0004 is sfr0004 & m2 & m1 & m0=0 & s1 & s0=1 { local tmp:4 = sfr0004; export tmp; }
+
+regS1l: reg0004 is reg0004 & m2 & m1 & m0=0 & s1 & s0=0 { local tmp:4 = &reg0004; export *[register]:8 tmp; }
+regS1l: op0004 is op0004 & m2 & m1 & m0=1 & s1 & s0=0 { local tmp:8 = op0004; export tmp; }
+regS1l: sfr0004 is sfr0004 & m2 & m1 & m0=0 & s1 & s0=1 { local tmp:4 = &sfr0004; export *[register]:8 tmp; }
+
+regS1t: reg0004 is reg0004 & m2 & m1 & m0=0 & s1 & s0=0 { local tmp:4 = &reg0004; export *[register]:12 tmp; }
+regS1t: op0004 is op0004 & m2 & m1 & m0=1 & s1 & s0=0 { local tmp:12 = op0004; export tmp; }
+regS1t: sfr0004 is sfr0004 & m2 & m1 & m0=0 & s1 & s0=1 { local tmp:4 = &sfr0004; export *[register]:12 tmp; }
+
+regS1q: reg0004 is reg0004 & m2 & m1 & m0=0 & s1 & s0=0 { local tmp:4 = &reg0004; export *[register]:16 tmp; }
+regS1q: op0004 is op0004 & m2 & m1 & m0=1 & s1 & s0=0 { local tmp:16 = op0004; export tmp; }
+regS1q: sfr0004 is sfr0004 & m2 & m1 & m0=0 & s1 & s0=1 { local tmp:4 = &sfr0004; export *[register]:16 tmp; }
+
+
 regS2: reg1418 is reg1418 & m2 & m1=0 & m0 & s1=0 & s0 { export reg1418; }
 regS2: op1418 is op1418 & m2 & m1=1 & m0 & s1=0 & s0 { local tmp:4 = op1418; export tmp; }
 regS2: sfr1418 is sfr1418 & m2 & m1=0 & m0 & s1=1 & s0 { export sfr1418; }
+
+regS2l: reg1418 is reg1418 & m2 & m1=0 & m0 & s1=0 & s0 { local tmp:4 = &reg1418; export *[register]:8 tmp; }
+regS2l: op1418 is op1418 & m2 & m1=1 & m0 & s1=0 & s0 { local tmp:8 = op1418; export tmp; }
+regS2l: sfr1418 is sfr1418 & m2 & m1=0 & m0 & s1=1 & s0 { local tmp:4 = &sfr1418; export *[register]:8 tmp; }
+
+
+
 regSD: reg1923 is reg1923 & m2=0 & m1 & m0 & s1 & s0 { export reg1923; }
 cobrS1: reg0004 is reg0004 & m2=0 & s2=0 & t { export reg0004; }
 cobrS2: reg1418 is reg1418 & m2=0 & s2=0 & t { export reg1418; }
@@ -325,7 +346,7 @@ define pcodeop log2;
 # b
 :b disp0223 is op2431=0x8 & op0000=0x0 & disp0223
 {
-	goto [disp0223];
+	goto disp0223;
 }
 
 
@@ -334,16 +355,15 @@ define pcodeop log2;
 {
 	build disp0223;
 	g14 = inst_next;
-	goto [disp0223];
+	goto disp0223;
 }
 
 
 # balx
 :balx efa, reg1923 is ( op2431=0x85 & reg1923 ) ... & efa
 {
-	local tmp:4 = ((efa << 2) + inst_start) & 0xfffffffc;
 	reg1923 = inst_next;
-	goto [tmp];
+	goto [efa];
 }
 
 
@@ -353,7 +373,7 @@ define pcodeop log2;
 	ac[0,3] = 0;
 	if (((1<<cobrS1) & cobrS2) == 0) goto inst_next;
 	ac[1,1] = 1;
-	goto [disp0212];
+	goto disp0212;
 }
 
 
@@ -363,7 +383,7 @@ define pcodeop log2;
 	ac[0,3] = 0;
 	if (((1<<cobrS1) & cobrS2) != 0) goto inst_next;
 	ac[1,1] = 1;
-	goto [disp0212];
+	goto disp0212;
 }
 
 
@@ -372,7 +392,7 @@ define pcodeop log2;
 {
 	local acCC:1 = ac:1 & 0x07;
 	if (!(acCC & 2)) goto inst_next;
-	goto [disp0223];
+	goto disp0223;
 }
 
 
@@ -381,7 +401,7 @@ define pcodeop log2;
 {
 	local acCC:1 = ac:1 & 0x07;
 	if (!(acCC & 1)) goto inst_next;
-	goto [disp0223];
+	goto disp0223;
 }
 
 
@@ -390,7 +410,7 @@ define pcodeop log2;
 {
 	local acCC:1 = ac:1 & 0x07;
 	if (!(acCC & 3)) goto inst_next;
-	goto [disp0223];
+	goto disp0223;
 }
 
 
@@ -399,7 +419,7 @@ define pcodeop log2;
 {
 	local acCC:1 = ac:1 & 0x07;
 	if (!(acCC & 4)) goto inst_next;
-	goto [disp0223];
+	goto disp0223;
 }
 
 
@@ -408,7 +428,7 @@ define pcodeop log2;
 {
 	local acCC:1 = ac:1 & 0x07;
 	if (!(acCC & 6)) goto inst_next;
-	goto [disp0223];
+	goto disp0223;
 }
 
 
@@ -417,7 +437,7 @@ define pcodeop log2;
 {
 	local acCC:1 = ac:1 & 0x07;
 	if (!(acCC & 5)) goto inst_next;
-	goto [disp0223];
+	goto disp0223;
 }
 
 # bno
@@ -425,7 +445,7 @@ define pcodeop log2;
 {
 	local acCC:1 = ac:1 & 0x07;
 	if (acCC) goto inst_next;
-	goto [disp0223];
+	goto disp0223;
 }
 
 # bo
@@ -433,7 +453,7 @@ define pcodeop log2;
 {
 	local acCC:1 = ac:1 & 0x07;
 	if (!acCC) goto inst_next;
-	goto [disp0223];
+	goto disp0223;
 }
 
 # bswap
@@ -443,8 +463,7 @@ define pcodeop log2;
 # bx
 :bx efa is ( op2431=0x84 ) ... & efa
 {
-	local tmp:4 = ((efa << 2) + inst_start) & 0xfffffffc;
-	goto [tmp];
+	goto [efa];
 }
 
 
@@ -455,7 +474,7 @@ define pcodeop log2;
 	pfp = fp;
 	fp = (sp + ($(SALIGN) * 16 - 1)) & ~($(SALIGN) * 16 - 1);
 	sp = fp + 64;
-	call [disp0223];
+	call disp0223;
 }
 
 
@@ -554,7 +573,7 @@ define pcodeop log2;
 	ac[0,1] = cobrS1 s> cobrS2;
 	local acCC:1 = ac:1 & 0x07;
 	if (!(acCC & 2)) goto inst_next;
-	goto [disp0212];
+	goto disp0212;
 }
 
 
@@ -567,7 +586,7 @@ define pcodeop log2;
 	ac[0,1] = cobrS1 s> cobrS2;
 	local acCC:1 = ac:1 & 0x07;
 	if (!(acCC & 1)) goto inst_next;
-	goto [disp0212];
+	goto disp0212;
 }
 
 
@@ -581,7 +600,7 @@ define pcodeop log2;
 	ac[0,1] = cobrS1 s> cobrS2;
 	local acCC:1 = ac:1 & 0x07;
 	if (!(acCC & 3)) goto inst_next;
-	goto [disp0212];
+	goto disp0212;
 }
 
 
@@ -594,7 +613,7 @@ define pcodeop log2;
 	ac[0,1] = cobrS1 s> cobrS2;
 	local acCC:1 = ac:1 & 0x07;
 	if (!(acCC & 4)) goto inst_next;
-	goto [disp0212];
+	goto disp0212;
 }
 
 
@@ -607,7 +626,7 @@ define pcodeop log2;
 	ac[0,1] = cobrS1 s> cobrS2;
 	local acCC:1 = ac:1 & 0x07;
 	if (!(acCC & 6)) goto inst_next;
-	goto [disp0212];
+	goto disp0212;
 }
 
 
@@ -620,7 +639,7 @@ define pcodeop log2;
 	ac[0,1] = cobrS1 s> cobrS2;
 	local acCC:1 = ac:1 & 0x07;
 	if (!(acCC & 5)) goto inst_next;
-	goto [disp0212];
+	goto disp0212;
 }
 
 
@@ -633,7 +652,7 @@ define pcodeop log2;
 	ac[0,1] = cobrS1 s> cobrS2;
 	local acCC:1 = ac:1 & 0x07;
 	if (acCC) goto inst_next;
-	goto [disp0212];
+	goto disp0212;
 }
 
 
@@ -646,7 +665,7 @@ define pcodeop log2;
 	ac[0,1] = cobrS1 s> cobrS2;
 	local acCC:1 = ac:1 & 0x07;
 	if (!acCC) goto inst_next;
-	goto [disp0212];
+	goto disp0212;
 }
 
 
@@ -711,7 +730,7 @@ define pcodeop log2;
 	ac[0,1] = cobrS1 > cobrS2;
 	local acCC:1 = ac:1 & 0x07;
 	if (!(acCC & 2)) goto inst_next;
-	goto [disp0212];
+	goto disp0212;
 }
 
 
@@ -724,7 +743,7 @@ define pcodeop log2;
 	ac[0,1] = cobrS1 > cobrS2;
 	local acCC:1 = ac:1 & 0x07;
 	if (!(acCC & 1)) goto inst_next;
-	goto [disp0212];
+	goto disp0212;
 }
 
 
@@ -737,7 +756,7 @@ define pcodeop log2;
 	ac[0,1] = cobrS1 > cobrS2;
 	local acCC:1 = ac:1 & 0x07;
 	if (!(acCC & 3)) goto inst_next;
-	goto [disp0212];
+	goto disp0212;
 }
 
 # cmpobl
@@ -749,7 +768,7 @@ define pcodeop log2;
 	ac[0,1] = cobrS1 > cobrS2;
 	local acCC:1 = ac:1 & 0x07;
 	if (!(acCC & 4)) goto inst_next;
-	goto [disp0212];
+	goto disp0212;
 }
 
 
@@ -762,7 +781,7 @@ define pcodeop log2;
 	ac[0,1] = cobrS1 > cobrS2;
 	local acCC:1 = ac:1 & 0x07;
 	if (!(acCC & 6)) goto inst_next;
-	goto [disp0212];
+	goto disp0212;
 }
 
 
@@ -775,7 +794,7 @@ define pcodeop log2;
 	ac[0,1] = cobrS1 > cobrS2;
 	local acCC:1 = ac:1 & 0x07;
 	if (!(acCC & 5)) goto inst_next;
-	goto [disp0212];
+	goto disp0212;
 }
 
 
@@ -960,7 +979,16 @@ define pcodeop log2;
 
 
 # ediv  4,8,4
-:ediv regS1, regS2, regSD is op2431=0x67 & op0710=0x1 & regS1 & regS2 & regSD unimpl
+:ediv regS1, regS2l, regSD is op2431=0x67 & op0710=0x1 & regS1 & regS2l & regSD
+{
+	local dividend:8 = regS2l;
+	local divisor:8 = zext(regS1);
+	local remainder:8 = dividend % divisor;
+	local quotient:8 = dividend / divisor;
+	regSD = remainder:4;
+	local dst:4 = &regSD;
+	*[register]:4 (dst + 4) = quotient:4;
+}
 
 
 # emul  4,4,8
@@ -1202,20 +1230,18 @@ define pcodeop log2;
 
 
 # movl
-:movl regS1, regSD is m1=0x1 & op2431=0x5d & op0710=0xc & regS1 & regSD
+:movl regS1l, regSD is m1=0x1 & op2431=0x5d & op0710=0xc & regS1l & regSD
 {
-	local src:4 = &regS1;
 	local dst:4 = &regSD;
-	*[register]:8 dst = *[register]:8 src;
+	*[register]:8 dst = regS1l;
 }
 
 
 # movq
-:movq regS1, regSD is m1=0x1 & op2431=0x5f & op0710=0xc & regS1 & regSD
+:movq regS1q, regSD is m1=0x1 & op2431=0x5f & op0710=0xc & regS1q & regSD
 {
-	local src:4 = &regS1;
 	local dst:4 = &regSD;
-	*[register]:16 dst = *[register]:16 src;
+	*[register]:16 dst = regS1q;
 }
 
 
@@ -1244,11 +1270,10 @@ define pcodeop log2;
 
 
 # movt
-:movt regS1, regSD is m1=0x1 & op2431=0x5e & op0710=0xc & regS1 & regSD
+:movt regS1t, regSD is m1=0x1 & op2431=0x5e & op0710=0xc & regS1t & regSD
 {
-	local src:4 = &regS1;
 	local dst:4 = &regSD;
-	*[register]:12 dst = *[register]:12 src;
+	*[register]:12 dst = regS1t;
 }
 
 
