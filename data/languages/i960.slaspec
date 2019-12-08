@@ -163,7 +163,7 @@ fregSD:  reg1923 is  reg1923 & m2=0 & m1 & m0 & s1 & s0 { local tmp:10 = int2flo
 fregSD: freg1923 is freg1923 & m2=1 & m1 & m0 & s1 & s0 & op1418 < 4 { export freg1923; }
 
 
-efa: offset0011 is offset0011 & mode1213=0 { export offset0011; }
+efa: offset0011 is offset0011 & mode1213=0 { local tmp:4 = offset0011; export tmp;}
 efa: offset0011 (reg1418) is offset0011 & reg1418 & mode1213=2 { local tmp:4 = reg1418 + offset0011; export tmp; }
 efa: (reg1418) is reg1418 & mode1213=1 & mode1011=0 & op0506=0 { local tmp:4 = reg1418; export tmp; }
 efa: reloc (ip) is ip & mode1213=1 & mode1011=1 & op0506=0 ; sop0031 [ reloc = sop0031 + 8; ] { local tmp:4 = reloc + inst_start; export tmp; }
@@ -185,6 +185,8 @@ define pcodeop cos;
 define pcodeop sin;
 define pcodeop tan;
 define pcodeop log2;
+
+define pcodeop syscall;
 
 
 # addc
@@ -443,7 +445,6 @@ define pcodeop log2;
 # bal
 :bal disp0223 is op2431=0xb & op0000=0x0 & disp0223
 {
-	build disp0223;
 	g14 = inst_next;
 	goto disp0223;
 }
@@ -452,8 +453,9 @@ define pcodeop log2;
 # balx
 :balx efa, reg1923 is ( op2431=0x85 & reg1923 ) ... & efa
 {
+	local ea:4 = efa;
 	reg1923 = inst_next;
-	goto [efa];
+	goto [ea];
 }
 
 
@@ -573,7 +575,11 @@ define pcodeop log2;
 
 
 # calls
-:calls regS1 is m1=0x1 & m2=0x1 & op2431=0x66 & op0710=0x0 & regS1 unimpl
+:calls regS1 is m1=0x1 & m2=0x1 & op2431=0x66 & op0710=0x0 & regS1
+{
+	#TODO  impl
+	syscall(regS1);
+}
 
 
 # callx
@@ -1185,7 +1191,7 @@ define pcodeop log2;
 # lda
 :lda efa, reg1923 is ( op2431=0x8c & reg1923 ) ... & efa
 {
-	reg1923 = zext(*[ram]:1 efa);
+	reg1923 = efa;
 }
 
 
@@ -1287,7 +1293,12 @@ define pcodeop log2;
 
 
 # modac
-:modac regS1, regS2, regSD is op2431=0x64 & op0710=0x5 & regS1 & regS2 & regSD unimpl
+:modac regS1, regS2, regSD is op2431=0x64 & op0710=0x5 & regS1 & regS2 & regSD
+{
+	local tmp:4 = ac;
+	ac = (regS2 & regS1) | (ac & ~regS1);
+	regSD = tmp;
+}
 
 
 # modi
