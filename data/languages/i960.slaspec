@@ -148,19 +148,20 @@ cobrS1: op0004 is op0004 & m2=1 & s2=0 & t=0 { export op0004; }
 cobrS2: sfr1418 is sfr1418 & m2=1 & s2=1 & t=0 { export sfr1418; }
 cobrSD:  sfr1923 is sfr1923 & m2=1 & s2=1 & t=0 { export sfr1923; }
 
-#TODO  For floating point, these are constants than can be loaded as a value
-#TODO  op 10000 -> +0.0
-#TODO  op 10110 -> +1.0
 
 #TODO  int2float is not correct, maybe float2float?
 fregS1:  reg0004 is  reg0004 & m2 & m1 & m0=0 & s1 & s0=0 { local tmp:10 = int2float(reg0004); export tmp; }
-fregS1: freg0004 is freg0004 & m2 & m1 & m0=1 & s1 & s0=0 & op0004 < 4 { export freg0004; }
+fregS1: freg0004 is freg0004 & m2 & m1 & m0=1 & s1 & s0=0 & op0004 < 4 { local tmp:10 = freg0004; export tmp; }
+fregS1: "+0.0" is m2 & m1 & m0=1 & s1 & s0=0 & op0004=0x10 { local tmp:10 = int2float(0:1); export tmp; }
+fregS1: "+1.0" is m2 & m1 & m0=1 & s1 & s0=0 & op0004=0x16 { local tmp:10 = int2float(1:1); export tmp; }
 
 fregS2:  reg1418 is  reg1418 & m2 & m1=0 & m0 & s1=0 & s0 { local tmp:10 = int2float(reg1418); export tmp; }
-fregS2: freg1418 is freg1418 & m2 & m1=1 & m0 & s1=0 & s0 & op1418 < 4 { export freg1418; }
+fregS2: freg1418 is freg1418 & m2 & m1=1 & m0 & s1=0 & s0 & op1418 < 4 { local tmp:10 = freg1418; export tmp; }
+fregS2: "+0.0" is m2 & m1=1 & m0 & s1=0 & s0 & op1418=0x10 { local tmp:10 = int2float(0:1); export tmp; }
+fregS2: "+1.0" is m2 & m1=1 & m0 & s1=0 & s0 & op1418=0x16 { local tmp:10 = int2float(1:1); export tmp; }
 
-fregSD:  reg1923 is  reg1923 & m2=0 & m1 & m0 & s1 & s0 { local tmp:10 = int2float(reg1923); export tmp;}
-fregSD: freg1923 is freg1923 & m2=1 & m1 & m0 & s1 & s0 & op1418 < 4 { export freg1923; }
+fregSD:  reg1923 is  reg1923 & m2=0 & m1 & m0 & s1 & s0 { local tmp:10 = int2float(reg1923); export tmp; }
+fregSD: freg1923 is freg1923 & m2=1 & m1 & m0 & s1 & s0 & op1418 < 4 { local tmp:10 = freg1923; export tmp; }
 
 
 efa: offset0011 is offset0011 & mode1213=0 { local tmp:4 = offset0011; export tmp;}
