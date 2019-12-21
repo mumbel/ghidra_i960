@@ -212,8 +212,7 @@ define pcodeop syscall;
 # addie
 :addie regS1, regS2, regSD is op2431=0x7a & op0710=0x1 & regS1 & regS2 & regSD
 {
-	local acCC:1 = ac:1 & 0x07;
-	if (!(acCC & 2)) goto inst_next;
+	if (!(ac[1,1])) goto inst_next;
 	ac[8,1] = scarry(regS1, regS2);
 	regSD = regS1 + regS2;
 }
@@ -222,8 +221,7 @@ define pcodeop syscall;
 # addig
 :addig regS1, regS2, regSD is op2431=0x79 & op0710=0x1 & regS1 & regS2 & regSD
 {
-	local acCC:1 = ac:1 & 0x07;
-	if (!(acCC & 1)) goto inst_next;
+	if (!(ac[0,1])) goto inst_next;
 	ac[8,1] = scarry(regS1, regS2);
 	regSD = regS1 + regS2;
 }
@@ -232,8 +230,7 @@ define pcodeop syscall;
 # addige
 :addige regS1, regS2, regSD is op2431=0x7b & op0710=0x1 & regS1 & regS2 & regSD
 {
-	local acCC:1 = ac:1 & 0x07;
-	if (!(acCC & 3)) goto inst_next;
+	if (!(ac[0,1] | ac[1,1])) goto inst_next;
 	ac[8,1] = scarry(regS1, regS2);
 	regSD = regS1 + regS2;
 }
@@ -242,8 +239,7 @@ define pcodeop syscall;
 # addil
 :addil regS1, regS2, regSD is op2431=0x7c & op0710=0x1 & regS1 & regS2 & regSD
 {
-	local acCC:1 = ac:1 & 0x07;
-	if (!(acCC & 4)) goto inst_next;
+	if (!(ac[2,1])) goto inst_next;
 	ac[8,1] = scarry(regS1, regS2);
 	regSD = regS1 + regS2;
 }
@@ -252,8 +248,7 @@ define pcodeop syscall;
 # addile
 :addile regS1, regS2, regSD is op2431=0x7e & op0710=0x1 & regS1 & regS2 & regSD
 {
-	local acCC:1 = ac:1 & 0x07;
-	if (!(acCC & 6)) goto inst_next;
+	if (!(ac[1,1] | ac[2,1])) goto inst_next;
 	ac[8,1] = scarry(regS1, regS2);
 	regSD = regS1 + regS2;
 }
@@ -262,8 +257,7 @@ define pcodeop syscall;
 # addine
 :addine regS1, regS2, regSD is op2431=0x7d & op0710=0x1 & regS1 & regS2 & regSD
 {
-	local acCC:1 = ac:1 & 0x07;
-	if (!(acCC & 5)) goto inst_next;
+	if (!(ac[0,1] | ac[2,1])) goto inst_next;
 	ac[8,1] = scarry(regS1, regS2);
 	regSD = regS1 + regS2;
 }
@@ -272,8 +266,7 @@ define pcodeop syscall;
 # addino
 :addino regS1, regS2, regSD is op2431=0x78 & op0710=0x1 & regS1 & regS2 & regSD
 {
-	local acCC:1 = ac:1 & 0x07;
-	if (acCC) goto inst_next;
+	if (ac[0,1] | ac[1,1] | ac[2,1]) goto inst_next;
 	ac[8,1] = scarry(regS1, regS2);
 	regSD = regS1 + regS2;
 }
@@ -282,8 +275,7 @@ define pcodeop syscall;
 # addio
 :addio regS1, regS2, regSD is op2431=0x7f & op0710=0x1 & regS1 & regS2 & regSD
 {
-	local acCC:1 = ac:1 & 0x07;
-	if (!acCC) goto inst_next;
+	if (!(ac[0,1] | ac[1,1] | ac[2,1])) goto inst_next;
 	ac[8,1] = scarry(regS1, regS2);
 	regSD = regS1 + regS2;
 }
@@ -299,8 +291,7 @@ define pcodeop syscall;
 # addoe
 :addoe regS1, regS2, regSD is op2431=0x7a & op0710=0x0 & regS1 & regS2 & regSD
 {
-	local acCC:1 = ac:1 & 0x07;
-	if (!(acCC & 2)) goto inst_next;
+	if (!(ac[1,1])) goto inst_next;
 	regSD = regS1 + regS2;
 }
 
@@ -308,8 +299,7 @@ define pcodeop syscall;
 # addog
 :addog regS1, regS2, regSD is op2431=0x79 & op0710=0x0 & regS1 & regS2 & regSD
 {
-	local acCC:1 = ac:1 & 0x07;
-	if (!(acCC & 1)) goto inst_next;
+	if (!(ac[0,1])) goto inst_next;
 	regSD = regS1 + regS2;
 }
 
@@ -317,8 +307,7 @@ define pcodeop syscall;
 # addoge
 :addoge regS1, regS2, regSD is op2431=0x7b & op0710=0x0 & regS1 & regS2 & regSD
 {
-	local acCC:1 = ac:1 & 0x07;
-	if (!(acCC & 3)) goto inst_next;
+	if (!(ac[0,1] | ac[1,1])) goto inst_next;
 	regSD = regS1 + regS2;
 }
 
@@ -326,8 +315,7 @@ define pcodeop syscall;
 # addol
 :addol regS1, regS2, regSD is op2431=0x7c & op0710=0x0 & regS1 & regS2 & regSD
 {
-	local acCC:1 = ac:1 & 0x07;
-	if (!(acCC & 4)) goto inst_next;
+	if (!(ac[2,1])) goto inst_next;
 	regSD = regS1 + regS2;
 }
 
@@ -335,8 +323,7 @@ define pcodeop syscall;
 # addole
 :addole regS1, regS2, regSD is op2431=0x7e & op0710=0x0 & regS1 & regS2 & regSD
 {
-	local acCC:1 = ac:1 & 0x07;
-	if (!(acCC & 6)) goto inst_next;
+	if (!(ac[1,1] | ac[2,1])) goto inst_next;
 	regSD = regS1 + regS2;
 }
 
@@ -344,8 +331,7 @@ define pcodeop syscall;
 # addone
 :addone regS1, regS2, regSD is op2431=0x7d & op0710=0x0 & regS1 & regS2 & regSD
 {
-	local acCC:1 = ac:1 & 0x07;
-	if (!(acCC & 5)) goto inst_next;
+	if (!(ac[0,1] | ac[2,1])) goto inst_next;
 	regSD = regS1 + regS2;
 }
 
@@ -353,8 +339,7 @@ define pcodeop syscall;
 # addono
 :addono regS1, regS2, regSD is op2431=0x78 & op0710=0x0 & regS1 & regS2 & regSD
 {
-	local acCC:1 = ac:1 & 0x07;
-	if (acCC) goto inst_next;
+	if (ac[0,1] | ac[1,1] | ac[2,1]) goto inst_next;
 	regSD = regS1 + regS2;
 }
 
@@ -362,8 +347,7 @@ define pcodeop syscall;
 # addoo
 :addoo regS1, regS2, regSD is op2431=0x7f & op0710=0x0 & regS1 & regS2 & regSD
 {
-	local acCC:1 = ac:1 & 0x07;
-	if (!acCC) goto inst_next;
+	if (!(ac[0,1] | ac[1,1] | ac[2,1])) goto inst_next;
 	regSD = regS1 + regS2;
 }
 
@@ -382,10 +366,9 @@ define pcodeop syscall;
 # alterbit
 :alterbit regS1, regS2, regSD is op2431=0x58 & op0710=0xf & regS1 & regS2 & regSD
 {
-	local acCC:1 = ac:1 & 0x07;
 	local bitpos = 1 << regS1;
 	regSD = regS2 | bitpos;
-	if (acCC & 2) goto inst_next;
+	if (ac[1,1]) goto inst_next;
 	regSD = regSD & ~bitpos;
 }
 
@@ -483,70 +466,54 @@ define pcodeop syscall;
 # be
 :be disp0223 is op2431=0x12 & op0000=0x0 & disp0223
 {
-	local acCC:1 = ac:1 & 0x07;
-	if (!(acCC & 2)) goto inst_next;
-	goto disp0223;
+	if (ac[1,1]) goto disp0223;
 }
 
 
 # bg
 :bg disp0223 is op2431=0x11 & op0000=0x0 & disp0223
 {
-	local acCC:1 = ac:1 & 0x07;
-	if (!(acCC & 1)) goto inst_next;
-	goto disp0223;
+	if (ac[0,1]) goto disp0223;
 }
 
 
 # bge
 :bge disp0223 is op2431=0x13 & op0000=0x0 & disp0223
 {
-	local acCC:1 = ac:1 & 0x07;
-	if (!(acCC & 3)) goto inst_next;
-	goto disp0223;
+	if (ac[0,1] | ac[1,1]) goto disp0223;
 }
 
 
 # bl
 :bl disp0223 is op2431=0x14 & op0000=0x0 & disp0223
 {
-	local acCC:1 = ac:1 & 0x07;
-	if (!(acCC & 4)) goto inst_next;
-	goto disp0223;
+	if (ac[2,1]) goto disp0223;
 }
 
 
 # ble
 :ble disp0223 is op2431=0x16 & op0000=0x0 & disp0223
 {
-	local acCC:1 = ac:1 & 0x07;
-	if (!(acCC & 6)) goto inst_next;
-	goto disp0223;
+	if (ac[1,1] | ac[2,1]) goto disp0223;
 }
 
 
 # bne
 :bne disp0223 is op2431=0x15 & op0000=0x0 & disp0223
 {
-	local acCC:1 = ac:1 & 0x07;
-	if (!(acCC & 5)) goto inst_next;
-	goto disp0223;
+	if (ac[0,1] | ac[2,1]) goto disp0223;
 }
 
 # bno
 :bno disp0223 is op2431=0x10 & op0000=0x0 & disp0223
 {
-	local acCC:1 = ac:1 & 0x07;
-	if (acCC) goto inst_next;
-	goto disp0223;
+	if (!(ac[0,1] | ac[1,1] | ac[2,1])) goto disp0223;
 }
 
 # bo
 :bo disp0223 is op2431=0x17 & op0000=0x0 & disp0223
 {
-	local acCC:1 = ac:1 & 0x07;
-	if (!acCC) goto inst_next;
-	goto disp0223;
+	if (ac[0,1] | ac[1,1] | ac[2,1]) goto disp0223;
 }
 
 # bswap
@@ -671,9 +638,7 @@ define pcodeop syscall;
 	ac[2,1] = cobrS1 s< cobrS2;
 	ac[1,1] = cobrS1 == cobrS2;
 	ac[0,1] = cobrS1 s> cobrS2;
-	local acCC:1 = ac:1 & 0x07;
-	if (!(acCC & 2)) goto inst_next;
-	goto disp0212;
+	if (ac[1,1]) goto disp0212;
 }
 
 
@@ -683,9 +648,7 @@ define pcodeop syscall;
 	ac[2,1] = cobrS1 s< cobrS2;
 	ac[1,1] = cobrS1 == cobrS2;
 	ac[0,1] = cobrS1 s> cobrS2;
-	local acCC:1 = ac:1 & 0x07;
-	if (!(acCC & 1)) goto inst_next;
-	goto disp0212;
+	if (ac[0,1]) goto disp0212;
 }
 
 
@@ -696,9 +659,7 @@ define pcodeop syscall;
 	ac[2,1] = cobrS1 s< cobrS2;
 	ac[1,1] = cobrS1 == cobrS2;
 	ac[0,1] = cobrS1 s> cobrS2;
-	local acCC:1 = ac:1 & 0x07;
-	if (!(acCC & 3)) goto inst_next;
-	goto disp0212;
+	if (ac[0,1] | ac[1,1]) goto disp0212;
 }
 
 
@@ -708,9 +669,7 @@ define pcodeop syscall;
 	ac[2,1] = cobrS1 s< cobrS2;
 	ac[1,1] = cobrS1 == cobrS2;
 	ac[0,1] = cobrS1 s> cobrS2;
-	local acCC:1 = ac:1 & 0x07;
-	if (!(acCC & 4)) goto inst_next;
-	goto disp0212;
+	if (ac[2,1]) goto disp0212;
 }
 
 
@@ -720,9 +679,7 @@ define pcodeop syscall;
 	ac[2,1] = cobrS1 s< cobrS2;
 	ac[1,1] = cobrS1 == cobrS2;
 	ac[0,1] = cobrS1 s> cobrS2;
-	local acCC:1 = ac:1 & 0x07;
-	if (!(acCC & 6)) goto inst_next;
-	goto disp0212;
+	if (ac[1,1] | ac[2,1]) goto disp0212;
 }
 
 
@@ -732,9 +689,7 @@ define pcodeop syscall;
 	ac[2,1] = cobrS1 s< cobrS2;
 	ac[1,1] = cobrS1 == cobrS2;
 	ac[0,1] = cobrS1 s> cobrS2;
-	local acCC:1 = ac:1 & 0x07;
-	if (!(acCC & 5)) goto inst_next;
-	goto disp0212;
+	if (ac[0,1] | ac[2,1]) goto disp0212;
 }
 
 
@@ -744,9 +699,7 @@ define pcodeop syscall;
 	ac[2,1] = cobrS1 s< cobrS2;
 	ac[1,1] = cobrS1 == cobrS2;
 	ac[0,1] = cobrS1 s> cobrS2;
-	local acCC:1 = ac:1 & 0x07;
-	if (acCC) goto inst_next;
-	goto disp0212;
+	if (!(ac[0,1] | ac[1,1] | ac[2,1])) goto disp0212;
 }
 
 
@@ -756,9 +709,7 @@ define pcodeop syscall;
 	ac[2,1] = cobrS1 s< cobrS2;
 	ac[1,1] = cobrS1 == cobrS2;
 	ac[0,1] = cobrS1 s> cobrS2;
-	local acCC:1 = ac:1 & 0x07;
-	if (!acCC) goto inst_next;
-	goto disp0212;
+	if (ac[0,1] | ac[1,1] | ac[2,1]) goto disp0212;
 }
 
 
@@ -815,9 +766,7 @@ define pcodeop syscall;
 	ac[2,1] = cobrS1 < cobrS2;
 	ac[1,1] = cobrS1 == cobrS2;
 	ac[0,1] = cobrS1 > cobrS2;
-	local acCC:1 = ac:1 & 0x07;
-	if (!(acCC & 2)) goto inst_next;
-	goto disp0212;
+	if (ac[1,1]) goto disp0212;
 }
 
 
@@ -827,9 +776,7 @@ define pcodeop syscall;
 	ac[2,1] = cobrS1 < cobrS2;
 	ac[1,1] = cobrS1 == cobrS2;
 	ac[0,1] = cobrS1 > cobrS2;
-	local acCC:1 = ac:1 & 0x07;
-	if (!(acCC & 1)) goto inst_next;
-	goto disp0212;
+	if (ac[0,1]) goto disp0212;
 }
 
 
@@ -839,9 +786,7 @@ define pcodeop syscall;
 	ac[2,1] = cobrS1 < cobrS2;
 	ac[1,1] = cobrS1 == cobrS2;
 	ac[0,1] = cobrS1 > cobrS2;
-	local acCC:1 = ac:1 & 0x07;
-	if (!(acCC & 3)) goto inst_next;
-	goto disp0212;
+	if (ac[0,1] | ac[1,1]) goto disp0212;
 }
 
 # cmpobl
@@ -850,9 +795,7 @@ define pcodeop syscall;
 	ac[2,1] = cobrS1 < cobrS2;
 	ac[1,1] = cobrS1 == cobrS2;
 	ac[0,1] = cobrS1 > cobrS2;
-	local acCC:1 = ac:1 & 0x07;
-	if (!(acCC & 4)) goto inst_next;
-	goto disp0212;
+	if (ac[2,1]) goto disp0212;
 }
 
 
@@ -862,9 +805,7 @@ define pcodeop syscall;
 	ac[2,1] = cobrS1 < cobrS2;
 	ac[1,1] = cobrS1 == cobrS2;
 	ac[0,1] = cobrS1 > cobrS2;
-	local acCC:1 = ac:1 & 0x07;
-	if (!(acCC & 6)) goto inst_next;
-	goto disp0212;
+	if (ac[1,1] | ac[2,1]) goto disp0212;
 }
 
 
@@ -874,9 +815,7 @@ define pcodeop syscall;
 	ac[2,1] = cobrS1 < cobrS2;
 	ac[1,1] = cobrS1 == cobrS2;
 	ac[0,1] = cobrS1 > cobrS2;
-	local acCC:1 = ac:1 & 0x07;
-	if (!(acCC & 5)) goto inst_next;
-	goto disp0212;
+	if (ac[0,1] | ac[2,1]) goto disp0212;
 }
 
 
@@ -940,7 +879,7 @@ define pcodeop syscall;
 # concmpi
 :concmpi regS1, regS2 is m2=0x1 & op2431=0x5a & op0710=0x3 & regS1 & regS2
 {
-	if ((ac & 4) == 0) goto inst_next;
+	if (!(ac[2,1])) goto inst_next;
 	ac[0,3] = 0;
 	ac[1,1] = regS1 s<= regS2;
 	ac[0,1] = regS1 s> regS2;
@@ -950,7 +889,7 @@ define pcodeop syscall;
 # concmpo
 :concmpo regS1, regS2 is m2=0x1 & op2431=0x5a & op0710=0x2 & regS1 & regS2
 {
-	if ((ac & 4) == 0) goto inst_next;
+	if (!(ac[2,1])) goto inst_next;
 	ac[0,3] = 0;
 	ac[1,1] = regS1 <= regS2;
 	ac[0,1] = regS1 > regS2;
@@ -1598,9 +1537,8 @@ define pcodeop syscall;
 # sele
 :sele regS1, regS2, regSD is op2431=0x7a & op0710=0x4 & regS1 & regS2 & regSD
 {
-	local acCC:1 = ac:1 & 0x07;
 	regSD = regS1;
-	if ((acCC & 2) == 0) goto inst_next;
+	if (!(ac[1,1])) goto inst_next;
 	regSD = regS2;
 }
 
@@ -1608,9 +1546,8 @@ define pcodeop syscall;
 # selg
 :selg regS1, regS2, regSD is op2431=0x79 & op0710=0x4 & regS1 & regS2 & regSD
 {
-	local acCC:1 = ac:1 & 0x07;
 	regSD = regS1;
-	if ((acCC & 1) == 0) goto inst_next;
+	if (!(ac[0,1])) goto inst_next;
 	regSD = regS2;
 }
 
@@ -1618,9 +1555,8 @@ define pcodeop syscall;
 # selge
 :selge regS1, regS2, regSD is op2431=0x7b & op0710=0x4 & regS1 & regS2 & regSD
 {
-	local acCC:1 = ac:1 & 0x07;
 	regSD = regS1;
-	if ((acCC & 3) == 0) goto inst_next;
+	if (!(ac[0,1] | ac[1,1])) goto inst_next;
 	regSD = regS2;
 }
 
@@ -1628,9 +1564,8 @@ define pcodeop syscall;
 # sell
 :sell regS1, regS2, regSD is op2431=0x7c & op0710=0x4 & regS1 & regS2 & regSD
 {
-	local acCC:1 = ac:1 & 0x07;
 	regSD = regS1;
-	if ((acCC & 4) == 0) goto inst_next;
+	if (!(ac[2,1])) goto inst_next;
 	regSD = regS2;
 }
 
@@ -1638,9 +1573,8 @@ define pcodeop syscall;
 # selle
 :selle regS1, regS2, regSD is op2431=0x7e & op0710=0x4 & regS1 & regS2 & regSD
 {
-	local acCC:1 = ac:1 & 0x07;
 	regSD = regS1;
-	if ((acCC & 6) == 0) goto inst_next;
+	if (!(ac[1,1] | ac[2,1])) goto inst_next;
 	regSD = regS2;
 }
 
@@ -1648,9 +1582,8 @@ define pcodeop syscall;
 # selne
 :selne regS1, regS2, regSD is op2431=0x7d & op0710=0x4 & regS1 & regS2 & regSD
 {
-	local acCC:1 = ac:1 & 0x07;
 	regSD = regS1;
-	if ((acCC & 5) == 0) goto inst_next;
+	if (!(ac[0,1] | ac[2,1])) goto inst_next;
 	regSD = regS2;
 }
 
@@ -1658,9 +1591,8 @@ define pcodeop syscall;
 # selno
 :selno regS1, regS2, regSD is op2431=0x78 & op0710=0x4 & regS1 & regS2 & regSD
 {
-	local acCC:1 = ac:1 & 0x07;
 	regSD = regS1;
-	if (acCC != 0) goto inst_next;
+	if (ac[0,1] | ac[1,1] | ac[2,1]) goto inst_next;
 	regSD = regS2;
 }
 
@@ -1668,9 +1600,8 @@ define pcodeop syscall;
 # selo
 :selo regS1, regS2, regSD is op2431=0x7f & op0710=0x4 & regS1 & regS2 & regSD
 {
-	local acCC:1 = ac:1 & 0x07;
 	regSD = regS1;
-	if (acCC == 0) goto inst_next;
+	if (!(ac[0,1] | ac[1,1] | ac[2,1])) goto inst_next;
 	regSD = regS2;
 }
 
@@ -1880,8 +1811,7 @@ define pcodeop syscall;
 # suboe
 :suboe regS1, regS2, regSD is op2431=0x7a & op0710=0x2 & regS1 & regS2 & regSD
 {
-	local acCC:1 = ac:1 & 0x07;
-	if (!(acCC & 2)) goto inst_next;
+	if (!(ac[1,1])) goto inst_next;
 	regSD = regS2 - regS1;
 }
 
@@ -1889,8 +1819,7 @@ define pcodeop syscall;
 # subog
 :subog regS1, regS2, regSD is op2431=0x79 & op0710=0x2 & regS1 & regS2 & regSD
 {
-	local acCC:1 = ac:1 & 0x07;
-	if (!(acCC & 1)) goto inst_next;
+	if (!(ac[0,1])) goto inst_next;
 	regSD = regS2 - regS1;
 }
 
@@ -1898,8 +1827,7 @@ define pcodeop syscall;
 # suboge
 :suboge regS1, regS2, regSD is op2431=0x7b & op0710=0x2 & regS1 & regS2 & regSD
 {
-	local acCC:1 = ac:1 & 0x07;
-	if (!(acCC & 3)) goto inst_next;
+	if (!(ac[0,1] | ac[1,1])) goto inst_next;
 	regSD = regS2 - regS1;
 }
 
@@ -1907,8 +1835,7 @@ define pcodeop syscall;
 # subol
 :subol regS1, regS2, regSD is op2431=0x7c & op0710=0x2 & regS1 & regS2 & regSD
 {
-	local acCC:1 = ac:1 & 0x07;
-	if (!(acCC & 4)) goto inst_next;
+	if (!(ac[2,1])) goto inst_next;
 	regSD = regS2 - regS1;
 }
 
@@ -1916,8 +1843,7 @@ define pcodeop syscall;
 # subole
 :subole regS1, regS2, regSD is op2431=0x7e & op0710=0x2 & regS1 & regS2 & regSD
 {
-	local acCC:1 = ac:1 & 0x07;
-	if (!(acCC & 6)) goto inst_next;
+	if (!(ac[1,1] | ac[2,1])) goto inst_next;
 	regSD = regS2 - regS1;
 }
 
@@ -1925,8 +1851,7 @@ define pcodeop syscall;
 # subone
 :subone regS1, regS2, regSD is op2431=0x7d & op0710=0x2 & regS1 & regS2 & regSD
 {
-	local acCC:1 = ac:1 & 0x07;
-	if (!(acCC & 5)) goto inst_next;
+	if (!(ac[0,1] | ac[2,1])) goto inst_next;
 	regSD = regS2 - regS1;
 }
 
@@ -1934,8 +1859,7 @@ define pcodeop syscall;
 # subono
 :subono regS1, regS2, regSD is op2431=0x78 & op0710=0x2 & regS1 & regS2 & regSD
 {
-	local acCC:1 = ac:1 & 0x07;
-	if (acCC) goto inst_next;
+	if (ac[0,1] | ac[1,1] | ac[2,1]) goto inst_next;
 	regSD = regS2 - regS1;
 }
 
@@ -1943,8 +1867,7 @@ define pcodeop syscall;
 # suboo
 :suboo regS1, regS2, regSD is op2431=0x7f & op0710=0x2 & regS1 & regS2 & regSD
 {
-	local acCC:1 = ac:1 & 0x07;
-	if (!(acCC & 2)) goto inst_next;
+	if (!(ac[1,1])) goto inst_next;
 	regSD = regS2 - regS1;
 }
 
@@ -2018,56 +1941,56 @@ define pcodeop syscall;
 # teste
 :teste cobrSD is op2431=0x22 & cobrSD
 {
-	cobrSD = zext((ac & 2) != 0);
+	cobrSD = zext(ac[1,1]);
 }
 
 
 # testg
 :testg cobrSD is op2431=0x21 & cobrSD
 {
-	cobrSD = zext((ac & 1) != 0);
+	cobrSD = zext(ac[0,1]);
 }
 
 
 # testge
 :testge cobrSD is op2431=0x23 & cobrSD
 {
-	cobrSD = zext((ac & 3) != 0);
+	cobrSD = zext(ac[0,1] | ac[1,1]);
 }
 
 
 # testl
 :testl cobrSD is op2431=0x24 & cobrSD
 {
-	cobrSD = zext((ac & 4) != 0);
+	cobrSD = zext(ac[2,1]);
 }
 
 
 # testle
 :testle cobrSD is op2431=0x26 & cobrSD
 {
-	cobrSD = zext((ac & 6) != 0);
+	cobrSD = zext(ac[1,1] | ac[2,1]);
 }
 
 
 # testne
 :testne cobrSD is op2431=0x25 & cobrSD
 {
-	cobrSD = zext((ac & 5) != 0);
+	cobrSD = zext(ac[0,1] | ac[2,1]);
 }
 
 
 # testno
 :testno cobrSD is op2431=0x20 & cobrSD
 {
-	cobrSD = zext((ac & 7) == 0);
+	cobrSD = zext(!(ac[0,1] | ac[1,1] | ac[2,1]));
 }
 
 
 # testo
 :testo cobrSD is op2431=0x27 & cobrSD
 {
-	cobrSD = zext((ac & 7) != 0);
+	cobrSD = zext(ac[0,1] | ac[1,1] | ac[2,1]);
 }
 
 
