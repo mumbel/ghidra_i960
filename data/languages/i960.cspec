@@ -22,13 +22,19 @@
   </data_organization>
   <global>
     <range space="ram"/>
+    <!-- Up to 12 parameters can be passed by value -->
+    <register name="g12" />
+    <register name="g13" />
+    <register name="g14" />
+    <register name="fp" />
   </global>
   <returnaddress>
     <register name="rip"/>
   </returnaddress>
-  <stackpointer register="sp" space="ram"/>
+  <!--<stackpointer register="sp" space="ram"/>-->
+  <stackpointer register="fp" space="ram" growth="positive"/>
     <default_proto>
-        <prototype name="__stdcall" extrapop="0" stackshift="0">
+        <prototype name="__stdcall" extrapop="0" stackshift="0" strategy="register">
       <input>
         <pentry minsize="1" maxsize="4">
           <register name="g0"/>
@@ -36,44 +42,77 @@
         <pentry minsize="1" maxsize="4">
           <register name="g1"/>
         </pentry>
+	<pentry minsize="5" maxsize="8">
+	  <addr space="join" piece1="g0" piece2="g1"/>
+	</pentry>
         <pentry minsize="1" maxsize="4">
           <register name="g2"/>
         </pentry>
 	<pentry minsize="1" maxsize="4">
           <register name="g3"/>
         </pentry>
+	<pentry minsize="5" maxsize="8">
+	  <addr space="join" piece1="g2" piece2="g3"/>
+	</pentry>
 	<pentry minsize="1" maxsize="4">
           <register name="g4"/>
         </pentry>
 	<pentry minsize="1" maxsize="4">
           <register name="g5"/>
         </pentry>
+	<pentry minsize="5" maxsize="8">
+	  <addr space="join" piece1="g4" piece2="g5"/>
+	</pentry>
 	<pentry minsize="1" maxsize="4">
           <register name="g6"/>
         </pentry>
 	<pentry minsize="1" maxsize="4">
           <register name="g7"/>
         </pentry>
+	<pentry minsize="5" maxsize="8">
+	  <addr space="join" piece1="g6" piece2="g7"/>
+	</pentry>
         <pentry minsize="1" maxsize="4">
           <register name="g8"/>
         </pentry>
 	<pentry minsize="1" maxsize="4">
           <register name="g9"/>
         </pentry>
+	<pentry minsize="5" maxsize="8">
+	  <addr space="join" piece1="g8" piece2="g9"/>
+	</pentry>
 	<pentry minsize="1" maxsize="4">
           <register name="g10"/>
         </pentry>
 	<pentry minsize="1" maxsize="4">
           <register name="g11"/>
         </pentry>
+	<pentry minsize="5" maxsize="8">
+	  <addr space="join" piece1="g10" piece2="g11"/>
+	</pentry>
       </input>
       <output>
         <pentry minsize="1" maxsize="4">
           <register name="g0"/>
         </pentry>
+	<pentry minsize="1" maxsize="4">
+          <register name="g1"/>
+        </pentry>
+	<pentry minsize="5" maxsize="8">
+	  <addr space="join" piece1="g0" piece2="g1"/>
+	</pentry>
+	<pentry minsize="1" maxsize="4">
+          <register name="g2"/>
+        </pentry>
+	<pentry minsize="1" maxsize="4">
+          <register name="g3"/>
+        </pentry>
+	<pentry minsize="5" maxsize="8">
+	  <addr space="join" piece1="g2" piece2="g3"/>
+	</pentry>
       </output>
       <unaffected>
-        <register name="sp"/>
+	<register name="fp"/>
 	<register name="r3"/>
 	<register name="r4"/>
 	<register name="r5"/>
