@@ -107,9 +107,9 @@ attach variables [ freg0004 freg1418 freg1923 ]
 #TODO  l/t/q is very broken for literals will probably need to break
 #      them each out
 
-regS1: reg0004 is reg0004 & m2 & m1 & m0=0 & s1 & s0=0 { local tmp:4 = reg0004; export tmp; }
+regS1: reg0004 is reg0004 & m2 & m1 & m0=0 & s1 & s0=0 { export reg0004; }
 regS1: op0004 is op0004 & m2 & m1 & m0=1 & s1 & s0=0 { local tmp:4 = op0004; export tmp; }
-regS1: sfr0004 is sfr0004 & m2 & m1 & m0=0 & s1 & s0=1 { local tmp:4 = sfr0004; export tmp; }
+regS1: sfr0004 is sfr0004 & m2 & m1 & m0=0 & s1 & s0=1 { export sfr0004; }
 
 regS1l: reg0004 is reg0004 & m2 & m1 & m0=0 & s1 & s0=0 { local tmp:4 = &reg0004; export *[register]:8 tmp; }
 regS1l: op0004 is op0004 & m2 & m1 & m0=1 & s1 & s0=0 { local tmp:8 = op0004; export tmp; }
@@ -138,13 +138,13 @@ regSD: reg1923 is reg1923 & m2=0 & m1 & m0 & s1 & s0 { export reg1923; }
 cobrS1: reg0004 is reg0004 & m2=0 & s2=0 & t { export reg0004; }
 cobrS2: reg1418 is reg1418 & m2=0 & s2=0 & t { export reg1418; }
 cobrSD:  reg1923 is reg1923 & m2=0 & s2=0 & t { export reg1923; }
-cobrS1: op0004 is op0004 & m2=1 & s2=0 & t { export op0004; }
+cobrS1: op0004 is op0004 & m2=1 & s2=0 & t { local tmp:4 = op0004; export tmp; }
 cobrS2: reg1418 is reg1418 & m2=1 & s2=0 & t { export reg1418; }
 cobrSD:  reg1923 is reg1923 & m2=1 & s2=0 & t { export reg1923; }
 cobrS1: reg0004 is reg0004 & m2=0 & s2=1 & t { export reg0004; }
 cobrS2: sfr1418 is sfr1418 & m2=0 & s2=1 & t { export sfr1418; }
 cobrSD:  sfr1923 is sfr1923 & m2=0 & s2=1 & t { export sfr1923; }
-cobrS1: op0004 is op0004 & m2=1 & s2=0 & t=0 { export op0004; }
+cobrS1: op0004 is op0004 & m2=1 & s2=0 & t=0 { local tmp:4 = op0004; export tmp; }
 cobrS2: sfr1418 is sfr1418 & m2=1 & s2=1 & t=0 { export sfr1418; }
 cobrSD:  sfr1923 is sfr1923 & m2=1 & s2=1 & t=0 { export sfr1923; }
 
