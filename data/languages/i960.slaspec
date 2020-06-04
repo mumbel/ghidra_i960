@@ -81,7 +81,7 @@ define token instr (32)
   mode1213=(12,13)
   mode1011=(10,11)
   offset0011=(0,11)
-  scale=(7,9)
+  op0709=(7,9)
   op0506=(5,6)
 ;
 
@@ -89,8 +89,6 @@ define token instr (32)
 define token instr2 (32)
   sop0031=(0,31) signed
 ;
-
-attach values [ scale ] [ 1 2 4 8 16 _ _ _ ];
 
 attach variables [ reg0004 reg1418 reg1923 ]
                  [ pfp sp rip r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14 r15 g0 g1 g2 g3 g4 g5 g6 g7 g8 g9 g10 g11 g12 g13 g14 fp ];
@@ -163,6 +161,7 @@ fregS2: "+1.0" is m2 & m1=1 & m0 & s1=0 & s0 & op1418=0x16 { local tmp:10 = int2
 fregSD:  reg1923 is  reg1923 & m2=0 & m1 & m0 & s1 & s0 { local tmp:10 = int2float(reg1923); export tmp; }
 fregSD: freg1923 is freg1923 & m2=1 & m1 & m0 & s1 & s0 & op1418 < 4 { local tmp:10 = freg1923; export tmp; }
 
+scale: imm is (op0709=0|op0709=1|op0709=2|op0709=3|op0709=4) & op0709 [ imm = 1 << op0709; ] { export *[const]:4 imm; }
 
 efa: offset0011 is offset0011 & mode1213=0 { local tmp:4 = offset0011; export tmp;}
 efa: offset0011 (reg1418) is offset0011 & reg1418 & mode1213=2 { local tmp:4 = reg1418 + offset0011; export tmp; }
