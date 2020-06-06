@@ -52,30 +52,28 @@ define register offset=0x300 size=10 [ fp0 fp1 fp2 fp3 ];
 
 define token instr (32)
   op2431=(24,31)
+  op1923=(19,23)
   freg1923=(19,23)
   reg1923=(19,23)
   sfr1923=(19,23)
-  fp1923=(19,23)
-  op1923=(19,23)
   freg1418=(14,18)
   reg1418=(14,18)
   sfr1418=(14,18)
-  fp1418=(14,18)
   op1418=(14,18)
-  m2=(13,13)
-  m1=(12,12)
-  m0=(11,11)
+  M1=(13,13)
+  m3=(13,13)
+  m2=(12,12)
+  m1=(11,11)
   op0710=(7,10)
-  s1=(6,6)
-  s0=(5,5)
+  s2=(6,6)
+  s1=(5,5)
   freg0004=(0,4)
   reg0004=(0,4)
   sfr0004=(0,4)
-  fp0004=(0,4)
   op0004=(0,4)
   sop0212=(2,12) signed
   t=(1,1)
-  s2=(0,0)
+  S2=(0,0)
   sop0223=(2,23) signed
   op0000=(0,0)
   mode1213=(12,13)
@@ -100,66 +98,93 @@ attach variables [ freg0004 freg1418 freg1923 ]
                  [ fp0 fp1 fp2 fp3 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ ];
 
 
-#TODO  m0 m1 m2 are actually m1 m2 m3 in manual, oops
+regS1:  reg0004 is reg0004 & m1=0 & s1=0 { export reg0004; }
+regS1:  op0004  is op0004  & m1=1 & s1=0 { local tmp:4 = op0004; export tmp; }
+regS1:  sfr0004 is sfr0004 & m1=0 & s1=1 { export sfr0004; }
 
-#TODO  l/t/q is very broken for literals will probably need to break
-#      them each out
+regS1l: reg0004 is reg0004 & m1=0 & s1=0 { local tmp:4 = &reg0004; export *[register]:8 tmp; }
+regS1l: op0004  is op0004  & m1=1 & s1=0 { local tmp:8 = op0004; export tmp; }
+regS1l: sfr0004 is sfr0004 & m1=0 & s1=1 { local tmp:4 = &sfr0004; export *[register]:8 tmp; }
 
-regS1: reg0004 is reg0004 & m2 & m1 & m0=0 & s1 & s0=0 { export reg0004; }
-regS1: op0004 is op0004 & m2 & m1 & m0=1 & s1 & s0=0 { local tmp:4 = op0004; export tmp; }
-regS1: sfr0004 is sfr0004 & m2 & m1 & m0=0 & s1 & s0=1 { export sfr0004; }
+regS1t: reg0004 is reg0004 & m1=0 & s1=0 { local tmp:4 = &reg0004; export *[register]:12 tmp; }
+regS1t: op0004  is op0004  & m1=1 & s1=0 { local tmp:12 = op0004; export tmp; }
+regS1t: sfr0004 is sfr0004 & m1=0 & s1=1 { local tmp:4 = &sfr0004; export *[register]:12 tmp; }
 
-regS1l: reg0004 is reg0004 & m2 & m1 & m0=0 & s1 & s0=0 { local tmp:4 = &reg0004; export *[register]:8 tmp; }
-regS1l: op0004 is op0004 & m2 & m1 & m0=1 & s1 & s0=0 { local tmp:8 = op0004; export tmp; }
-regS1l: sfr0004 is sfr0004 & m2 & m1 & m0=0 & s1 & s0=1 { local tmp:4 = &sfr0004; export *[register]:8 tmp; }
+regS1q: reg0004 is reg0004 & m1=0 & s1=0 { local tmp:4 = &reg0004; export *[register]:16 tmp; }
+regS1q: op0004  is op0004  & m1=1 & s1=0 { local tmp:16 = op0004; export tmp; }
+regS1q: sfr0004 is sfr0004 & m1=0 & s1=1 { local tmp:4 = &sfr0004; export *[register]:16 tmp; }
 
-regS1t: reg0004 is reg0004 & m2 & m1 & m0=0 & s1 & s0=0 { local tmp:4 = &reg0004; export *[register]:12 tmp; }
-regS1t: op0004 is op0004 & m2 & m1 & m0=1 & s1 & s0=0 { local tmp:12 = op0004; export tmp; }
-regS1t: sfr0004 is sfr0004 & m2 & m1 & m0=0 & s1 & s0=1 { local tmp:4 = &sfr0004; export *[register]:12 tmp; }
+regS2:  reg1418 is reg1418 & m2=0 & s2=0 { export reg1418; }
+regS2:  op1418  is op1418  & m2=1 & s2=0 { local tmp:4 = op1418; export tmp; }
+regS2:  sfr1418 is sfr1418 & m2=0 & s2=1 { export sfr1418; }
 
-regS1q: reg0004 is reg0004 & m2 & m1 & m0=0 & s1 & s0=0 { local tmp:4 = &reg0004; export *[register]:16 tmp; }
-regS1q: op0004 is op0004 & m2 & m1 & m0=1 & s1 & s0=0 { local tmp:16 = op0004; export tmp; }
-regS1q: sfr0004 is sfr0004 & m2 & m1 & m0=0 & s1 & s0=1 { local tmp:4 = &sfr0004; export *[register]:16 tmp; }
+regS2l: reg1418 is reg1418 & m2=0 & s2=0 { local tmp:4 = &reg1418; export *[register]:8 tmp; }
+regS2l: op1418  is op1418  & m2=1 & s2=0 { local tmp:8 = op1418; export tmp; }
+regS2l: sfr1418 is sfr1418 & m2=0 & s2=1 { local tmp:4 = &sfr1418; export *[register]:8 tmp; }
 
-
-regS2: reg1418 is reg1418 & m2 & m1=0 & m0 & s1=0 & s0 { export reg1418; }
-regS2: op1418 is op1418 & m2 & m1=1 & m0 & s1=0 & s0 { local tmp:4 = op1418; export tmp; }
-regS2: sfr1418 is sfr1418 & m2 & m1=0 & m0 & s1=1 & s0 { export sfr1418; }
-
-regS2l: reg1418 is reg1418 & m2 & m1=0 & m0 & s1=0 & s0 { local tmp:4 = &reg1418; export *[register]:8 tmp; }
-regS2l: op1418 is op1418 & m2 & m1=1 & m0 & s1=0 & s0 { local tmp:8 = op1418; export tmp; }
-regS2l: sfr1418 is sfr1418 & m2 & m1=0 & m0 & s1=1 & s0 { local tmp:4 = &sfr1418; export *[register]:8 tmp; }
-
+regSD:  reg1923 is reg1923 & m3=0 { export reg1923; }
+#TODO  This looks awful to handle
+# regSDl: reg1923 is reg1923 & m3=0 { local tmp:4 = &reg1923; export *[register]:8 tmp; }
+# regSDq: reg1923 is reg1923 & m3=0 { local tmp:4 = &reg1923; export *[register]:12 tmp; }
 
 
-regSD: reg1923 is reg1923 & m2=0 & m1 & m0 & s1 & s0 { export reg1923; }
-cobrS1: reg0004 is reg0004 & m2=0 & s2=0 & t { export reg0004; }
-cobrS2: reg1418 is reg1418 & m2=0 & s2=0 & t { export reg1418; }
-cobrSD:  reg1923 is reg1923 & m2=0 & s2=0 & t { export reg1923; }
-cobrS1: op0004 is op0004 & m2=1 & s2=0 & t { local tmp:4 = op0004; export tmp; }
-cobrS2: reg1418 is reg1418 & m2=1 & s2=0 & t { export reg1418; }
-cobrSD:  reg1923 is reg1923 & m2=1 & s2=0 & t { export reg1923; }
-cobrS1: reg0004 is reg0004 & m2=0 & s2=1 & t { export reg0004; }
-cobrS2: sfr1418 is sfr1418 & m2=0 & s2=1 & t { export sfr1418; }
-cobrSD:  sfr1923 is sfr1923 & m2=0 & s2=1 & t { export sfr1923; }
-cobrS1: op0004 is op0004 & m2=1 & s2=0 & t=0 { local tmp:4 = op0004; export tmp; }
-cobrS2: sfr1418 is sfr1418 & m2=1 & s2=1 & t=0 { export sfr1418; }
-cobrSD:  sfr1923 is sfr1923 & m2=1 & s2=1 & t=0 { export sfr1923; }
+cobrS1: reg0004 is reg0004 & M1=0 & S2=0 { export reg0004; }
+cobrS2: reg1418 is reg1418 & M1=0 & S2=0 { export reg1418; }
+cobrSD: reg1923 is reg1923 & M1=0 & S2=0 { export reg1923; }
 
+cobrS1: op0004  is op0004  & M1=1 & S2=0 { local tmp:4 = op0004; export tmp; }
+cobrS2: reg1418 is reg1418 & M1=1 & S2=0 { export reg1418; }
+cobrSD: reg1923 is reg1923 & M1=1 & S2=0 { export reg1923; }
+
+cobrS1: reg0004 is reg0004 & M1=0 & S2=1 { export reg0004; }
+cobrS2: sfr1418 is sfr1418 & M1=0 & S2=1 { export sfr1418; }
+cobrSD: sfr1923 is sfr1923 & M1=0 & S2=1 { export sfr1923; }
+
+cobrS1: op0004  is op0004  & M1=1 & S2=1 & t=0 { local tmp:4 = op0004; export tmp; }
+cobrS2: sfr1418 is sfr1418 & M1=1 & S2=1 & t=0 { export sfr1418; }
+cobrSD: sfr1923 is sfr1923 & M1=1 & S2=1 & t=0 { export sfr1923; }
+
+
+# reals: 1 reg (Real), 2 regs (Long Real), or 3 regs (Extended Real)
 
 #TODO  int2float is not correct, maybe float2float?
-fregS1:  reg0004 is  reg0004 & m2 & m1 & m0=0 & s1 & s0=0 { local tmp:10 = int2float(reg0004); export tmp; }
-fregS1: freg0004 is freg0004 & m2 & m1 & m0=1 & s1 & s0=0 & op0004 < 4 { local tmp:10 = freg0004; export tmp; }
-fregS1: "+0.0" is m2 & m1 & m0=1 & s1 & s0=0 & op0004=0x10 { local tmp:10 = int2float(0:1); export tmp; }
-fregS1: "+1.0" is m2 & m1 & m0=1 & s1 & s0=0 & op0004=0x16 { local tmp:10 = int2float(1:1); export tmp; }
+fregS1:  reg0004 is  reg0004 & m1=0 & s1=0 { local tmp:10 = int2float(reg0004); export tmp; }
+fregS1: freg0004 is freg0004 & m1=1 & s1=0 & op0004 < 4 { local tmp:10 = freg0004; export tmp; }
+fregS1: "+0.0" is m1=1 & s1=0 & op0004=0x10 { local tmp:10 = int2float(0:1); export tmp; }
+fregS1: "+1.0" is m1=1 & s1=0 & op0004=0x16 { local tmp:10 = int2float(1:1); export tmp; }
+fregS1l:  reg0004 is  reg0004 & m1=0 & s1=0 { local tmp:10 = int2float(reg0004); export tmp; }
+fregS1l: freg0004 is freg0004 & m1=1 & s1=0 & op0004 < 4 { local tmp:10 = freg0004; export tmp; }
+fregS1l: "+0.0" is m1=1 & s1=0 & op0004=0x10 { local tmp:10 = int2float(0:1); export tmp; }
+fregS1l: "+1.0" is m1=1 & s1=0 & op0004=0x16 { local tmp:10 = int2float(1:1); export tmp; }
+fregS1e:  reg0004 is  reg0004 & m1=0 & s1=0 { local tmp:10 = int2float(reg0004); export tmp; }
+fregS1e: freg0004 is freg0004 & m1=1 & s1=0 & op0004 < 4 { local tmp:10 = freg0004; export tmp; }
+fregS1e: "+0.0" is m1=1 & s1=0 & op0004=0x10 { local tmp:10 = int2float(0:1); export tmp; }
+fregS1e: "+1.0" is m1=1 & s1=0 & op0004=0x16 { local tmp:10 = int2float(1:1); export tmp; }
 
-fregS2:  reg1418 is  reg1418 & m2 & m1=0 & m0 & s1=0 & s0 { local tmp:10 = int2float(reg1418); export tmp; }
-fregS2: freg1418 is freg1418 & m2 & m1=1 & m0 & s1=0 & s0 & op1418 < 4 { local tmp:10 = freg1418; export tmp; }
-fregS2: "+0.0" is m2 & m1=1 & m0 & s1=0 & s0 & op1418=0x10 { local tmp:10 = int2float(0:1); export tmp; }
-fregS2: "+1.0" is m2 & m1=1 & m0 & s1=0 & s0 & op1418=0x16 { local tmp:10 = int2float(1:1); export tmp; }
 
-fregSD:  reg1923 is  reg1923 & m2=0 & m1 & m0 & s1 & s0 { local tmp:10 = int2float(reg1923); export tmp; }
-fregSD: freg1923 is freg1923 & m2=1 & m1 & m0 & s1 & s0 & op1418 < 4 { local tmp:10 = freg1923; export tmp; }
+fregS2:  reg1418 is  reg1418 & m2=0 & s2=0 { local tmp:10 = int2float(reg1418); export tmp; }
+fregS2: freg1418 is freg1418 & m2=1 & s2=0 & op1418 < 4 { local tmp:10 = freg1418; export tmp; }
+fregS2: "+0.0" is m2=1 & s2=0 & op1418=0x10 { local tmp:10 = int2float(0:1); export tmp; }
+fregS2: "+1.0" is m2=1 & s2=0 & op1418=0x16 { local tmp:10 = int2float(1:1); export tmp; }
+fregS2l:  reg1418 is  reg1418 & m2=0 & s2=0 { local tmp:10 = int2float(reg1418); export tmp; }
+fregS2l: freg1418 is freg1418 & m2=1 & s2=0 & op1418 < 4 { local tmp:10 = freg1418; export tmp; }
+fregS2l: "+0.0" is m2=1 & s2=0 & op1418=0x10 { local tmp:10 = int2float(0:1); export tmp; }
+fregS2l: "+1.0" is m2=1 & s2=0 & op1418=0x16 { local tmp:10 = int2float(1:1); export tmp; }
+fregS2e:  reg1418 is  reg1418 & m2=0 & s2=0 { local tmp:10 = int2float(reg1418); export tmp; }
+fregS2e: freg1418 is freg1418 & m2=1 & s2=0 & op1418 < 4 { local tmp:10 = freg1418; export tmp; }
+fregS2e: "+0.0" is m2=1 & s2=0 & op1418=0x10 { local tmp:10 = int2float(0:1); export tmp; }
+fregS2e: "+1.0" is m2=1 & s2=0 & op1418=0x16 { local tmp:10 = int2float(1:1); export tmp; }
+
+#TODO  This looks awful to handle
+fregSD:  reg1923 is  reg1923 & m3=0 { local tmp:4 = &reg1923; export *[register]:10 tmp; }
+fregSD: freg1923 is freg1923 & m3=1 & op1923 < 4 { export freg1923; }
+
+fregSDl:  reg1923 is  reg1923 & m3=0 { local tmp:10 = int2float(reg1923); export tmp; }
+fregSDl: freg1923 is freg1923 & m3=1 & op1923 < 4 { local tmp:10 = freg1923; export tmp; }
+
+fregSDe:  reg1923 is  reg1923 & m3=0 { local tmp:10 = int2float(reg1923); export tmp; }
+fregSDe: freg1923 is freg1923 & m3=1 & op1923 < 4 { local tmp:10 = freg1923; export tmp; }
+
 
 scale: imm is (op0709=0|op0709=1|op0709=2|op0709=3|op0709=4) & op0709 [ imm = 1 << op0709; ] { export *[const]:4 imm; }
 
@@ -359,7 +384,10 @@ define pcodeop syscall;
 
 
 # addrl  8,8,8
-:addrl fregS1, fregS2, fregSD is op2431=0x79 & op0710=0xf & fregS1 & fregS2 & fregSD unimpl
+:addrl fregS1l, fregS2l, fregSDl is op2431=0x79 & op0710=0xf & fregS1l & fregS2l & fregSDl
+{
+	fregSDl = fregS1l f+ fregS2l;
+}
 
 
 # alterbit
@@ -405,7 +433,7 @@ define pcodeop syscall;
 
 
 # atanrl  8,8,8
-:atanrl fregS1, fregS2, fregSD is op2431=0x69 & op0710=0x0 & fregS1 & fregS2 & fregSD unimpl
+:atanrl fregS1l, fregS2l, fregSDl is op2431=0x69 & op0710=0x0 & fregS1l & fregS2l & fregSDl unimpl
 
 
 # atmod
@@ -516,7 +544,7 @@ define pcodeop syscall;
 }
 
 # bswap
-:bswap regS1, regSD is m1=0x1 & op2431=0x5a & op0710=0xd & regS1 & regSD
+:bswap regS1, regSD is op2431=0x5a & op0710=0xd & regS1 & regSD
 {
 	local tmp:4 = regS1;
 	regSD = ((tmp & 0xff) << 24) | ((tmp & 0xff00) << 8) | ((tmp & 0xff0000) >> 8) | ((tmp & 0xff000000) >> 24);
@@ -542,7 +570,7 @@ define pcodeop syscall;
 
 
 # calls
-:calls regS1 is m1=0x1 & m2=0x1 & op2431=0x66 & op0710=0x0 & regS1
+:calls regS1 is op2431=0x66 & op0710=0x0 & regS1
 {
 	#TODO  impl
 	syscall(regS1);
@@ -562,7 +590,7 @@ define pcodeop syscall;
 
 
 # chkbit
-:chkbit regS1, regS2 is m2=0x1 & op2431=0x5a & op0710=0xe & regS1 & regS2
+:chkbit regS1, regS2 is op2431=0x5a & op0710=0xe & regS1 & regS2
 {
 	ac[0,3] = 0;
 	ac[1,1] = 0 != (regS2 & (1 << regS1));
@@ -579,11 +607,11 @@ define pcodeop syscall;
 # s101 signal
 # s110 resv
 # classr
-:classr fregS1 is m1=0x1 & m2=0x1 & op2431=0x68 & op0710=0xf & fregS1 unimpl
+:classr fregS1 is op2431=0x68 & op0710=0xf & fregS1 unimpl
 
 
 # classrl  8
-:classrl fregS1 is m1=0x1 & m2=0x1 & op2431=0x69 & op0710=0xf & fregS1 unimpl
+:classrl fregS1l is op2431=0x69 & op0710=0xf & fregS1l unimpl
 
 
 # clrbit
@@ -614,7 +642,7 @@ define pcodeop syscall;
 
 
 # cmpi
-:cmpi regS1, regS2 is m2=0x1 & op2431=0x5a & op0710=0x1 & regS1 & regS2
+:cmpi regS1, regS2 is op2431=0x5a & op0710=0x1 & regS1 & regS2
 {
 	ac[2,1] = regS1 s< regS2;
 	ac[1,1] = regS1 == regS2;
@@ -623,7 +651,7 @@ define pcodeop syscall;
 
 
 # cmpib
-:cmpib regS1, regS2 is m2=0x1 & op2431=0x59 & op0710=0x5 & regS1 & regS2
+:cmpib regS1, regS2 is op2431=0x59 & op0710=0x5 & regS1 & regS2
 {
 	ac[2,1] = regS1:1 s< regS2:1;
 	ac[1,1] = regS1:1 == regS2:1;
@@ -733,7 +761,7 @@ define pcodeop syscall;
 
 
 # cmpis
-:cmpis regS1, regS2 is m2=0x1 & op2431=0x59 & op0710=0x7 & regS1 & regS2
+:cmpis regS1, regS2 is op2431=0x59 & op0710=0x7 & regS1 & regS2
 {
 	ac[2,1] = regS1:2 s< regS2:2;
 	ac[1,1] = regS1:2 == regS2:2;
@@ -742,7 +770,7 @@ define pcodeop syscall;
 
 
 # cmpo
-:cmpo regS1, regS2 is m2=0x1 & op2431=0x5a & op0710=0x0 & regS1 & regS2
+:cmpo regS1, regS2 is op2431=0x5a & op0710=0x0 & regS1 & regS2
 {
 	ac[2,1] = regS1 < regS2;
 	ac[1,1] = regS1 == regS2;
@@ -751,7 +779,7 @@ define pcodeop syscall;
 
 
 # cmpob
-:cmpob regS1, regS2 is m2=0x1 & op2431=0x59 & op0710=0x4 & regS1 & regS2
+:cmpob regS1, regS2 is op2431=0x59 & op0710=0x4 & regS1 & regS2
 {
 	ac[2,1] = regS1:1 < regS2:1;
 	ac[1,1] = regS1:1 == regS2:1;
@@ -819,7 +847,7 @@ define pcodeop syscall;
 
 
 # cmpor
-:cmpor fregS1, fregS2 is m2=0x1 & op2431=0x68 & op0710=0x4 & fregS1 & fregS2
+:cmpor fregS1, fregS2 is op2431=0x68 & op0710=0x4 & fregS1 & fregS2
 {
 	ac[0,3] = 0;
 	if (nan(fregS1) || nan(fregS2)) goto inst_next;
@@ -830,11 +858,18 @@ define pcodeop syscall;
 
 
 # cmporl  8,8
-:cmporl fregS1, fregS2 is m2=0x1 & op2431=0x69 & op0710=0x4 & fregS1 & fregS2 unimpl
+:cmporl fregS1l, fregS2l is op2431=0x69 & op0710=0x4 & fregS1l & fregS2l
+{
+	ac[0,3] = 0;
+	if (nan(fregS1l) || nan(fregS2l)) goto inst_next;
+	ac[2,1] = fregS1l f< fregS2l;
+	ac[1,1] = fregS1l f== fregS2l;
+	ac[0,1] = fregS1l f> fregS2l;
+}
 
 
 # cmpos
-:cmpos regS1, regS2 is m2=0x1 & op2431=0x59 & op0710=0x6 & regS1 & regS2
+:cmpos regS1, regS2 is op2431=0x59 & op0710=0x6 & regS1 & regS2
 {
 	ac[2,1] = regS1:2 < regS2:2;
 	ac[1,1] = regS1:2 == regS2:2;
@@ -843,7 +878,7 @@ define pcodeop syscall;
 
 
 # cmpr
-:cmpr fregS1, fregS2 is m2=0x1 & op2431=0x68 & op0710=0x5 & fregS1 & fregS2
+:cmpr fregS1, fregS2 is op2431=0x68 & op0710=0x5 & fregS1 & fregS2
 {
 	#TODO  figure out the difference between cmpor
 	ac[0,3] = 0;
@@ -855,7 +890,15 @@ define pcodeop syscall;
 
 
 # cmprl  8,8
-:cmprl fregS1, fregS2 is m2=0x1 & op2431=0x69 & op0710=0x5 & fregS1 & fregS2 unimpl
+:cmprl fregS1l, fregS2l is op2431=0x69 & op0710=0x5 & fregS1l & fregS2l
+{
+	#TODO  figure out the difference between cmpor
+	ac[0,3] = 0;
+	if (nan(fregS1l) || nan(fregS2l)) goto inst_next;
+	ac[2,1] = fregS1l f< fregS2l;
+	ac[1,1] = fregS1l f== fregS2l;
+	ac[0,1] = fregS1l f> fregS2l;
+}
 
 
 # cmpstr
@@ -876,7 +919,7 @@ define pcodeop syscall;
 
 
 # concmpi
-:concmpi regS1, regS2 is m2=0x1 & op2431=0x5a & op0710=0x3 & regS1 & regS2
+:concmpi regS1, regS2 is op2431=0x5a & op0710=0x3 & regS1 & regS2
 {
 	if (!(ac[2,1])) goto inst_next;
 	ac[0,3] = 0;
@@ -886,7 +929,7 @@ define pcodeop syscall;
 
 
 # concmpo
-:concmpo regS1, regS2 is m2=0x1 & op2431=0x5a & op0710=0x2 & regS1 & regS2
+:concmpo regS1, regS2 is op2431=0x5a & op0710=0x2 & regS1 & regS2
 {
 	if (!(ac[2,1])) goto inst_next;
 	ac[0,3] = 0;
@@ -896,55 +939,67 @@ define pcodeop syscall;
 
 
 # condrec
-:condrec regS1, regSD is m1=0x1 & op2431=0x64 & op0710=0x6 & regS1 & regSD unimpl
+:condrec regS1, regSD is op2431=0x64 & op0710=0x6 & regS1 & regSD unimpl
 
 
 # condwait
-:condwait regS1 is m1=0x1 & m2=0x1 & op2431=0x66 & op0710=0x8 & regS1 unimpl
+:condwait regS1 is op2431=0x66 & op0710=0x8 & regS1 unimpl
 
 
 # cosr
-:cosr fregS1, fregSD is m1=0x1 & op2431=0x68 & op0710=0xd & fregS1 & fregSD
+:cosr fregS1, fregSD is op2431=0x68 & op0710=0xd & fregS1 & fregSD
 {
 	fregSD = cos(fregS1);
 }
 
 
 # cosrl  8,8
-:cosrl fregS1, fregSD is m1=0x1 & op2431=0x69 & op0710=0xd & fregS1 & fregSD unimpl
+:cosrl fregS1l, fregSDl is op2431=0x69 & op0710=0xd & fregS1l & fregSDl
+{
+	fregSDl = cos(fregS1l);
+}
 
 
 # cpyrsre
-:cpyrsre fregS1, fregS2, fregSD is op2431=0x6e & op0710=0x3 & fregS1 & fregS2 & fregSD unimpl
+:cpyrsre fregS1e, fregS2e, fregSDe is op2431=0x6e & op0710=0x3 & fregS1e & fregS2e & fregSDe
+{
+	local tmp = fregS2e;
+	fregSDe = abs(fregS1e);
+	if (tmp f< 0) goto inst_next;
+	fregSDe = f- fregSDe;
+}
 
 
 # cpysre
-:cpysre fregS1, fregS2, fregSD is op2431=0x6e & op0710=0x2 & fregS1 & fregS2 & fregSD
+:cpysre fregS1e, fregS2e, fregSDe is op2431=0x6e & op0710=0x2 & fregS1e & fregS2e & fregSDe
 {
-	local tmp = fregS2;
-	fregSD = abs(fregS1);
+	local tmp = fregS2e;
+	fregSDe = abs(fregS1e);
 	if (tmp f> 0) goto inst_next;
-	fregSD = f- fregSD;
+	fregSDe = f- fregSDe;
 }
 
 
 # cvtadr  4,8
-:cvtadr regS1, regSD is m1=0x1 & op2431=0x67 & op0710=0x2 & regS1 & regSD unimpl
+:cvtadr regS1, regSD is op2431=0x67 & op0710=0x2 & regS1 & regSD unimpl
 
 
 # cvtilr
-:cvtilr regS1, fregSD is m1=0x1 & op2431=0x67 & op0710=0x5 & regS1 & fregSD unimpl
+:cvtilr regS1l, fregSDl is op2431=0x67 & op0710=0x5 & regS1l & fregSDl
+{
+	fregSDl = int2float(regS1l);
+}
 
 
 # cvtir
-:cvtir regS1, fregSD is m1=0x1 & op2431=0x67 & op0710=0x4 & regS1 & fregSD
+:cvtir regS1, fregSD is op2431=0x67 & op0710=0x4 & regS1 & fregSD
 {
 	fregSD = int2float(regS1);
 }
 
 
 # cvtri
-:cvtri fregS1, regSD is m1=0x1 & op2431=0x6c & op0710=0x0 & fregS1 & regSD
+:cvtri fregS1, regSD is op2431=0x6c & op0710=0x0 & fregS1 & regSD
 {
 	#TODO  rounding
 	#TODO  same sizes
@@ -954,22 +1009,35 @@ define pcodeop syscall;
 
 
 # cvtril  4,8
-:cvtril fregS1, regSD is m1=0x1 & op2431=0x6c & op0710=0x1 & fregS1 & regSD unimpl
-
+:cvtril fregS1l, regSD is op2431=0x6c & op0710=0x1 & fregS1l & regSD
+{
+	#TODO  rounding
+	#TODO  same sizes
+	local tmp:10 = floor(fregS1l);
+	regSD = tmp:4;
+}
 
 # cvtzri
-:cvtzri fregS1, regSD is m1=0x1 & op2431=0x6c & op0710=0x2 & fregS1 & regSD
+:cvtzri fregS1, regSD is op2431=0x6c & op0710=0x2 & fregS1 & regSD
 {
 	regSD = trunc(fregS1);
 }
 
 
 # cvtzril  4,8
-:cvtzril fregS1, regSD is m1=0x1 & op2431=0x6c & op0710=0x3 & fregS1 & regSD unimpl
+:cvtzril fregS1l, regSD is op2431=0x6c & op0710=0x3 & fregS1l & regSD
+{
+	regSD = trunc(fregS1l);
+}
 
 
 # daddc
-:daddc regS1, regS2, regSD is op2431=0x64 & op0710=0x2 & regS1 & regS2 & regSD unimpl
+:daddc regS1, regS2, regSD is op2431=0x64 & op0710=0x2 & regS1 & regS2 & regSD
+{
+	local tmp:4 = (0xf & regS1) + (0xf & regS2) + zext(ac[1,1]);
+	regSD = (0xfffffff0 & regS2) | (0xf & tmp);
+	ac[1,1] = tmp[4,1];
+}
 
 
 # dcctl
@@ -1003,15 +1071,29 @@ define pcodeop syscall;
 
 
 # divrl  8,8,8
-:divrl fregS1, fregS2, fregSD is op2431=0x79 & op0710=0xb & fregS1 & fregS2 & fregSD unimpl
+:divrl fregS1l, fregS2l, fregSDl is op2431=0x79 & op0710=0xb & fregS1l & fregS2l & fregSDl
+{
+	fregSDl = fregS2l f/ fregS1l;
+}
 
 
 # dmovt
-:dmovt regS1, regSD is m1=0x1 & op2431=0x64 & op0710=0x4 & regS1 & regSD unimpl
+:dmovt regS1, regSD is op2431=0x64 & op0710=0x4 & regS1 & regSD
+{
+	regSD = regS1;
+	ac[0,1] = 0;
+	ac[1,1] = (regSD[0,8] < 0x30 && regSD[0,8] > 0x39);
+	ac[2,1] = 0;
+}
 
 
 # dsubc
-:dsubc regS1, regS2, regSD is op2431=0x64 & op0710=0x3 & regS1 & regS2 & regSD unimpl
+:dsubc regS1, regS2, regSD is op2431=0x64 & op0710=0x3 & regS1 & regS2 & regSD
+{
+	local tmp:4 = (0xf & regS2) - (0xf & regS1) - 1 + zext(ac[1,1]);
+	regSD = (0xfffffff0 & regS2) | (0xf & tmp);
+	ac[1,1] = tmp[31,1];
+}
 
 
 # ediv  4,8,4
@@ -1037,15 +1119,18 @@ define pcodeop syscall;
 
 
 # eshro
-:eshro regS1, regS2, regSD is op2431=0x5d & op0710=0x8 & regS1 & regS2 & regSD unimpl
-
+:eshro regS1, regS2l, regSD is op2431=0x5d & op0710=0x8 & regS1 & regS2l & regSD
+{
+	local tmp:8 = regS2l >> regS1[0,5];
+	regSD = tmp:4;
+}
 
 # expr
-:expr fregS1, fregSD is m1=0x1 & op2431=0x68 & op0710=0x9 & fregS1 & fregSD unimpl
+:expr fregS1, fregSD is op2431=0x68 & op0710=0x9 & fregS1 & fregSD unimpl
 
 
 # exprl  8,8
-:exprl fregS1, fregSD is m1=0x1 & op2431=0x69 & op0710=0x9 & fregS1 & fregSD unimpl
+:exprl fregS1l, fregSDl is op2431=0x69 & op0710=0x9 & fregS1l & fregSDl unimpl
 
 
 # extract
@@ -1089,15 +1174,15 @@ define pcodeop syscall;
 
 
 # flushreg
-:flushreg  is m0=0x1 & m1=0x1 & m2=0x1 & op2431=0x66 & op0710=0xd unimpl
+:flushreg  is op2431=0x66 & op0710=0xd unimpl
 
 
 # fmark
-:fmark  is m0=0x1 & m1=0x1 & m2=0x1 & op2431=0x66 & op0710=0xc unimpl
+:fmark  is op2431=0x66 & op0710=0xc unimpl
 
 
 # halt
-:halt regS1 is m0=0x1 & m1=0x1 & m2=0x1 & op2431=0x65 & op0710=0xd & regS1 unimpl
+:halt regS1 is op2431=0x65 & op0710=0xd & regS1 unimpl
 
 
 # icctl
@@ -1105,19 +1190,19 @@ define pcodeop syscall;
 
 
 # inspacc
-:inspacc regS1, regSD is m1=0x1 & op2431=0x61 & op0710=0x3 & regS1 & regSD unimpl
+:inspacc regS1, regSD is op2431=0x61 & op0710=0x3 & regS1 & regSD unimpl
 
 
 # intctl
-:intctl regS1, regSD is m1=0x1 & op2431=0x65 & op0710=0x8 & regS1 & regSD unimpl
+:intctl regS1, regSD is op2431=0x65 & op0710=0x8 & regS1 & regSD unimpl
 
 
 # intdis
-:intdis  is m0=0x1 & m1=0x1 & m2=0x1 & op2431=0x5b & op0710=0x4 unimpl
+:intdis  is op2431=0x5b & op0710=0x4 unimpl
 
 
 # inten
-:inten  is m0=0x1 & m1=0x1 & m2=0x1 & op2431=0x5b & op0710=0x5 unimpl
+:inten  is op2431=0x5b & op0710=0x5 unimpl
 
 
 # ld
@@ -1171,7 +1256,7 @@ define pcodeop syscall;
 
 
 # ldphy
-:ldphy regS1, regSD is m1=0x1 & op2431=0x61 & op0710=0x4 & regS1 & regSD unimpl
+:ldphy regS1, regSD is op2431=0x61 & op0710=0x4 & regS1 & regSD unimpl
 
 
 # ldq
@@ -1191,18 +1276,21 @@ define pcodeop syscall;
 
 
 # ldtime  8
-:ldtime regSD is m0=0x1 & m1=0x1 & op2431=0x67 & op0710=0x3 & regSD unimpl
+:ldtime regSD is op2431=0x67 & op0710=0x3 & regSD unimpl
 
 
 # logbnr
-:logbnr fregS1, fregSD is m1=0x1 & op2431=0x68 & op0710=0xa & fregS1 & fregSD
+:logbnr fregS1, fregSD is op2431=0x68 & op0710=0xa & fregS1 & fregSD
 {
 	fregSD = log2(fregS1);
 }
 
 
 # logbnrl  8,8
-:logbnrl fregS1, fregSD is m1=0x1 & op2431=0x69 & op0710=0xa & fregS1 & fregSD unimpl
+:logbnrl fregS1l, fregSDl is op2431=0x69 & op0710=0xa & fregS1l & fregSDl
+{
+	fregSDl = log2(fregS1l);
+}
 
 
 # logepr
@@ -1213,7 +1301,10 @@ define pcodeop syscall;
 
 
 # logeprl  8,8,8
-:logeprl fregS1, fregS2, fregSD is op2431=0x69 & op0710=0x1 & fregS1 & fregS2 & fregSD unimpl
+:logeprl fregS1l, fregS2l, fregSDl is op2431=0x69 & op0710=0x1 & fregS1l & fregS2l & fregSDl
+{
+	fregSDl = fregS2l f* log2(fregS1l f+ 1);
+}
 
 
 # logr
@@ -1224,11 +1315,14 @@ define pcodeop syscall;
 
 
 # logrl  8,8,8
-:logrl fregS1, fregS2, fregSD is op2431=0x69 & op0710=0x2 & fregS1 & fregS2 & fregSD unimpl
+:logrl fregS1l, fregS2l, fregSDl is op2431=0x69 & op0710=0x2 & fregS1l & fregS2l & fregSDl
+{
+	fregSDl = fregS2l f* log2(fregS1l);
+}
 
 
 # mark
-:mark  is m0=0x1 & m1=0x1 & m2=0x1 & op2431=0x66 & op0710=0xb unimpl
+:mark  is op2431=0x66 & op0710=0xb unimpl
 
 
 # modac
@@ -1279,14 +1373,14 @@ define pcodeop syscall;
 
 
 # mov
-:mov regS1, regSD is m1=0x1 & op2431=0x5c & op0710=0xc & regS1 & regSD
+:mov regS1, regSD is op2431=0x5c & op0710=0xc & regS1 & regSD
 {
 	regSD = regS1;
 }
 
 
 # movl
-:movl regS1l, regSD is m1=0x1 & op2431=0x5d & op0710=0xc & regS1l & regSD
+:movl regS1l, regSD is op2431=0x5d & op0710=0xc & regS1l & regSD
 {
 	local dst:4 = &regSD;
 	*[register]:8 dst = regS1l;
@@ -1294,7 +1388,7 @@ define pcodeop syscall;
 
 
 # movq
-:movq regS1q, regSD is m1=0x1 & op2431=0x5f & op0710=0xc & regS1q & regSD
+:movq regS1q, regSD is op2431=0x5f & op0710=0xc & regS1q & regSD
 {
 	local dst:4 = &regSD;
 	*[register]:16 dst = regS1q;
@@ -1315,19 +1409,24 @@ define pcodeop syscall;
 
 
 # movr
-:movr fregS1, fregSD is m1=0x1 & op2431=0x6c & op0710=0x9 & fregS1 & fregSD
+:movr fregS1, fregSD is op2431=0x6c & op0710=0x9 & fregS1 & fregSD
 {
 	fregSD = fregS1;
 }
 
 
 # movre
-#TODO  tq
-:movre fregS1, fregSD is m1=0x1 & op2431=0x6e & op0710=0x1 & fregS1 & fregSD unimpl
+:movre fregS1e, fregSDe is op2431=0x6e & op0710=0x1 & fregS1e & fregSDe
+{
+	fregSDe = fregS1e;
+}
 
 
 # movrl  8,8
-:movrl fregS1, fregSD is m1=0x1 & op2431=0x6d & op0710=0x9 & fregS1 & fregSD unimpl
+:movrl fregS1l, fregSDl is op2431=0x6d & op0710=0x9 & fregS1l & fregSDl
+{
+	fregSDl = fregS1l;
+}
 
 
 # movstr
@@ -1350,7 +1449,7 @@ define pcodeop syscall;
 
 
 # movt
-:movt regS1t, regSD is m1=0x1 & op2431=0x5e & op0710=0xc & regS1t & regSD
+:movt regS1t, regSD is op2431=0x5e & op0710=0xc & regS1t & regSD
 {
 	local dst:4 = &regSD;
 	*[register]:12 dst = regS1t;
@@ -1380,7 +1479,10 @@ define pcodeop syscall;
 
 
 # mulrl  8,8,8
-:mulrl fregS1, fregS2, fregSD is op2431=0x79 & op0710=0xc & fregS1 & fregS2 & fregSD unimpl
+:mulrl fregS1l, fregS2l, fregSDl is op2431=0x79 & op0710=0xc & fregS1l & fregS2l & fregSDl
+{
+	fregSDl = fregS2l f* fregS1l;
+}
 
 
 # nand
@@ -1398,7 +1500,7 @@ define pcodeop syscall;
 
 
 # not
-:not regS1, regSD is m1=0x1 & op2431=0x58 & op0710=0xa & regS1 & regSD
+:not regS1, regSD is op2431=0x58 & op0710=0xa & regS1 & regSD
 {
 	regSD = ~regS1;
 }
@@ -1440,7 +1542,7 @@ define pcodeop syscall;
 
 
 # receive
-:receive regS1, regSD is m1=0x1 & op2431=0x65 & op0710=0x6 & regS1 & regSD unimpl
+:receive regS1, regSD is op2431=0x65 & op0710=0x6 & regS1 & regSD unimpl
 
 
 # remi
@@ -1463,11 +1565,11 @@ define pcodeop syscall;
 
 
 # remrl  8,8,8
-:remrl fregS1, fregS2, fregSD is op2431=0x69 & op0710=0x3 & fregS1 & fregS2 & fregSD unimpl
+:remrl fregS1l, fregS2l, fregSDl is op2431=0x69 & op0710=0x3 & fregS1l & fregS2l & fregSDl unimpl
 
 
 # resumprcs
-:resumprcs regS1 is m1=0x1 & m2=0x1 & op2431=0x66 & op0710=0x4 & regS1 unimpl
+:resumprcs regS1 is op2431=0x66 & op0710=0x4 & regS1 unimpl
 
 
 # ret
@@ -1487,34 +1589,45 @@ define pcodeop syscall;
 
 
 # roundr
-:roundr fregS1, fregSD is m1=0x1 & op2431=0x68 & op0710=0xb & fregS1 & fregSD
+:roundr fregS1, fregSD is op2431=0x68 & op0710=0xb & fregS1 & fregSD
 {
 	fregSD = int2float(round(fregS1));
 }
 
 
 # roundrl  8,8
-:roundrl fregS1, fregSD is m1=0x1 & op2431=0x69 & op0710=0xb & fregS1 & fregSD unimpl
+:roundrl fregS1l, fregSDl is op2431=0x69 & op0710=0xb & fregS1l & fregSDl
+{
+	fregSDl = int2float(round(fregS1l));
+}
 
 
 # saveprcs
-:saveprcs  is m0=0x1 & m1=0x1 & m2=0x1 & op2431=0x66 & op0710=0x6 unimpl
+:saveprcs  is op2431=0x66 & op0710=0x6 unimpl
 
 
 # scaler
-:scaler regS1, fregS2, fregSD is op2431=0x67 & op0710=0x7 & regS1 & fregS2 & fregSD unimpl
+:scaler regS1, fregS2, fregSD is op2431=0x67 & op0710=0x7 & regS1 & fregS2 & fregSD
+{
+	local tmp:4 = 1 << regS1;
+	fregSD = fregS2 f* int2float(tmp);
+}
 
 
 # scalerl  4,8,8
-:scalerl regS1, fregS2, fregSD is op2431=0x67 & op0710=0x6 & regS1 & fregS2 & fregSD unimpl
+:scalerl regS1, fregS2l, fregSDl is op2431=0x67 & op0710=0x6 & regS1 & fregS2l & fregSDl
+{
+	local tmp:4 = 1 << regS1;
+	fregSDl = fregS2l f* int2float(tmp);
+}
 
 
 # scanbit
-:scanbit regS1, regSD is m1=0x1 & op2431=0x64 & op0710=0x1 & regS1 & regSD unimpl
+:scanbit regS1, regSD is op2431=0x64 & op0710=0x1 & regS1 & regSD unimpl
 
 
 # scanbyte
-:scanbyte regS1, regS2 is m2=0x1 & op2431=0x5a & op0710=0xc & regS1 & regS2
+:scanbyte regS1, regS2 is op2431=0x5a & op0710=0xc & regS1 & regS2
 {
 	ac[0,3] = 0;
 	local code = (regS1[24,8] == regS2[24,8]) ||
@@ -1526,7 +1639,7 @@ define pcodeop syscall;
 
 
 # schedprcs
-:schedprcs regS1 is m1=0x1 & m2=0x1 & op2431=0x66 & op0710=0x5 & regS1 unimpl
+:schedprcs regS1 is op2431=0x66 & op0710=0x5 & regS1 unimpl
 
 
 # sdma
@@ -1610,7 +1723,7 @@ define pcodeop syscall;
 
 
 # sendserv
-:sendserv regS1 is m1=0x1 & m2=0x1 & op2431=0x66 & op0710=0x3 & regS1 unimpl
+:sendserv regS1 is op2431=0x66 & op0710=0x3 & regS1 unimpl
 
 
 # setbit
@@ -1661,33 +1774,39 @@ define pcodeop syscall;
 
 
 # signal
-:signal regS1 is m1=0x1 & m2=0x1 & op2431=0x66 & op0710=0xa & regS1 unimpl
+:signal regS1 is op2431=0x66 & op0710=0xa & regS1 unimpl
 
 
 # sinr
-:sinr fregS1, fregSD is m1=0x1 & op2431=0x68 & op0710=0xc & fregS1 & fregSD
+:sinr fregS1, fregSD is op2431=0x68 & op0710=0xc & fregS1 & fregSD
 {
 	fregSD = sin(fregS1);
 }
 
 
 # sinrl  8,8
-:sinrl fregS1, fregSD is m1=0x1 & op2431=0x69 & op0710=0xc & fregS1 & fregSD unimpl
+:sinrl fregS1l, fregSDl is op2431=0x69 & op0710=0xc & fregS1l & fregSDl
+{
+	fregSDl = sin(fregS1l);
+}
 
 
 # spanbit
-:spanbit regS1, regSD is m1=0x1 & op2431=0x64 & op0710=0x0 & regS1 & regSD unimpl
+:spanbit regS1, regSD is op2431=0x64 & op0710=0x0 & regS1 & regSD unimpl
 
 
 # sqrtr
-:sqrtr fregS1, fregSD is m1=0x1 & op2431=0x68 & op0710=0x8 & fregS1 & fregSD
+:sqrtr fregS1, fregSD is op2431=0x68 & op0710=0x8 & fregS1 & fregSD
 {
 	fregSD = sqrt(fregS1);
 }
 
 
 # sqrtrl  8,8
-:sqrtrl fregS1, fregSD is m1=0x1 & op2431=0x69 & op0710=0x8 & fregS1 & fregSD unimpl
+:sqrtrl fregS1l, fregSDl is op2431=0x69 & op0710=0x8 & fregS1l & fregSDl
+{
+	fregSDl = sqrt(fregS1l);
+}
 
 
 # st
@@ -1879,15 +1998,18 @@ define pcodeop syscall;
 
 
 # subrl  8,8,8
-:subrl fregS1, fregS2, fregSD is op2431=0x79 & op0710=0xd & fregS1 & fregS2 & fregSD unimpl
+:subrl fregS1l, fregS2l, fregSDl is op2431=0x79 & op0710=0xd & fregS1l & fregS2l & fregSDl
+{
+	fregSDl = fregS2l f- fregS1l;
+}
 
 
 # syncf
-:syncf  is m0=0x1 & m1=0x1 & m2=0x1 & op2431=0x66 & op0710=0xf unimpl
+:syncf  is op2431=0x66 & op0710=0xf unimpl
 
 
 # synld
-:synld regS1, regSD is m1=0x1 & op2431=0x61 & op0710=0x5 & regS1 & regSD
+:synld regS1, regSD is op2431=0x61 & op0710=0x5 & regS1 & regSD
 {
 	#TODO  this might need work
 	regSD = *[ram]:4 regS1;
@@ -1895,7 +2017,7 @@ define pcodeop syscall;
 
 
 # synmov
-:synmov regS1, regS2 is m2=0x1 & op2431=0x60 & op0710=0x0 & regS1 & regS2
+:synmov regS1, regS2 is op2431=0x60 & op0710=0x0 & regS1 & regS2
 {
 	#TODO  this might need work
 	*[ram]:4 regS1 = *[ram]:4 regS2;
@@ -1903,7 +2025,7 @@ define pcodeop syscall;
 
 
 # synmovl
-:synmovl regS1, regS2 is m2=0x1 & op2431=0x60 & op0710=0x1 & regS1 & regS2
+:synmovl regS1, regS2 is op2431=0x60 & op0710=0x1 & regS1 & regS2
 {
 	#TODO  this might need work
 	*[ram]:8 regS1 = *[ram]:8 regS2;
@@ -1911,7 +2033,7 @@ define pcodeop syscall;
 
 
 # synmovq
-:synmovq regS1, regS2 is m2=0x1 & op2431=0x60 & op0710=0x2 & regS1 & regS2
+:synmovq regS1, regS2 is op2431=0x60 & op0710=0x2 & regS1 & regS2
 {
 	#TODO  this might need work
 	*[ram]:16 regS1 = *[ram]:16 regS2;
@@ -1927,14 +2049,17 @@ define pcodeop syscall;
 
 
 # tanr
-:tanr fregS1, fregSD is m1=0x1 & op2431=0x68 & op0710=0xe & fregS1 & fregSD
+:tanr fregS1, fregSD is op2431=0x68 & op0710=0xe & fregS1 & fregSD
 {
 	fregSD = tan(fregS1);
 }
 
 
 # tanrl  8,8
-:tanrl fregS1, fregSD is m1=0x1 & op2431=0x69 & op0710=0xe & fregS1 & fregSD unimpl
+:tanrl fregS1l, fregSDl is op2431=0x69 & op0710=0xe & fregS1l & fregSDl
+{
+	fregSDl = tan(fregS1l);
+}
 
 
 # teste
@@ -1998,7 +2123,7 @@ define pcodeop syscall;
 
 
 # wait
-:wait regS1 is m1=0x1 & m2=0x1 & op2431=0x66 & op0710=0x9 & regS1 unimpl
+:wait regS1 is op2431=0x66 & op0710=0x9 & regS1 unimpl
 
 
 # xnor
