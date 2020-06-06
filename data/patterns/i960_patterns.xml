@@ -45,6 +45,5 @@
       <data>000..... 01001000 00001000 01011001</data> <!-- addo lit, sp, sp -->
       <data>0....... .....110 .1...... 01011100</data> <!-- mov src, <r10-r15> -->
     </postpatterns>
-    <funcstart/>
   </patternpairs>
 </patternlist>
