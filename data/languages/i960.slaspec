@@ -462,7 +462,7 @@ define pcodeop __send;
 :bal disp0223 is op2431=0xb & op0000=0x0 & disp0223
 {
 	g14 = inst_next;
-	goto disp0223;
+	call disp0223;
 }
 
 
@@ -471,7 +471,7 @@ define pcodeop __send;
 {
 	local ea:4 = efa;
 	reg1923 = inst_next;
-	goto [ea];
+	call [ea];
 }
 
 
