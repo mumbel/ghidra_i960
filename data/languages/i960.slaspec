@@ -85,7 +85,8 @@ define token instr (32)
 
 
 define token instr2 (32)
-  sop0031=(0,31) signed
+  sop3263=(0,31) signed
+  op3263=(0,31)
 ;
 
 attach variables [ reg0004 reg1418 reg1923 ]
@@ -189,14 +190,15 @@ fregSDe: freg1923 is freg1923 & m3=1 & op1923 < 4 { local tmp:10 = freg1923; exp
 scale: imm is (op0709=0|op0709=1|op0709=2|op0709=3|op0709=4) & op0709 [ imm = 1 << op0709; ] { export *[const]:4 imm; }
 
 efa: offset0011 is offset0011 & mode1213=0 { local tmp:4 = offset0011; export tmp;}
+efa: op3263 is mode1213=3 & mode1011=0 & op0506=0 ; op3263 { local tmp:4 = op3263; export tmp; }
+
 efa: offset0011 (reg1418) is offset0011 & reg1418 & mode1213=2 { local tmp:4 = reg1418 + offset0011; export tmp; }
 efa: (reg1418) is reg1418 & mode1213=1 & mode1011=0 & op0506=0 { local tmp:4 = reg1418; export tmp; }
-efa: reloc (ip) is ip & mode1213=1 & mode1011=1 & op0506=0 ; sop0031 [ reloc = sop0031 + 8; ] { local tmp:4 = reloc + inst_start; export tmp; }
+efa: reloc (ip) is ip & mode1213=1 & mode1011=1 & op0506=0 ; sop3263 [ reloc = sop3263 + 8; ] { local tmp:4 = reloc + inst_start; export tmp; }
 efa: (reg1418) [reg0004 * scale] is scale & reg0004 & reg1418  & mode1213=1 & mode1011=3 & op0506=0 { local tmp:4 = (scale * reg0004) + reg1418; export tmp; }
-efa: sop0031 is mode1213=3 & mode1011=0 & op0506=0 ; sop0031 { local tmp:4 = sop0031; export tmp; }
-efa: sop0031 (reg1418) is reg1418 & mode1213=3 & mode1011=1 & op0506=0 ; sop0031 { local tmp:4 = sop0031 + reg1418; export tmp; }
-efa: sop0031 [reg0004 * scale] is reg0004 & scale & mode1213=3 & mode1011=2 & op0506=0 ; sop0031 { local tmp:4 = sop0031 + (reg0004 * scale); export tmp; }
-efa: sop0031 (reg1418) [reg0004 * scale] is reg1418 & reg0004 & scale & mode1213=3 & mode1011=3 & op0506=0 ; sop0031 { local tmp:4 = sop0031 + reg1418 + (reg0004 * scale); export tmp; }
+efa: sop3263 (reg1418) is reg1418 & mode1213=3 & mode1011=1 & op0506=0 ; sop3263 { local tmp:4 = sop3263 + reg1418; export tmp; }
+efa: sop3263 [reg0004 * scale] is reg0004 & scale & mode1213=3 & mode1011=2 & op0506=0 ; sop3263 { local tmp:4 = sop3263 + (reg0004 * scale); export tmp; }
+efa: sop3263 (reg1418) [reg0004 * scale] is reg1418 & reg0004 & scale & mode1213=3 & mode1011=3 & op0506=0 ; sop3263 { local tmp:4 = sop3263 + reg1418 + (reg0004 * scale); export tmp; }
 
 
 
@@ -212,6 +214,9 @@ define pcodeop tan;
 define pcodeop log2;
 
 define pcodeop syscall;
+
+define pcodeop __scanbit;
+define pcodeop __send;
 
 
 # addc
@@ -1623,7 +1628,11 @@ define pcodeop syscall;
 
 
 # scanbit
-:scanbit regS1, regSD is op2431=0x64 & op0710=0x1 & regS1 & regSD unimpl
+:scanbit regS1, regSD is op2431=0x64 & op0710=0x1 & regS1 & regSD
+{
+	#TODO  this is probably similar to other count leading zero type instructions
+	regSD = __scanbit(regS1);
+}
 
 
 # scanbyte
@@ -1719,7 +1728,11 @@ define pcodeop syscall;
 
 
 # send
-:send regS1, regS2, regSD is op2431=0x66 & op0710=0x2 & regS1 & regS2 & regSD unimpl
+:send regS1, regS2, regSD is op2431=0x66 & op0710=0x2 & regS1 & regS2 & regSD
+{
+	#TODO  not sure
+	__send(regS1, regS2, regSD);
+}
 
 
 # sendserv
