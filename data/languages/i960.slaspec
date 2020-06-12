@@ -51,7 +51,9 @@ define register offset=0x300 size=10 [ fp0 fp1 fp2 fp3 ];
 
 
 define token instr (32)
+  op2731=(27,31)
   op2431=(24,31)
+  op2426=(24,26)
   op1923=(19,23)
   freg1923=(19,23)
   reg1923=(19,23)
@@ -97,6 +99,25 @@ attach variables [ sfr0004 sfr1418 sfr1923 ]
 
 attach variables [ freg0004 freg1418 freg1923 ]
                  [ fp0 fp1 fp2 fp3 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ ];
+
+
+macro f_cmp_set_ac(v0, v1) {
+	ac[2,1] = v0 f< v1;
+	ac[1,1] = v0 f== v1;
+	ac[0,1] = v0 f> v1;
+}
+
+macro s_cmp_set_ac(v0, v1) {
+	ac[2,1] = v0 s< v1;
+	ac[1,1] = v0 == v1;
+	ac[0,1] = v0 s> v1;
+}
+
+macro cmp_set_ac(v0, v1) {
+	ac[2,1] = v0 <  v1;
+	ac[1,1] = v0 == v1;
+	ac[0,1] = v0 >  v1;
+}
 
 
 regS1:  reg0004 is reg0004 & m1=0 & s1=0 { export reg0004; }
@@ -153,11 +174,11 @@ fregS1:  reg0004 is  reg0004 & m1=0 & s1=0 { local tmp:10 = int2float(reg0004); 
 fregS1: freg0004 is freg0004 & m1=1 & s1=0 & op0004 < 4 { local tmp:10 = freg0004; export tmp; }
 fregS1: "+0.0" is m1=1 & s1=0 & op0004=0x10 { local tmp:10 = int2float(0:1); export tmp; }
 fregS1: "+1.0" is m1=1 & s1=0 & op0004=0x16 { local tmp:10 = int2float(1:1); export tmp; }
-fregS1l:  reg0004 is  reg0004 & m1=0 & s1=0 { local tmp:10 = int2float(reg0004); export tmp; }
+fregS1l:  reg0004 is  reg0004 & m1=0 & s1=0 { local reg:4 = &reg0004; local val:8 = *[register]:8 reg; local tmp:10 = int2float(val); export tmp; }
 fregS1l: freg0004 is freg0004 & m1=1 & s1=0 & op0004 < 4 { local tmp:10 = freg0004; export tmp; }
 fregS1l: "+0.0" is m1=1 & s1=0 & op0004=0x10 { local tmp:10 = int2float(0:1); export tmp; }
 fregS1l: "+1.0" is m1=1 & s1=0 & op0004=0x16 { local tmp:10 = int2float(1:1); export tmp; }
-fregS1e:  reg0004 is  reg0004 & m1=0 & s1=0 { local tmp:10 = int2float(reg0004); export tmp; }
+fregS1e:  reg0004 is  reg0004 & m1=0 & s1=0 { local reg:4 = &reg0004; local val:12 = *[register]:12 reg; local tmp:10 = int2float(val); export tmp; }
 fregS1e: freg0004 is freg0004 & m1=1 & s1=0 & op0004 < 4 { local tmp:10 = freg0004; export tmp; }
 fregS1e: "+0.0" is m1=1 & s1=0 & op0004=0x10 { local tmp:10 = int2float(0:1); export tmp; }
 fregS1e: "+1.0" is m1=1 & s1=0 & op0004=0x16 { local tmp:10 = int2float(1:1); export tmp; }
@@ -167,11 +188,11 @@ fregS2:  reg1418 is  reg1418 & m2=0 & s2=0 { local tmp:10 = int2float(reg1418); 
 fregS2: freg1418 is freg1418 & m2=1 & s2=0 & op1418 < 4 { local tmp:10 = freg1418; export tmp; }
 fregS2: "+0.0" is m2=1 & s2=0 & op1418=0x10 { local tmp:10 = int2float(0:1); export tmp; }
 fregS2: "+1.0" is m2=1 & s2=0 & op1418=0x16 { local tmp:10 = int2float(1:1); export tmp; }
-fregS2l:  reg1418 is  reg1418 & m2=0 & s2=0 { local tmp:10 = int2float(reg1418); export tmp; }
+fregS2l:  reg1418 is  reg1418 & m2=0 & s2=0 { local reg:4 = &reg1418; local val:8 = *[register]:8 reg; local tmp:10 = int2float(val); export tmp; }
 fregS2l: freg1418 is freg1418 & m2=1 & s2=0 & op1418 < 4 { local tmp:10 = freg1418; export tmp; }
 fregS2l: "+0.0" is m2=1 & s2=0 & op1418=0x10 { local tmp:10 = int2float(0:1); export tmp; }
 fregS2l: "+1.0" is m2=1 & s2=0 & op1418=0x16 { local tmp:10 = int2float(1:1); export tmp; }
-fregS2e:  reg1418 is  reg1418 & m2=0 & s2=0 { local tmp:10 = int2float(reg1418); export tmp; }
+fregS2e:  reg1418 is  reg1418 & m2=0 & s2=0 { local reg:4 = &reg1418; local val:12 = *[register]:12 reg; local tmp:10 = int2float(val); export tmp; }
 fregS2e: freg1418 is freg1418 & m2=1 & s2=0 & op1418 < 4 { local tmp:10 = freg1418; export tmp; }
 fregS2e: "+0.0" is m2=1 & s2=0 & op1418=0x10 { local tmp:10 = int2float(0:1); export tmp; }
 fregS2e: "+1.0" is m2=1 & s2=0 & op1418=0x16 { local tmp:10 = int2float(1:1); export tmp; }
@@ -206,6 +227,16 @@ disp0212: reloc is sop0212 [ reloc = ((sop0212 << 2) + inst_start) & 0xfffffffc;
 
 disp0223: reloc is sop0223 [ reloc = ((sop0223 << 2) + inst_start) & 0xfffffffc; ] { export *[ram]:4 reloc; }
 
+# conditions
+cc: "no" is op2426=0 { local tmp:1 = ((ac[0,1] | ac[1,1] | ac[2,1]) == 0); export tmp; }
+cc: "g"  is op2426=1 { local tmp:1 = (ac[0,1] == 1); export tmp; }
+cc: "e"  is op2426=2 { local tmp:1 = (ac[1,1] == 1); export tmp; }
+cc: "ge" is op2426=3 { local tmp:1 = ((ac[0,1] | ac[1,1]) == 1); export tmp; }
+cc: "l"  is op2426=4 { local tmp:1 = (ac[2,1] == 1); export tmp; }
+cc: "ne" is op2426=5 { local tmp:1 = ((ac[0,1] | ac[2,1]) == 1); export tmp; }
+cc: "le" is op2426=6 { local tmp:1 = ((ac[1,1] | ac[2,1]) == 1); export tmp; }
+cc: "o"  is op2426=7 { local tmp:1 = ((ac[0,1] | ac[1,1] | ac[2,1]) == 1); export tmp; }
+
 
 define pcodeop atan;
 define pcodeop cos;
@@ -238,73 +269,17 @@ define pcodeop __send;
 }
 
 
-# addie
-:addie regS1, regS2, regSD is op2431=0x7a & op0710=0x1 & regS1 & regS2 & regSD
+# addino      op2431=0x78
+# addig       op2431=0x79
+# addie       op2431=0x7a
+# addige      op2431=0x7b
+# addil       op2431=0x7c
+# addine      op2431=0x7d
+# addile      op2431=0x7e
+# addio       op2431=0x7f
+:addi^cc regS1, regS2, regSD is op2731=0b01111 & cc & op0710=0x1 & regS1 & regS2 & regSD
 {
-	if (!(ac[1,1])) goto inst_next;
-	ac[8,1] = scarry(regS1, regS2);
-	regSD = regS1 + regS2;
-}
-
-
-# addig
-:addig regS1, regS2, regSD is op2431=0x79 & op0710=0x1 & regS1 & regS2 & regSD
-{
-	if (!(ac[0,1])) goto inst_next;
-	ac[8,1] = scarry(regS1, regS2);
-	regSD = regS1 + regS2;
-}
-
-
-# addige
-:addige regS1, regS2, regSD is op2431=0x7b & op0710=0x1 & regS1 & regS2 & regSD
-{
-	if (!(ac[0,1] | ac[1,1])) goto inst_next;
-	ac[8,1] = scarry(regS1, regS2);
-	regSD = regS1 + regS2;
-}
-
-
-# addil
-:addil regS1, regS2, regSD is op2431=0x7c & op0710=0x1 & regS1 & regS2 & regSD
-{
-	if (!(ac[2,1])) goto inst_next;
-	ac[8,1] = scarry(regS1, regS2);
-	regSD = regS1 + regS2;
-}
-
-
-# addile
-:addile regS1, regS2, regSD is op2431=0x7e & op0710=0x1 & regS1 & regS2 & regSD
-{
-	if (!(ac[1,1] | ac[2,1])) goto inst_next;
-	ac[8,1] = scarry(regS1, regS2);
-	regSD = regS1 + regS2;
-}
-
-
-# addine
-:addine regS1, regS2, regSD is op2431=0x7d & op0710=0x1 & regS1 & regS2 & regSD
-{
-	if (!(ac[0,1] | ac[2,1])) goto inst_next;
-	ac[8,1] = scarry(regS1, regS2);
-	regSD = regS1 + regS2;
-}
-
-
-# addino
-:addino regS1, regS2, regSD is op2431=0x78 & op0710=0x1 & regS1 & regS2 & regSD
-{
-	if (ac[0,1] | ac[1,1] | ac[2,1]) goto inst_next;
-	ac[8,1] = scarry(regS1, regS2);
-	regSD = regS1 + regS2;
-}
-
-
-# addio
-:addio regS1, regS2, regSD is op2431=0x7f & op0710=0x1 & regS1 & regS2 & regSD
-{
-	if (!(ac[0,1] | ac[1,1] | ac[2,1])) goto inst_next;
+	if (!cc) goto inst_next;
 	ac[8,1] = scarry(regS1, regS2);
 	regSD = regS1 + regS2;
 }
@@ -317,66 +292,17 @@ define pcodeop __send;
 }
 
 
-# addoe
-:addoe regS1, regS2, regSD is op2431=0x7a & op0710=0x0 & regS1 & regS2 & regSD
+# addono      op2431=0x78
+# addog       op2431=0x79
+# addoe       op2431=0x7a
+# addoge      op2431=0x7b
+# addol       op2431=0x7c
+# addone      op2431=0x7d
+# addole      op2431=0x7e
+# addoo       op2431=0x7f
+:addo^cc regS1, regS2, regSD is op2731=0b01111 & cc & op0710=0x0 & regS1 & regS2 & regSD
 {
-	if (!(ac[1,1])) goto inst_next;
-	regSD = regS1 + regS2;
-}
-
-
-# addog
-:addog regS1, regS2, regSD is op2431=0x79 & op0710=0x0 & regS1 & regS2 & regSD
-{
-	if (!(ac[0,1])) goto inst_next;
-	regSD = regS1 + regS2;
-}
-
-
-# addoge
-:addoge regS1, regS2, regSD is op2431=0x7b & op0710=0x0 & regS1 & regS2 & regSD
-{
-	if (!(ac[0,1] | ac[1,1])) goto inst_next;
-	regSD = regS1 + regS2;
-}
-
-
-# addol
-:addol regS1, regS2, regSD is op2431=0x7c & op0710=0x0 & regS1 & regS2 & regSD
-{
-	if (!(ac[2,1])) goto inst_next;
-	regSD = regS1 + regS2;
-}
-
-
-# addole
-:addole regS1, regS2, regSD is op2431=0x7e & op0710=0x0 & regS1 & regS2 & regSD
-{
-	if (!(ac[1,1] | ac[2,1])) goto inst_next;
-	regSD = regS1 + regS2;
-}
-
-
-# addone
-:addone regS1, regS2, regSD is op2431=0x7d & op0710=0x0 & regS1 & regS2 & regSD
-{
-	if (!(ac[0,1] | ac[2,1])) goto inst_next;
-	regSD = regS1 + regS2;
-}
-
-
-# addono
-:addono regS1, regS2, regSD is op2431=0x78 & op0710=0x0 & regS1 & regS2 & regSD
-{
-	if (ac[0,1] | ac[1,1] | ac[2,1]) goto inst_next;
-	regSD = regS1 + regS2;
-}
-
-
-# addoo
-:addoo regS1, regS2, regSD is op2431=0x7f & op0710=0x0 & regS1 & regS2 & regSD
-{
-	if (!(ac[0,1] | ac[1,1] | ac[2,1])) goto inst_next;
+	if (!cc) goto inst_next;
 	regSD = regS1 + regS2;
 }
 
@@ -495,58 +421,19 @@ define pcodeop __send;
 }
 
 
-# be
-:be disp0223 is op2431=0x12 & op0000=0x0 & disp0223
+# bno      op2431=0x10
+# bg       op2431=0x11
+# be       op2431=0x12
+# bge      op2431=0x13
+# bl       op2431=0x14
+# bne      op2431=0x15
+# ble      op2431=0x16
+# bo       op2431=0x17
+:b^cc disp0223 is op2731=0b00010 & cc & op0000=0x0 & disp0223
 {
-	if (ac[1,1]) goto disp0223;
+	if (cc) goto disp0223;
 }
 
-
-# bg
-:bg disp0223 is op2431=0x11 & op0000=0x0 & disp0223
-{
-	if (ac[0,1]) goto disp0223;
-}
-
-
-# bge
-:bge disp0223 is op2431=0x13 & op0000=0x0 & disp0223
-{
-	if (ac[0,1] | ac[1,1]) goto disp0223;
-}
-
-
-# bl
-:bl disp0223 is op2431=0x14 & op0000=0x0 & disp0223
-{
-	if (ac[2,1]) goto disp0223;
-}
-
-
-# ble
-:ble disp0223 is op2431=0x16 & op0000=0x0 & disp0223
-{
-	if (ac[1,1] | ac[2,1]) goto disp0223;
-}
-
-
-# bne
-:bne disp0223 is op2431=0x15 & op0000=0x0 & disp0223
-{
-	if (ac[0,1] | ac[2,1]) goto disp0223;
-}
-
-# bno
-:bno disp0223 is op2431=0x10 & op0000=0x0 & disp0223
-{
-	if (!(ac[0,1] | ac[1,1] | ac[2,1])) goto disp0223;
-}
-
-# bo
-:bo disp0223 is op2431=0x17 & op0000=0x0 & disp0223
-{
-	if (ac[0,1] | ac[1,1] | ac[2,1]) goto disp0223;
-}
 
 # bswap
 :bswap regS1, regSD is op2431=0x5a & op0710=0xd & regS1 & regSD
@@ -629,9 +516,7 @@ define pcodeop __send;
 # cmpdeci
 :cmpdeci regS1, regS2, regSD is op2431=0x5a & op0710=0x7 & regS1 & regS2 & regSD
 {
-	ac[2,1] = regS1 s< regS2;
-	ac[1,1] = regS1 == regS2;
-	ac[0,1] = regS1 s> regS2;	
+	s_cmp_set_ac(regS1, regS2);
 	regSD = regS2 - 1;
 }
 
@@ -639,118 +524,44 @@ define pcodeop __send;
 # cmpdeco
 :cmpdeco regS1, regS2, regSD is op2431=0x5a & op0710=0x6 & regS1 & regS2 & regSD
 {
-	ac[2,1] = regS1 < regS2;
-	ac[1,1] = regS1 == regS2;
-	ac[0,1] = regS1 > regS2;	
-	regSD = regS2 - 1;	
+	cmp_set_ac(regS1, regS2);
+	regSD = regS2 - 1;
 }
 
 
 # cmpi
 :cmpi regS1, regS2 is op2431=0x5a & op0710=0x1 & regS1 & regS2
 {
-	ac[2,1] = regS1 s< regS2;
-	ac[1,1] = regS1 == regS2;
-	ac[0,1] = regS1 s> regS2;	
+	s_cmp_set_ac(regS1, regS2);
 }
 
 
 # cmpib
 :cmpib regS1, regS2 is op2431=0x59 & op0710=0x5 & regS1 & regS2
 {
-	ac[2,1] = regS1:1 s< regS2:1;
-	ac[1,1] = regS1:1 == regS2:1;
-	ac[0,1] = regS1:1 s> regS2:1;	
+	s_cmp_set_ac(regS1:1, regS2:1);
 }
 
 
-# cmpibe
-:cmpibe cobrS1, cobrS2, disp0212 is op2431=0x3a & cobrS1 & cobrS2 & disp0212
+# cmpibno      op2431=0x38
+# cmpibg       op2431=0x39
+# cmpibe       op2431=0x3a
+# cmpibge      op2431=0x3b
+# cmpibl       op2431=0x3c
+# cmpibne      op2431=0x3d
+# cmpible      op2431=0x3e
+# cmpibo       op2431=0x3f
+:cmpib^cc cobrS1, cobrS2, disp0212 is op2731=0b00111 & cc & cobrS1 & cobrS2 & disp0212
 {
-	ac[2,1] = cobrS1 s< cobrS2;
-	ac[1,1] = cobrS1 == cobrS2;
-	ac[0,1] = cobrS1 s> cobrS2;
-	if (ac[1,1]) goto disp0212;
-}
-
-
-# cmpibg
-:cmpibg cobrS1, cobrS2, disp0212 is op2431=0x39 & cobrS1 & cobrS2 & disp0212
-{
-	ac[2,1] = cobrS1 s< cobrS2;
-	ac[1,1] = cobrS1 == cobrS2;
-	ac[0,1] = cobrS1 s> cobrS2;
-	if (ac[0,1]) goto disp0212;
-}
-
-
-
-# cmpibge
-:cmpibge cobrS1, cobrS2, disp0212 is op2431=0x3b & cobrS1 & cobrS2 & disp0212
-{
-	ac[2,1] = cobrS1 s< cobrS2;
-	ac[1,1] = cobrS1 == cobrS2;
-	ac[0,1] = cobrS1 s> cobrS2;
-	if (ac[0,1] | ac[1,1]) goto disp0212;
-}
-
-
-# cmpibl
-:cmpibl cobrS1, cobrS2, disp0212 is op2431=0x3c & cobrS1 & cobrS2 & disp0212
-{
-	ac[2,1] = cobrS1 s< cobrS2;
-	ac[1,1] = cobrS1 == cobrS2;
-	ac[0,1] = cobrS1 s> cobrS2;
-	if (ac[2,1]) goto disp0212;
-}
-
-
-# cmpible
-:cmpible cobrS1, cobrS2, disp0212 is op2431=0x3e & cobrS1 & cobrS2 & disp0212
-{
-	ac[2,1] = cobrS1 s< cobrS2;
-	ac[1,1] = cobrS1 == cobrS2;
-	ac[0,1] = cobrS1 s> cobrS2;
-	if (ac[1,1] | ac[2,1]) goto disp0212;
-}
-
-
-# cmpibne
-:cmpibne cobrS1, cobrS2, disp0212 is op2431=0x3d & cobrS1 & cobrS2 & disp0212
-{
-	ac[2,1] = cobrS1 s< cobrS2;
-	ac[1,1] = cobrS1 == cobrS2;
-	ac[0,1] = cobrS1 s> cobrS2;
-	if (ac[0,1] | ac[2,1]) goto disp0212;
-}
-
-
-# cmpibno
-:cmpibno cobrS1, cobrS2, disp0212 is op2431=0x38 & cobrS1 & cobrS2 & disp0212
-{
-	ac[2,1] = cobrS1 s< cobrS2;
-	ac[1,1] = cobrS1 == cobrS2;
-	ac[0,1] = cobrS1 s> cobrS2;
-	if (!(ac[0,1] | ac[1,1] | ac[2,1])) goto disp0212;
-}
-
-
-# cmpibo
-:cmpibo cobrS1, cobrS2, disp0212 is op2431=0x3f & cobrS1 & cobrS2 & disp0212
-{
-	ac[2,1] = cobrS1 s< cobrS2;
-	ac[1,1] = cobrS1 == cobrS2;
-	ac[0,1] = cobrS1 s> cobrS2;
-	if (ac[0,1] | ac[1,1] | ac[2,1]) goto disp0212;
+	s_cmp_set_ac(cobrS1, cobrS2);
+	if (cc) goto disp0212;
 }
 
 
 # cmpinci
 :cmpinci regS1, regS2, regSD is op2431=0x5a & op0710=0x5 & regS1 & regS2 & regSD
 {
-	ac[2,1] = regS1 s< regS2;
-	ac[1,1] = regS1 == regS2;
-	ac[0,1] = regS1 s> regS2;	
+	s_cmp_set_ac(regS1, regS2);
 	regSD = regS2 + 1;
 }
 
@@ -758,9 +569,7 @@ define pcodeop __send;
 # cmpinco
 :cmpinco regS1, regS2, regSD is op2431=0x5a & op0710=0x4 & regS1 & regS2 & regSD
 {
-	ac[2,1] = regS1 < regS2;
-	ac[1,1] = regS1 == regS2;
-	ac[0,1] = regS1 > regS2;	
+	cmp_set_ac(regS1, regS2);
 	regSD = regS2 - 1;
 }
 
@@ -768,86 +577,36 @@ define pcodeop __send;
 # cmpis
 :cmpis regS1, regS2 is op2431=0x59 & op0710=0x7 & regS1 & regS2
 {
-	ac[2,1] = regS1:2 s< regS2:2;
-	ac[1,1] = regS1:2 == regS2:2;
-	ac[0,1] = regS1:2 s> regS2:2;
+	s_cmp_set_ac(regS1:2, regS2:2);
 }
 
 
 # cmpo
 :cmpo regS1, regS2 is op2431=0x5a & op0710=0x0 & regS1 & regS2
 {
-	ac[2,1] = regS1 < regS2;
-	ac[1,1] = regS1 == regS2;
-	ac[0,1] = regS1 > regS2;
+	cmp_set_ac(regS1, regS2);
 }
 
 
 # cmpob
 :cmpob regS1, regS2 is op2431=0x59 & op0710=0x4 & regS1 & regS2
 {
-	ac[2,1] = regS1:1 < regS2:1;
-	ac[1,1] = regS1:1 == regS2:1;
-	ac[0,1] = regS1:1 > regS2:1;
+	cmp_set_ac(regS1:1, regS2:1);
 }
 
 
-# cmpobe
-:cmpobe cobrS1, cobrS2, disp0212 is op2431=0x32 & cobrS1 & cobrS2 & disp0212
+# cmpobno      op2431=0x30
+# cmpobg       op2431=0x31
+# cmpobe       op2431=0x32
+# cmpobge      op2431=0x33
+# cmpobl       op2431=0x34
+# cmpobne      op2431=0x35
+# cmpoble      op2431=0x36
+# cmpobo       op2431=0x37
+:cmpob^cc cobrS1, cobrS2, disp0212 is op2731=0b00110 & cc & cobrS1 & cobrS2 & disp0212
 {
-	ac[2,1] = cobrS1 < cobrS2;
-	ac[1,1] = cobrS1 == cobrS2;
-	ac[0,1] = cobrS1 > cobrS2;
-	if (ac[1,1]) goto disp0212;
-}
-
-
-# cmpobg
-:cmpobg cobrS1, cobrS2, disp0212 is op2431=0x31 & cobrS1 & cobrS2 & disp0212
-{
-	ac[2,1] = cobrS1 < cobrS2;
-	ac[1,1] = cobrS1 == cobrS2;
-	ac[0,1] = cobrS1 > cobrS2;
-	if (ac[0,1]) goto disp0212;
-}
-
-
-# cmpobge
-:cmpobge cobrS1, cobrS2, disp0212 is op2431=0x33 & cobrS1 & cobrS2 & disp0212
-{
-	ac[2,1] = cobrS1 < cobrS2;
-	ac[1,1] = cobrS1 == cobrS2;
-	ac[0,1] = cobrS1 > cobrS2;
-	if (ac[0,1] | ac[1,1]) goto disp0212;
-}
-
-# cmpobl
-:cmpobl cobrS1, cobrS2, disp0212 is op2431=0x34 & cobrS1 & cobrS2 & disp0212
-{
-	ac[2,1] = cobrS1 < cobrS2;
-	ac[1,1] = cobrS1 == cobrS2;
-	ac[0,1] = cobrS1 > cobrS2;
-	if (ac[2,1]) goto disp0212;
-}
-
-
-# cmpoble
-:cmpoble cobrS1, cobrS2, disp0212 is op2431=0x36 & cobrS1 & cobrS2 & disp0212
-{
-	ac[2,1] = cobrS1 < cobrS2;
-	ac[1,1] = cobrS1 == cobrS2;
-	ac[0,1] = cobrS1 > cobrS2;
-	if (ac[1,1] | ac[2,1]) goto disp0212;
-}
-
-
-# cmpobne
-:cmpobne cobrS1, cobrS2, disp0212 is op2431=0x35 & cobrS1 & cobrS2 & disp0212
-{
-	ac[2,1] = cobrS1 < cobrS2;
-	ac[1,1] = cobrS1 == cobrS2;
-	ac[0,1] = cobrS1 > cobrS2;
-	if (ac[0,1] | ac[2,1]) goto disp0212;
+	cmp_set_ac(cobrS1, cobrS2);
+	if (cc) goto disp0212;
 }
 
 
@@ -856,9 +615,7 @@ define pcodeop __send;
 {
 	ac[0,3] = 0;
 	if (nan(fregS1) || nan(fregS2)) goto inst_next;
-	ac[2,1] = fregS1 f< fregS2;
-	ac[1,1] = fregS1 f== fregS2;
-	ac[0,1] = fregS1 f> fregS2;
+	f_cmp_set_ac(fregS1, fregS2);
 }
 
 
@@ -867,18 +624,14 @@ define pcodeop __send;
 {
 	ac[0,3] = 0;
 	if (nan(fregS1l) || nan(fregS2l)) goto inst_next;
-	ac[2,1] = fregS1l f< fregS2l;
-	ac[1,1] = fregS1l f== fregS2l;
-	ac[0,1] = fregS1l f> fregS2l;
+	f_cmp_set_ac(fregS1l, fregS2l);
 }
 
 
 # cmpos
 :cmpos regS1, regS2 is op2431=0x59 & op0710=0x6 & regS1 & regS2
 {
-	ac[2,1] = regS1:2 < regS2:2;
-	ac[1,1] = regS1:2 == regS2:2;
-	ac[0,1] = regS1:2 > regS2:2;
+	s_cmp_set_ac(regS1:2, regS2:2);
 }
 
 
@@ -888,9 +641,7 @@ define pcodeop __send;
 	#TODO  figure out the difference between cmpor
 	ac[0,3] = 0;
 	if (nan(fregS1) || nan(fregS2)) goto inst_next;
-	ac[2,1] = fregS1 f< fregS2;
-	ac[1,1] = fregS1 f== fregS2;
-	ac[0,1] = fregS1 f> fregS2;
+	f_cmp_set_ac(fregS1, fregS2);
 }
 
 
@@ -900,9 +651,7 @@ define pcodeop __send;
 	#TODO  figure out the difference between cmpor
 	ac[0,3] = 0;
 	if (nan(fregS1l) || nan(fregS2l)) goto inst_next;
-	ac[2,1] = fregS1l f< fregS2l;
-	ac[1,1] = fregS1l f== fregS2l;
-	ac[0,1] = fregS1l f> fregS2l;
+	f_cmp_set_ac(fregS1l, fregS2l);
 }
 
 
@@ -927,7 +676,7 @@ define pcodeop __send;
 :concmpi regS1, regS2 is op2431=0x5a & op0710=0x3 & regS1 & regS2
 {
 	if (!(ac[2,1])) goto inst_next;
-	ac[0,3] = 0;
+	ac[2,1] = 0;
 	ac[1,1] = regS1 s<= regS2;
 	ac[0,1] = regS1 s> regS2;
 }
@@ -1086,9 +835,9 @@ define pcodeop __send;
 :dmovt regS1, regSD is op2431=0x64 & op0710=0x4 & regS1 & regSD
 {
 	regSD = regS1;
-	ac[0,1] = 0;
-	ac[1,1] = (regSD[0,8] < 0x30 && regSD[0,8] > 0x39);
 	ac[2,1] = 0;
+	ac[1,1] = (regSD[0,8] < 0x30 && regSD[0,8] > 0x39);
+	ac[0,1] = 0;
 }
 
 
@@ -1142,36 +891,22 @@ define pcodeop __send;
 :extract regS1, regS2, regSD is op2431=0x65 & op0710=0x1 & regS1 & regS2 & regSD unimpl
 
 
-# faulte
-:faulte  is op2431=0x1a & op0000=0x0 unimpl
+define pcodeop __fault;
 
-
-# faultg
-:faultg  is op2431=0x19 & op0000=0x0 unimpl
-
-
-# faultge
-:faultge  is op2431=0x1b & op0000=0x0 unimpl
-
-
-# faultl
-:faultl  is op2431=0x1c & op0000=0x0 unimpl
-
-
-# faultle
-:faultle  is op2431=0x1e & op0000=0x0 unimpl
-
-
-# faultne
-:faultne  is op2431=0x1d & op0000=0x0 unimpl
-
-
-# faultno
-:faultno  is op2431=0x18 & op0000=0x0 unimpl
-
-
-# faulto
-:faulto  is op2431=0x1f & op0000=0x0 unimpl
+# faultno      op2431=0x18
+# faultg       op2431=0x19
+# faulte       op2431=0x1a
+# faultge      op2431=0x1b
+# faultl       op2431=0x1c
+# faultne      op2431=0x1d
+# faultle      op2431=0x1e
+# faulto       op2431=0x1f
+:fault^cc is op2731=0b00011 & cc & op0000=0x0
+{
+	#TODO  this is probably super broken
+	if (!cc) goto inst_next;
+	__fault();
+}
 
 
 # fill
@@ -1655,74 +1390,18 @@ define pcodeop __send;
 :sdma regS1, regS2, regSD is op2431=0x63 & op0710=0x0 & regS1 & regS2 & regSD unimpl
 
 
-# sele
-:sele regS1, regS2, regSD is op2431=0x7a & op0710=0x4 & regS1 & regS2 & regSD
+# selno      op2431=0x78
+# selg       op2431=0x79
+# sele       op2431=0x7a
+# selge      op2431=0x7b
+# sell       op2431=0x7c
+# selne      op2431=0x7d
+# selle      op2431=0x7e
+# selo       op2431=0x7f
+:sel^cc regS1, regS2, regSD is op2731=0b01111 & cc & op0710=0x4 & regS1 & regS2 & regSD
 {
 	regSD = regS1;
-	if (!(ac[1,1])) goto inst_next;
-	regSD = regS2;
-}
-
-
-# selg
-:selg regS1, regS2, regSD is op2431=0x79 & op0710=0x4 & regS1 & regS2 & regSD
-{
-	regSD = regS1;
-	if (!(ac[0,1])) goto inst_next;
-	regSD = regS2;
-}
-
-
-# selge
-:selge regS1, regS2, regSD is op2431=0x7b & op0710=0x4 & regS1 & regS2 & regSD
-{
-	regSD = regS1;
-	if (!(ac[0,1] | ac[1,1])) goto inst_next;
-	regSD = regS2;
-}
-
-
-# sell
-:sell regS1, regS2, regSD is op2431=0x7c & op0710=0x4 & regS1 & regS2 & regSD
-{
-	regSD = regS1;
-	if (!(ac[2,1])) goto inst_next;
-	regSD = regS2;
-}
-
-
-# selle
-:selle regS1, regS2, regSD is op2431=0x7e & op0710=0x4 & regS1 & regS2 & regSD
-{
-	regSD = regS1;
-	if (!(ac[1,1] | ac[2,1])) goto inst_next;
-	regSD = regS2;
-}
-
-
-# selne
-:selne regS1, regS2, regSD is op2431=0x7d & op0710=0x4 & regS1 & regS2 & regSD
-{
-	regSD = regS1;
-	if (!(ac[0,1] | ac[2,1])) goto inst_next;
-	regSD = regS2;
-}
-
-
-# selno
-:selno regS1, regS2, regSD is op2431=0x78 & op0710=0x4 & regS1 & regS2 & regSD
-{
-	regSD = regS1;
-	if (ac[0,1] | ac[1,1] | ac[2,1]) goto inst_next;
-	regSD = regS2;
-}
-
-
-# selo
-:selo regS1, regS2, regSD is op2431=0x7f & op0710=0x4 & regS1 & regS2 & regSD
-{
-	regSD = regS1;
-	if (!(ac[0,1] | ac[1,1] | ac[2,1])) goto inst_next;
+	if (!cc) goto inst_next;
 	regSD = regS2;
 }
 
@@ -1900,36 +1579,20 @@ define pcodeop __send;
 }
 
 
-# subie
-:subie regS1, regS2, regSD is op2431=0x7a & op0710=0x3 & regS1 & regS2 & regSD unimpl
-
-
-# subig
-:subig regS1, regS2, regSD is op2431=0x79 & op0710=0x3 & regS1 & regS2 & regSD unimpl
-
-
-# subige
-:subige regS1, regS2, regSD is op2431=0x7b & op0710=0x3 & regS1 & regS2 & regSD unimpl
-
-
-# subil
-:subil regS1, regS2, regSD is op2431=0x7c & op0710=0x3 & regS1 & regS2 & regSD unimpl
-
-
-# subile
-:subile regS1, regS2, regSD is op2431=0x7e & op0710=0x3 & regS1 & regS2 & regSD unimpl
-
-
-# subine
-:subine regS1, regS2, regSD is op2431=0x7d & op0710=0x3 & regS1 & regS2 & regSD unimpl
-
-
-# subino
-:subino regS1, regS2, regSD is op2431=0x78 & op0710=0x3 & regS1 & regS2 & regSD unimpl
-
-
-# subio
-:subio regS1, regS2, regSD is op2431=0x7f & op0710=0x3 & regS1 & regS2 & regSD unimpl
+# subino      op2431=0x78
+# subig       op2431=0x79
+# subie       op2431=0x7a
+# subige      op2431=0x7b
+# subil       op2431=0x7c
+# subine      op2431=0x7d
+# subile      op2431=0x7e
+# subio       op2431=0x7f
+:subi^cc regS1, regS2, regSD is op2731=0b01111 & cc & op0710=0x3 & regS1 & regS2 & regSD
+{
+	if (!cc) goto inst_next;
+	ac[8,1] = sborrow(regS2, regS1);
+	regSD = regS2 - regS1;
+}
 
 
 # subo
@@ -1939,66 +1602,17 @@ define pcodeop __send;
 }
 
 
-# suboe
-:suboe regS1, regS2, regSD is op2431=0x7a & op0710=0x2 & regS1 & regS2 & regSD
+# subono      op2431=0x78
+# subog       op2431=0x79
+# suboe       op2431=0x7a
+# suboge      op2431=0x7b
+# subol       op2431=0x7c
+# subone      op2431=0x7d
+# subole      op2431=0x7e
+# suboo       op2431=0x7f
+:subo^cc regS1, regS2, regSD is op2731=0b01111 & cc & op0710=0x2 & regS1 & regS2 & regSD
 {
-	if (!(ac[1,1])) goto inst_next;
-	regSD = regS2 - regS1;
-}
-
-
-# subog
-:subog regS1, regS2, regSD is op2431=0x79 & op0710=0x2 & regS1 & regS2 & regSD
-{
-	if (!(ac[0,1])) goto inst_next;
-	regSD = regS2 - regS1;
-}
-
-
-# suboge
-:suboge regS1, regS2, regSD is op2431=0x7b & op0710=0x2 & regS1 & regS2 & regSD
-{
-	if (!(ac[0,1] | ac[1,1])) goto inst_next;
-	regSD = regS2 - regS1;
-}
-
-
-# subol
-:subol regS1, regS2, regSD is op2431=0x7c & op0710=0x2 & regS1 & regS2 & regSD
-{
-	if (!(ac[2,1])) goto inst_next;
-	regSD = regS2 - regS1;
-}
-
-
-# subole
-:subole regS1, regS2, regSD is op2431=0x7e & op0710=0x2 & regS1 & regS2 & regSD
-{
-	if (!(ac[1,1] | ac[2,1])) goto inst_next;
-	regSD = regS2 - regS1;
-}
-
-
-# subone
-:subone regS1, regS2, regSD is op2431=0x7d & op0710=0x2 & regS1 & regS2 & regSD
-{
-	if (!(ac[0,1] | ac[2,1])) goto inst_next;
-	regSD = regS2 - regS1;
-}
-
-
-# subono
-:subono regS1, regS2, regSD is op2431=0x78 & op0710=0x2 & regS1 & regS2 & regSD
-{
-	if (ac[0,1] | ac[1,1] | ac[2,1]) goto inst_next;
-	regSD = regS2 - regS1;
-}
-
-
-# suboo
-:suboo regS1, regS2, regSD is op2431=0x7f & op0710=0x2 & regS1 & regS2 & regSD
-{
-	if (!(ac[1,1])) goto inst_next;
+	if (!cc) goto inst_next;
 	regSD = regS2 - regS1;
 }
 
@@ -2075,59 +1689,17 @@ define pcodeop __send;
 }
 
 
-# teste
-:teste cobrSD is op2431=0x22 & cobrSD
+# testno      op2431=0x20
+# testg       op2431=0x21
+# teste       op2431=0x22
+# testge      op2431=0x23
+# testl       op2431=0x24
+# testne      op2431=0x25
+# testle      op2431=0x26
+# testo       op2431=0x27
+:test^cc cobrSD is op2731=0b00100 & cc & cobrSD
 {
-	cobrSD = zext(ac[1,1]);
-}
-
-
-# testg
-:testg cobrSD is op2431=0x21 & cobrSD
-{
-	cobrSD = zext(ac[0,1]);
-}
-
-
-# testge
-:testge cobrSD is op2431=0x23 & cobrSD
-{
-	cobrSD = zext(ac[0,1] | ac[1,1]);
-}
-
-
-# testl
-:testl cobrSD is op2431=0x24 & cobrSD
-{
-	cobrSD = zext(ac[2,1]);
-}
-
-
-# testle
-:testle cobrSD is op2431=0x26 & cobrSD
-{
-	cobrSD = zext(ac[1,1] | ac[2,1]);
-}
-
-
-# testne
-:testne cobrSD is op2431=0x25 & cobrSD
-{
-	cobrSD = zext(ac[0,1] | ac[2,1]);
-}
-
-
-# testno
-:testno cobrSD is op2431=0x20 & cobrSD
-{
-	cobrSD = zext(!(ac[0,1] | ac[1,1] | ac[2,1]));
-}
-
-
-# testo
-:testo cobrSD is op2431=0x27 & cobrSD
-{
-	cobrSD = zext(ac[0,1] | ac[1,1] | ac[2,1]);
+	cobrSD = zext(cc);
 }
 
 
@@ -2151,5 +1723,4 @@ define pcodeop __send;
 {
 	regSD = regS1 ^ regS2;
 }
-
 
