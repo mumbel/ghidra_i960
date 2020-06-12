@@ -554,6 +554,7 @@ define pcodeop __send;
 :cmpib^cc cobrS1, cobrS2, disp0212 is op2731=0b00111 & cc & cobrS1 & cobrS2 & disp0212
 {
 	s_cmp_set_ac(cobrS1, cobrS2);
+	build cc;
 	if (cc) goto disp0212;
 }
 
@@ -606,6 +607,7 @@ define pcodeop __send;
 :cmpob^cc cobrS1, cobrS2, disp0212 is op2731=0b00110 & cc & cobrS1 & cobrS2 & disp0212
 {
 	cmp_set_ac(cobrS1, cobrS2);
+	build cc;
 	if (cc) goto disp0212;
 }
 
