@@ -119,29 +119,110 @@ macro cmp_set_ac(v0, v1) {
 	ac[0,1] = v0 >  v1;
 }
 
+#TODO  does it make sense to make macros for 4-byte?
 
-regS1:  reg0004 is reg0004 & m1=0 & s1=0 { export reg0004; }
+macro l_copy_efa_to_reg(sefa, dreg) {
+	*[register]:4 (dreg + 0x0) = *[ram]:4 (sefa + 0x0);
+	*[register]:4 (dreg + 0x4) = *[ram]:4 (sefa + 0x4);
+}
+
+macro t_copy_efa_to_reg(sefa, dreg) {
+	l_copy_efa_to_reg(sefa, dreg);
+	*[register]:4 (dreg + 0x8) = *[ram]:4 (sefa + 0x8);
+}
+
+macro q_copy_efa_to_reg(sefa, dreg) {
+	t_copy_efa_to_reg(sefa, dreg);
+	*[register]:4 (dreg + 0xc) = *[ram]:4 (sefa + 0xc);
+}
+
+macro l_copy_reg_to_efa(sreg, defa) {
+	*[ram]:4 (defa + 0x0) = *[register]:4 (sreg + 0x0);
+	*[ram]:4 (defa + 0x4) = *[register]:4 (sreg + 0x4);
+}
+
+macro t_copy_reg_to_efa(sreg, defa) {
+	l_copy_reg_to_efa(sreg, defa);
+	*[ram]:4 (defa + 0x8) = *[register]:4 (sreg + 0x8);
+}
+
+macro q_copy_reg_to_efa(sreg, defa) {
+	t_copy_reg_to_efa(sreg, defa);
+	*[ram]:4 (defa + 0xc) = *[register]:4 (sreg + 0xc);
+}
+
+macro l_copy_reg_to_reg(sreg, dreg) {
+	*[register]:4 (dreg + 0x0) = *[register]:4 (sreg + 0x0);
+	*[register]:4 (dreg + 0x4) = *[register]:4 (sreg + 0x4);
+}
+
+macro t_copy_reg_to_reg(sreg, dreg) {
+	l_copy_reg_to_reg(sreg, dreg);
+	*[register]:4 (dreg + 0x8) = *[register]:4 (sreg + 0x8);
+}
+
+macro q_copy_reg_to_reg(sreg, dreg) {
+	t_copy_reg_to_reg(sreg, dreg);
+	*[register]:4 (dreg + 0xc) = *[register]:4 (sreg + 0xc);
+}
+
+macro l_copy_efa_to_efa(sefa, defa) {
+	*[ram]:4 (defa + 0x0) = *[ram]:4 (sefa + 0x0);
+	*[ram]:4 (defa + 0x4) = *[ram]:4 (sefa + 0x4);
+}
+
+macro t_copy_efa_to_efa(sefa, defa) {
+	l_copy_efa_to_efa(sefa, defa);
+	*[ram]:4 (defa + 0x8) = *[ram]:4 (sefa + 0x8);
+}
+
+macro q_copy_efa_to_efa(sefa, defa) {
+	t_copy_efa_to_efa(sefa, defa);
+	*[ram]:4 (defa + 0xc) = *[ram]:4 (sefa + 0xc);
+}
+
+macro l_copy_lit_to_reg(slit, dreg) {
+	*[register]:4 (dreg + 0x0) = slit[0,32];
+	*[register]:4 (dreg + 0x4) = slit[32,32];
+}
+
+macro t_copy_lit_to_reg(slit, dreg) {
+	l_copy_lit_to_reg(slit, dreg);
+	*[register]:4 (dreg + 0x8) = slit[64,32];
+}
+
+macro q_copy_lit_to_reg(slit, dreg) {
+	t_copy_lit_to_reg(slit, dreg);
+	*[register]:4 (dreg + 0xc) = slit[96,32];
+}
+
+macro l_copy_reg_to_lit(sreg, dlit) {
+	dlit = zext(*[register]:4 (sreg + 0x0));
+	dlit = dlit | zext((*[register]:4 (sreg + 0x0)) << 32);
+}
+
+macro t_copy_reg_to_lit(sreg, dlit) {
+	l_copy_reg_to_lit(sreg, dlit);
+	dlit = dlit | zext((*[register]:4 (sreg + 0x0)) << 64);
+}
+
+macro q_copy_reg_to_lit(sreg, dlit) {
+	t_copy_reg_to_lit(sreg, dlit);
+	dlit = dlit | zext((*[register]:4 (sreg + 0x0)) << 96);
+}
+
+
+
 regS1:  op0004  is op0004  & m1=1 & s1=0 { local tmp:4 = op0004; export tmp; }
+regS1:  reg0004 is reg0004 & m1=0 & s1=0 { export reg0004; }
 regS1:  sfr0004 is sfr0004 & m1=0 & s1=1 { export sfr0004; }
 
-regS1l: reg0004 is reg0004 & m1=0 & s1=0 { local tmp:4 = &reg0004; export *[register]:8 tmp; }
-regS1l: op0004  is op0004  & m1=1 & s1=0 { local tmp:8 = op0004; export tmp; }
-regS1l: sfr0004 is sfr0004 & m1=0 & s1=1 { local tmp:4 = &sfr0004; export *[register]:8 tmp; }
-
-regS1t: reg0004 is reg0004 & m1=0 & s1=0 { local tmp:4 = &reg0004; export *[register]:12 tmp; }
-regS1t: op0004  is op0004  & m1=1 & s1=0 { local tmp:12 = op0004; export tmp; }
-regS1t: sfr0004 is sfr0004 & m1=0 & s1=1 { local tmp:4 = &sfr0004; export *[register]:12 tmp; }
-
-regS1q: reg0004 is reg0004 & m1=0 & s1=0 { local tmp:4 = &reg0004; export *[register]:16 tmp; }
-regS1q: op0004  is op0004  & m1=1 & s1=0 { local tmp:16 = op0004; export tmp; }
-regS1q: sfr0004 is sfr0004 & m1=0 & s1=1 { local tmp:4 = &sfr0004; export *[register]:16 tmp; }
-
-regS2:  reg1418 is reg1418 & m2=0 & s2=0 { export reg1418; }
 regS2:  op1418  is op1418  & m2=1 & s2=0 { local tmp:4 = op1418; export tmp; }
+regS2:  reg1418 is reg1418 & m2=0 & s2=0 { export reg1418; }
 regS2:  sfr1418 is sfr1418 & m2=0 & s2=1 { export sfr1418; }
 
-regS2l: reg1418 is reg1418 & m2=0 & s2=0 { local tmp:4 = &reg1418; export *[register]:8 tmp; }
 regS2l: op1418  is op1418  & m2=1 & s2=0 { local tmp:8 = op1418; export tmp; }
+regS2l: reg1418 is reg1418 & m2=0 & s2=0 { local tmp:4 = &reg1418; export *[register]:8 tmp; }
 regS2l: sfr1418 is sfr1418 & m2=0 & s2=1 { local tmp:4 = &sfr1418; export *[register]:8 tmp; }
 
 regSD:  reg1923 is reg1923 & m3=0 { export reg1923; }
@@ -741,9 +822,16 @@ define pcodeop __send;
 
 
 # cvtilr
-:cvtilr regS1l, fregSDl is op2431=0x67 & op0710=0x5 & regS1l & fregSDl
+:cvtilr regS1, fregSDl is op2431=0x67 & op0710=0x5 & regS1 & fregSDl & m1=0
 {
-	fregSDl = int2float(regS1l);
+	local tmp:8 = 0;
+	l_copy_reg_to_lit(regS1, tmp);
+	fregSDl = int2float(tmp);
+}
+:cvtilr op0004, fregSDl is op2431=0x67 & op0710=0x5 & op0004 & fregSDl & m1=1
+{
+	local tmp:8 = op0004;
+	fregSDl = int2float(tmp);
 }
 
 
@@ -979,7 +1067,7 @@ define pcodeop __fault;
 :ldl efa, reg1923 is ( op2431=0x98 & reg1923 ) ... & efa
 {
 	local dst:4 = &reg1923;
-	*[register]:8 dst = *[ram]:8 efa;
+	l_copy_efa_to_reg(efa, dst);
 }
 
 
@@ -1005,7 +1093,7 @@ define pcodeop __fault;
 :ldq efa, reg1923 is ( op2431=0xb0 & reg1923 ) ... & efa
 {
 	local dst:4 = &reg1923;
-	*[register]:16 dst = *[ram]:16 efa;
+	q_copy_efa_to_reg(efa, dst);
 }
 
 
@@ -1013,7 +1101,7 @@ define pcodeop __fault;
 :ldt efa, reg1923 is ( op2431=0xa0 & reg1923 ) ... & efa
 {
 	local dst:4 = &reg1923;
-	*[register]:12 dst = *[ram]:12 efa;
+	t_copy_efa_to_reg(efa, dst);
 }
 
 
@@ -1122,18 +1210,36 @@ define pcodeop __fault;
 
 
 # movl
-:movl regS1l, regSD is op2431=0x5d & op0710=0xc & regS1l & regSD
+:movl regS1, regSD is op2431=0x5d & op0710=0xc & regS1 & regSD & m1=0
 {
+	#TODO  better handle lit vs reg
 	local dst:4 = &regSD;
-	*[register]:8 dst = regS1l;
+	local src:4 = &regS1;
+	l_copy_reg_to_reg(src, dst);
+}
+:movl op0004, regSD is op2431=0x5d & op0710=0xc & op0004 & regSD & m1=1
+{
+	#TODO  better handle lit vs reg
+	local dst:4 = &regSD;
+	local src:8 = op0004;
+	l_copy_lit_to_reg(src, dst);
 }
 
 
 # movq
-:movq regS1q, regSD is op2431=0x5f & op0710=0xc & regS1q & regSD
+:movq regS1, regSD is op2431=0x5f & op0710=0xc & regS1 & regSD & m1=0
 {
+	#TODO  better handle lit vs reg
 	local dst:4 = &regSD;
-	*[register]:16 dst = regS1q;
+	local src:4 = &regS1;
+	q_copy_reg_to_reg(src, dst);
+}
+:movq op0004, regSD is op2431=0x5f & op0710=0xc & op0004 & regSD & m1=1
+{
+	#TODO  better handle lit vs reg
+	local dst:4 = &regSD;
+	local src:16 = op0004;
+	q_copy_lit_to_reg(src, dst);
 }
 
 
@@ -1191,10 +1297,19 @@ define pcodeop __fault;
 
 
 # movt
-:movt regS1t, regSD is op2431=0x5e & op0710=0xc & regS1t & regSD
+:movt regS1, regSD is op2431=0x5e & op0710=0xc & regS1 & regSD & m1=0
 {
+	#TODO  better handle lit vs reg
 	local dst:4 = &regSD;
-	*[register]:12 dst = regS1t;
+	local src:4 = &regS1;
+	t_copy_reg_to_reg(src, dst);
+}
+:movt op0004, regSD is op2431=0x5e & op0710=0xc & op0004 & regSD & m1=1
+{
+	#TODO  better handle lit vs reg
+	local dst:4 = &regSD;
+	local src:12 = op0004;
+	t_copy_lit_to_reg(src, dst);
 }
 
 
@@ -1377,10 +1492,10 @@ define pcodeop __fault;
 {
 	ac[0,3] = 0;
 	local code = (regS1[24,8] == regS2[24,8]) ||
-	      	     (regS1[16,8] == regS2[16,8]) ||
+		     (regS1[16,8] == regS2[16,8]) ||
 		     (regS1[8,8] == regS2[8,8]) ||
 		     (regS1[0,8] == regS2[0,8]);
-	ac[1,1] = code; 
+	ac[1,1] = code;
 }
 
 
@@ -1528,7 +1643,7 @@ define pcodeop __fault;
 :stl reg1923, efa is ( op2431=0x9a & reg1923 ) ... & efa
 {
 	local src:4 = &reg1923;
-	*[ram]:8 efa = *[register]:8 src;
+	l_copy_reg_to_efa(src, efa);
 }
 
 
@@ -1550,7 +1665,7 @@ define pcodeop __fault;
 :stq reg1923, efa is ( op2431=0xb2 & reg1923 ) ... & efa
 {
 	local src:4 = &reg1923;
-	*[ram]:16 efa = *[register]:16 src;
+	q_copy_reg_to_efa(src, efa);
 }
 
 
@@ -1558,7 +1673,7 @@ define pcodeop __fault;
 :stt reg1923, efa is ( op2431=0xa2 & reg1923 ) ... & efa
 {
 	local src:4 = &reg1923;
-	*[ram]:12 efa = *[register]:12 src;
+	t_copy_reg_to_efa(src, efa);
 }
 
 
@@ -1657,7 +1772,7 @@ define pcodeop __fault;
 :synmovl regS1, regS2 is op2431=0x60 & op0710=0x1 & regS1 & regS2
 {
 	#TODO  this might need work
-	*[ram]:8 regS1 = *[ram]:8 regS2;
+	l_copy_efa_to_efa(regS2, regS1);
 }
 
 
@@ -1665,7 +1780,7 @@ define pcodeop __fault;
 :synmovq regS1, regS2 is op2431=0x60 & op0710=0x2 & regS1 & regS2
 {
 	#TODO  this might need work
-	*[ram]:16 regS1 = *[ram]:16 regS2;
+	l_copy_efa_to_efa(regS2, regS1);
 }
 
 
