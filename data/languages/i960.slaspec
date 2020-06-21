@@ -445,7 +445,11 @@ define pcodeop __send;
 
 
 # atanrl  8,8,8
-:atanrl fregS1l, fregS2l, fregSDl is op2431=0x69 & op0710=0x0 & fregS1l & fregS2l & fregSDl unimpl
+:atanrl fregS1l, fregS2l, fregSDl is op2431=0x69 & op0710=0x0 & fregS1l & fregS2l & fregSDl
+{
+	local tmp:10 = fregS2l f/ fregS1l;
+	fregSDl = atan(tmp);
+}
 
 
 # atmod
@@ -1184,9 +1188,11 @@ define pcodeop __fault;
 {
 	local mask = regS2;
 	local src_dest = regSD;
+	pc = inst_next;
 	regSD = pc;
 	if (0 == mask) goto inst_next;
 	pc = (mask & src_dest) | (pc & ~mask);
+	goto [pc];
 }
 
 
