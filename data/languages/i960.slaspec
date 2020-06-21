@@ -1187,12 +1187,11 @@ define pcodeop __fault;
 :modpc regS1, regS2, regSD is op2431=0x65 & op0710=0x5 & regS1 & regS2 & regSD
 {
 	local mask = regS2;
-	local src_dest = regSD;
-	pc = inst_next;
-	regSD = pc;
+	local src_dest = regS1;
+	regSD = inst_next;
 	if (0 == mask) goto inst_next;
-	pc = (mask & src_dest) | (pc & ~mask);
-	goto [pc];
+	regSD = (mask & src_dest) | (regSD & ~mask);
+	goto [regSD];
 }
 
 
