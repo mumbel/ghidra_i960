@@ -1,8 +1,5 @@
 # i960 / 80960
 
-
-define endian=little;
-
 define alignment=4;
 
 define space ram type=ram_space size=4 default;

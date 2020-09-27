@@ -7,10 +7,21 @@
             size="32"
             variant="default"
             version="1.0"
-            slafile="i960.sla"
+            slafile="i960_le.sla"
             processorspec="i960.pspec"
             id="i960:LE:32:default">
-    <description>i960 80960</description>
+    <description>i960 80960 LE</description>
+    <compiler name="default" spec="i960.cspec" id="default"/>
+  </language>
+  <language processor="i960"
+            endian="big"
+            size="32"
+            variant="default"
+            version="1.0"
+            slafile="i960_be.sla"
+            processorspec="i960.pspec"
+            id="i960:BE:32:default">
+    <description>i960 80960 BE</description>
     <compiler name="default" spec="i960.cspec" id="default"/>
   </language>
   

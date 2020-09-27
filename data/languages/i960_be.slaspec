@@ -1,0 +1,5 @@
+# i960 big endian
+
+define endian=big;
+
+@include "i960.sinc"
