@@ -6,28 +6,83 @@ define space ram type=ram_space size=4 default;
 
 define space register type=register_space size=4;
 
-@define SALIGN 1
+#TODO  slaspec or context value instead?
+@define SALIGN 4
 
-define register offset=0 size=4 [ pfp sp rip r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14 r15 g0 g1 g2 g3 g4 g5 g6 g7 g8 g9 g10 g11 g12 g13 g14 fp ];
+# Local Registers
+# r0  - pfp - previous frame pointer
+# r1  - sp  - stack pointer
+# r2  - rip - return instruction pointer
+define register offset=0x00 size=4 [ pfp sp rip r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14 r15 ];
 
+# Global Registers
+# g15 - fp  - frame pointer
+define register offset=0x40 size=4 [ g0 g1 g2 g3 g4 g5 g6 g7 g8 g9 g10 g11 g12 g13 g14 fp ];
+
+# SF
 define register offset=0x100 size=4 [ sf0 sf1 sf2 sf3 sf4 sf5 sf6 sf7 sf8 sf9 sf10 sf11 sf12 sf13 sf14 sf15 sf16 sf17 sf18 sf19 sf20 sf21 sf22 sf23 sf24 sf25 sf26 sf27 sf28 sf29 sf30 sf31 ];
 
+# 80-bit registers  extended-real format
+define register offset=0x300 size=10 [ fp0 fp1 fp2 fp3 ];
 
 define register offset=0x200 size=4 [ pc ac ip tc ];
 
+
+# PFP return status
+# 000 - local/super call from super, local return
+# 001 - fault call, fault return
+# 011 - super call from user, trace enabled, super return, trace enable, PC=0 mode=0
+# 100 - reserved
+# 101 - reserved
+# 110 - stopped-interrupt call, stopped-interrupt return
+# 111 - interrupt call, interrupt return
+
+
 # PC  Process Controls Register
-# PC.te [0,1] # Trace-Enable Bit
-# PC.em [1,1] # Execution-Mode Flag
-# PC.tfp [10,1] # Trace-Fault-Pending
-# PC.s [13,1] # State Flag
-# PC.p [16,5] # Priority Field
+# PC [0,1] # Trace-Enable Bit
+# PC [1,1] # Execution-Mode Flag
+# PC [9,1] # Resume
+# PC [10,1] # Trace-Fault-Pending
+# PC [13,1] # State Flag
+# PC [16,5] # Priority Field
+# PC [21,11] # internal state
 
 # AC  Arithmetic Controls Register
-# AC.cc [0,3] # Condition Code Bits
-# AC.of [8,1] # Integer-Overflow Flag
-# AC.om [12,1] # Integer Overflow Mask Bit
-# AC.nif [15,1] # No-Imprecise-Faults Bit
+# AC [0,3] # Condition Code Bits
+# AC [3,4] # Arithmetic status
+# AC [8,1] # Integer-Overflow Flag
+# AC [12,1] # Integer Overflow Mask Bit
+# AC [15,1] # No-Imprecise-Faults Bit
+# AC [16,1] # Floating overflow flag
+# AC [17,1] # Floating underflow flag
+# AC [18,1] # Floating invalid-op flag
+# AC [19,1] # Floating zero-divide flag
+# AC [20,1] # Floating inexct flag
+# AC [24,1] # Floating overflow mask
+# AC [25,1] # Floating underflow mask
+# AC [26,1] # Floating invalid-op mask
+# AC [27,1] # Floating zero-divide mask
+# AC [28,1] # Floating inexact mask
+# AC [29,1] # Floating-Point Normalizing Mode
+# AC [30,2] # Floating-Point Rounding Control
 
+# TC Trace-Controls
+# TC[1,1] # instruction trace mode
+# TC[2,1] # branch trace mode
+# TC[3,1] # call trace mode
+# TC[4,1] # return trace mode
+# TC[5,1] # prereturn trace mode
+# TC[6,1] # supervise trace mode
+# TC[7,1] # breakpoint trace mode
+# TC[17,1] # instruction trace event
+# TC[18,1] # branch trace event
+# TC[19,1] # call trace event
+# TC[20,1] # return trace event
+# TC[21,1] # prereturn trace event
+# TC[22,1] # supervisor trace event
+# TC[23,1] # breakpoint trace event
+
+# condition codes
 # 010 true
 # 000 false
 # 000 unordered
@@ -41,10 +96,14 @@ define register offset=0x200 size=4 [ pc ac ip tc ];
 # 01X carry out
 # 0X1 overflow
 
-
-# 80-bit registers  extended-real format
-define register offset=0x300 size=10 [ fp0 fp1 fp2 fp3 ];
-
+# arithmetic status, s=sign
+# s000 Zero
+# s001 Denom
+# s010 Normal
+# s011 inf
+# s100 quiet
+# s101 signal
+# s110 resv
 
 
 define token instr (32)
@@ -179,18 +238,18 @@ macro q_copy_efa_to_efa(sefa, defa) {
 }
 
 macro l_copy_lit_to_reg(slit, dreg) {
-	*[register]:4 (dreg + 0x0) = slit[0,32];
-	*[register]:4 (dreg + 0x4) = slit[32,32];
+	*[register]:4 (dreg + 0x0) = slit[0,5];
+	*[register]:4 (dreg + 0x4) = slit[0,5];
 }
 
 macro t_copy_lit_to_reg(slit, dreg) {
 	l_copy_lit_to_reg(slit, dreg);
-	*[register]:4 (dreg + 0x8) = slit[64,32];
+	*[register]:4 (dreg + 0x8) = slit[0,5];
 }
 
 macro q_copy_lit_to_reg(slit, dreg) {
 	t_copy_lit_to_reg(slit, dreg);
-	*[register]:4 (dreg + 0xc) = slit[96,32];
+	*[register]:4 (dreg + 0xc) = slit[0,5];
 }
 
 macro l_copy_reg_to_lit(sreg, dlit) {
@@ -306,14 +365,14 @@ disp0212: reloc is sop0212 [ reloc = ((sop0212 << 2) + inst_start) & 0xfffffffc;
 disp0223: reloc is sop0223 [ reloc = ((sop0223 << 2) + inst_start) & 0xfffffffc; ] { export *[ram]:4 reloc; }
 
 # conditions
-cc: "no" is op2426=0 { local tmp:1 = ((ac[0,1] | ac[1,1] | ac[2,1]) == 0); export tmp; }
+cc: "no" is op2426=0 { local tmp:1 = 0; export tmp; }
 cc: "g"  is op2426=1 { local tmp:1 = (ac[0,1] == 1); export tmp; }
 cc: "e"  is op2426=2 { local tmp:1 = (ac[1,1] == 1); export tmp; }
 cc: "ge" is op2426=3 { local tmp:1 = ((ac[0,1] | ac[1,1]) == 1); export tmp; }
 cc: "l"  is op2426=4 { local tmp:1 = (ac[2,1] == 1); export tmp; }
 cc: "ne" is op2426=5 { local tmp:1 = ((ac[0,1] | ac[2,1]) == 1); export tmp; }
 cc: "le" is op2426=6 { local tmp:1 = ((ac[1,1] | ac[2,1]) == 1); export tmp; }
-cc: "o"  is op2426=7 { local tmp:1 = ((ac[0,1] | ac[1,1] | ac[2,1]) == 1); export tmp; }
+cc: "o"  is op2426=7 { local tmp:1 = 1; export tmp; }
 
 
 define pcodeop atan;
@@ -321,12 +380,13 @@ define pcodeop cos;
 define pcodeop sin;
 define pcodeop tan;
 define pcodeop log2;
-
+define pcodeop flushreg;
 define pcodeop syscall;
-
-define pcodeop __scanbit;
-define pcodeop __send;
-
+define pcodeop syncf;
+define pcodeop scanbit;
+define pcodeop spanbit;
+define pcodeop send;
+define pcodeop fault;
 
 # addc
 :addc regS1, regS2, regSD is op2431=0x5b & op0710=0x0 & regS1 & regS2 & regSD
@@ -403,16 +463,18 @@ define pcodeop __send;
 :alterbit regS1, regS2, regSD is op2431=0x58 & op0710=0xf & regS1 & regS2 & regSD
 {
 	local bitpos = 1 << regS1;
-	regSD = regS2 | bitpos;
+	local tmp0:4 = regS2 & ~bitpos;
+	local tmp1:4 = regS2 | bitpos;
+	regSD = tmp1;
 	if (ac[1,1]) goto inst_next;
-	regSD = regSD & ~bitpos;
+	regSD = tmp0;
 }
 
 
 # and
 :and regS1, regS2, regSD is op2431=0x58 & op0710=0x1 & regS1 & regS2 & regSD
 {
-	regSD = regS1 & regS2;
+	regSD = regS2 & regS1;
 }
 
 
@@ -429,7 +491,7 @@ define pcodeop __send;
 	local addr:4 = regS1 & 0xfffffffc;
 	local tmp:4 = *[ram]:4 addr;
 	*[ram]:4 addr = (tmp + regS2);
-	regSD = regS2;
+	regSD = tmp;
 }
 
 
@@ -470,7 +532,7 @@ define pcodeop __send;
 :bal disp0223 is op2431=0xb & op0000=0x0 & disp0223
 {
 	g14 = inst_next;
-	call disp0223;
+	goto disp0223;
 }
 
 
@@ -479,27 +541,25 @@ define pcodeop __send;
 {
 	local ea:4 = efa;
 	reg1923 = inst_next;
-	call [ea];
+	goto [ea];
 }
 
 
 # bbc
 :bbc cobrS1, cobrS2, disp0212 is op2431=0x30 & cobrS1 & cobrS2 & disp0212
 {
-	ac[0,3] = 0;
-	if (((1<<cobrS1) & cobrS2) == 0) goto inst_next;
-	ac[1,1] = 1;
-	goto disp0212;
+	ac[0,3] = 2;
+	if (((1<<cobrS1) & cobrS2) != 0) goto disp0212;
+	ac[1,1] = 0;
 }
 
 
 # bbs
 :bbs cobrS1, cobrS2, disp0212 is op2431=0x37 & cobrS1 & cobrS2 & disp0212
 {
-	ac[0,3] = 0;
-	if (((1<<cobrS1) & cobrS2) != 0) goto inst_next;
-	ac[1,1] = 1;
-	goto disp0212;
+	ac[0,3] = 2;
+	if (((1<<cobrS1) & cobrS2) == 0) goto disp0212;
+	ac[1,1] = 0;
 }
 
 
@@ -531,12 +591,75 @@ define pcodeop __send;
 	goto [efa];
 }
 
+# Local Call Operation  ( call or callx )
+# 1. Stores the RIP in current local-register r2.
+# 2. Allocates a new set of local registers for the called procedure.
+# 3. Allocates a new frame on the procedure stack.
+# 4. Changes the instruction pointer to point to the first instruction in the called procedure.
+# 5. Stores the PFP in new local-register rOo
+# 6. Stores the FP for the new frame in global register g15.
+# 7. Allocates a save area for the new local registers in the new stack frame.
+# 8. Stores the SP in new local-register r1
+
+# Local Return Operation
+# 1. Sets the FP in global register g15 to the value of the PFP in current local-register rOo
+# 2. Deallocates the current local registers for the procedure that initiated the return and
+#    switches to the local registers assigned to the procedure being returned to.
+# 3. Deallocates the stack frame for the procedure that initiated the return.
+# 4. Sets the IP to the value of the RIP in new local~register r2.
+
+macro alloc_register_set() {
+	local nop:4 = 0;
+	nop = nop;
+	# fp = fp & 0xffffffc0;
+	# *[ram]:4 (fp + 0x00) = pfp;
+	# *[ram]:4 (fp + 0x04) = sp;
+	# *[ram]:4 (fp + 0x08) = rip;
+	# *[ram]:4 (fp + 0x0c) = r3;
+	# *[ram]:4 (fp + 0x10) = r4;
+	# *[ram]:4 (fp + 0x14) = r5;
+	# *[ram]:4 (fp + 0x18) = r6;
+	# *[ram]:4 (fp + 0x1c) = r7;
+	# *[ram]:4 (fp + 0x20) = r8;
+	# *[ram]:4 (fp + 0x24) = r9;
+	# *[ram]:4 (fp + 0x28) = r10;
+	# *[ram]:4 (fp + 0x2c) = r11;
+	# *[ram]:4 (fp + 0x30) = r12;
+	# *[ram]:4 (fp + 0x34) = r13;
+	# *[ram]:4 (fp + 0x38) = r14;
+	# *[ram]:4 (fp + 0x3c) = r15;
+}
+
+macro dealloc_register_set() {
+	local nop:4 = 0;
+	nop = nop;
+	# pfp = *[ram]:4 (fp + 0x00);
+	# sp = *[ram]:4 (fp + 0x04);
+	# rip = *[ram]:4 (fp + 0x08);
+	# r3 = *[ram]:4 (fp + 0x0c);
+	# r4 = *[ram]:4 (fp + 0x10);
+	# r5 = *[ram]:4 (fp + 0x14);
+	# r6 = *[ram]:4 (fp + 0x18);
+	# r7 = *[ram]:4 (fp + 0x1c);
+	# r8 = *[ram]:4 (fp + 0x20);
+	# r9 = *[ram]:4 (fp + 0x24);
+	# r10 = *[ram]:4 (fp + 0x28);
+	# r11 = *[ram]:4 (fp + 0x2c);
+	# r12 = *[ram]:4 (fp + 0x30);
+	# r13 = *[ram]:4 (fp + 0x34);
+	# r14 = *[ram]:4 (fp + 0x38);
+	# r15 = *[ram]:4 (fp + 0x3c);
+}
+
 
 # call
 :call disp0223 is op2431=0x9 & op0000=0x0 & disp0223
 {
 	rip = inst_next;
-	pfp = fp;
+	alloc_register_set();
+	ip = disp0223;
+	pfp = fp & 0xffffffc0; # 26 bit copy
+	#TODO  set return status
 	fp = (sp + ($(SALIGN) * 16 - 1)) & ~($(SALIGN) * 16 - 1);
 	sp = fp + 64;
 	call disp0223;
@@ -554,9 +677,12 @@ define pcodeop __send;
 # callx
 :callx efa is ( op2431=0x86 ) ... & efa
 {
-	local tmp:4 = efa;
 	rip = inst_next;
-	pfp = fp;
+	alloc_register_set();
+	local tmp:4 = efa;
+	ip = tmp;
+	pfp = fp & 0xffffffc0; # 26 bit copy
+	#TODO  set return status
 	fp = (sp + ($(SALIGN) * 16 - 1)) & ~($(SALIGN) * 16 - 1);
 	sp = fp + 64;
 	call [tmp];
@@ -573,13 +699,6 @@ define pcodeop __send;
 
 # arithmetic-status bits 3 to 6
 # s -sign
-# s000 Zero
-# s001 Denom
-# s010 Normal
-# s011 inf
-# s100 quiet
-# s101 signal
-# s110 resv
 # classr
 :classr fregS1 is op2431=0x68 & op0710=0xf & fregS1 unimpl
 
@@ -653,7 +772,7 @@ define pcodeop __send;
 :cmpinco regS1, regS2, regSD is op2431=0x5a & op0710=0x4 & regS1 & regS2 & regSD
 {
 	cmp_set_ac(regS1, regS2);
-	regSD = regS2 - 1;
+	regSD = regS2 + 1;
 }
 
 
@@ -759,7 +878,7 @@ define pcodeop __send;
 # concmpi
 :concmpi regS1, regS2 is op2431=0x5a & op0710=0x3 & regS1 & regS2
 {
-	if (!(ac[2,1])) goto inst_next;
+	if (ac[2,1]) goto inst_next;
 	ac[2,1] = 0;
 	ac[1,1] = regS1 s<= regS2;
 	ac[0,1] = regS1 s> regS2;
@@ -769,8 +888,8 @@ define pcodeop __send;
 # concmpo
 :concmpo regS1, regS2 is op2431=0x5a & op0710=0x2 & regS1 & regS2
 {
-	if (!(ac[2,1])) goto inst_next;
-	ac[0,3] = 0;
+	if (ac[2,1]) goto inst_next;
+	ac[2,1] = 0;
 	ac[1,1] = regS1 <= regS2;
 	ac[0,1] = regS1 > regS2;
 }
@@ -881,7 +1000,9 @@ define pcodeop __send;
 {
 	local tmp:4 = (0xf & regS1) + (0xf & regS2) + zext(ac[1,1]);
 	regSD = (0xfffffff0 & regS2) | (0xf & tmp);
+	ac[2,1] = 0;
 	ac[1,1] = tmp[4,1];
+	ac[0,1] = 0;
 }
 
 
@@ -937,7 +1058,9 @@ define pcodeop __send;
 {
 	local tmp:4 = (0xf & regS2) - (0xf & regS1) - 1 + zext(ac[1,1]);
 	regSD = (0xfffffff0 & regS2) | (0xf & tmp);
+	ac[2,1] = 0;
 	ac[1,1] = tmp[31,1];
+	ac[0,1] = 0;
 }
 
 
@@ -982,7 +1105,7 @@ define pcodeop __send;
 :extract regS1, regS2, regSD is op2431=0x65 & op0710=0x1 & regS1 & regS2 & regSD unimpl
 
 
-define pcodeop __fault;
+
 
 # faultno      op2431=0x18
 # faultg       op2431=0x19
@@ -996,7 +1119,7 @@ define pcodeop __fault;
 {
 	#TODO  this is probably super broken
 	if (!cc) goto inst_next;
-	__fault();
+	fault();
 }
 
 
@@ -1005,7 +1128,11 @@ define pcodeop __fault;
 
 
 # flushreg
-:flushreg  is op2431=0x66 & op0710=0xd unimpl
+:flushreg  is op2431=0x66 & op0710=0xd
+{
+	# all local-register sets except the current, written to associate stack frame
+	flushreg();
+}
 
 
 # fmark
@@ -1354,7 +1481,7 @@ define pcodeop __fault;
 # nor
 :nor regS1, regS2, regSD is op2431=0x58 & op0710=0x8 & regS1 & regS2 & regSD
 {
-	regSD = ~regS1 & ~regS2;
+	regSD = ~regS2 & ~regS1;
 }
 
 
@@ -1368,7 +1495,7 @@ define pcodeop __fault;
 # notand
 :notand regS1, regS2, regSD is op2431=0x58 & op0710=0x4 & regS1 & regS2 & regSD
 {
-	regSD = ~(regS1 & regS2);
+	regSD = ~regS2 & regS1;
 }
 
 
@@ -1434,8 +1561,11 @@ define pcodeop __fault;
 # ret
 :ret  is op2431=0xa & op0000=0x0
 {
-	fp = pfp;
-	return [rip];
+	#TODO  handle return status
+	fp = pfp & 0xffffffc0;
+	dealloc_register_set();
+	ip = rip;
+	return [ip];
 }
 
 
@@ -1485,7 +1615,11 @@ define pcodeop __fault;
 :scanbit regS1, regSD is op2431=0x64 & op0710=0x1 & regS1 & regSD
 {
 	#TODO  this is probably similar to other count leading zero type instructions
-	regSD = __scanbit(regS1);
+	regSD = 0xffffffff;
+	ac[0,3] = 0;
+	if (regS1 == 0) goto inst_next;
+	regSD = scanbit(regS1);
+	ac[0,3] = 2;
 }
 
 
@@ -1529,7 +1663,7 @@ define pcodeop __fault;
 :send regS1, regS2, regSD is op2431=0x66 & op0710=0x2 & regS1 & regS2 & regSD
 {
 	#TODO  not sure
-	__send(regS1, regS2, regSD);
+	send(regS1, regS2, regSD);
 }
 
 
@@ -1563,9 +1697,7 @@ define pcodeop __fault;
 :shrdi regS1, regS2, regSD is op2431=0x59 & op0710=0xa & regS1 & regS2 & regSD
 {
 	#TODO  are there flags here?
-	#TODO  is this correct?
-	# (x + ((x >> 31) & ((1 << n) + ~0))) >> n
-	regSD = (regS2 + ((regS2 s>> 31) & ((1 << regS1) + ~0))) s>> regS1;
+	regSD = regS2 / (1 << regS1);
 }
 
 
@@ -1603,7 +1735,14 @@ define pcodeop __fault;
 
 
 # spanbit
-:spanbit regS1, regSD is op2431=0x64 & op0710=0x0 & regS1 & regSD unimpl
+:spanbit regS1, regSD is op2431=0x64 & op0710=0x0 & regS1 & regSD
+{
+	ac[0,3] = 0;
+	regSD = 0xffffffff;
+	if (regS1 == 0xffffffff) goto inst_next;
+	regSD = spanbit(regS1);
+	ac[0,3] = 2;
+}
 
 
 # sqrtr
@@ -1751,7 +1890,10 @@ define pcodeop __fault;
 
 
 # syncf
-:syncf  is op2431=0x66 & op0710=0xf unimpl
+:syncf  is op2431=0x66 & op0710=0xf
+{
+	syncf();
+}
 
 
 # synld
@@ -1759,6 +1901,7 @@ define pcodeop __fault;
 {
 	#TODO  this might need work
 	regSD = *[ram]:4 regS1;
+	ac[0,3] = 2;
 }
 
 
@@ -1782,7 +1925,7 @@ define pcodeop __fault;
 :synmovq regS1, regS2 is op2431=0x60 & op0710=0x2 & regS1 & regS2
 {
 	#TODO  this might need work
-	l_copy_efa_to_efa(regS2, regS1);
+	q_copy_efa_to_efa(regS2, regS1);
 }
 
 
@@ -1833,7 +1976,7 @@ define pcodeop __fault;
 # xnor
 :xnor regS1, regS2, regSD is op2431=0x58 & op0710=0x9 & regS1 & regS2 & regSD
 {
-	regSD = ~(regS1 | regS2) | (regS1 & regS2);
+	regSD = ~(regS1 ^ regS2);
 }
 
 
