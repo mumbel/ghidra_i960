@@ -286,22 +286,24 @@ regSD:  reg1923 is reg1923 & m3=0 { export reg1923; }
 # regSDl: reg1923 is reg1923 & m3=0 { local tmp:4 = &reg1923; export *[register]:8 tmp; }
 # regSDq: reg1923 is reg1923 & m3=0 { local tmp:4 = &reg1923; export *[register]:12 tmp; }
 
-
-cobrS1: reg0004 is reg0004 & M1=0 & S2=0 { export reg0004; }
+#SEE  Encoding of Src1 and Src2 Fields in REG Format
+#     Same encoding is used for COBR
+#TODO The FP encoding still looks off and probably needs the same table look ups
+#     as fregS1
+cobrS1: reg1923 is reg1923 & M1=0 & S2=0 { export reg1923; }
 cobrS2: reg1418 is reg1418 & M1=0 & S2=0 { export reg1418; }
 cobrSD: reg1923 is reg1923 & M1=0 & S2=0 { export reg1923; }
 
-cobrS1: op0004  is op0004  & M1=1 & S2=0 { local tmp:4 = op0004; export tmp; }
+cobrS1: op1923  is op1923  & M1=1 & S2=0 { local tmp:4 = op1923; export tmp; }
 cobrS2: reg1418 is reg1418 & M1=1 & S2=0 { export reg1418; }
-cobrSD: reg1923 is reg1923 & M1=1 & S2=0 { export reg1923; }
 
-cobrS1: reg0004 is reg0004 & M1=0 & S2=1 { export reg0004; }
+cobrS1: sfr1923 is sfr1923 & M1=0 & S2=1 { export sfr1923; }
 cobrS2: sfr1418 is sfr1418 & M1=0 & S2=1 { export sfr1418; }
+#TODO  not sure if this can happend
 cobrSD: sfr1923 is sfr1923 & M1=0 & S2=1 { export sfr1923; }
 
-cobrS1: op0004  is op0004  & M1=1 & S2=1 & t=0 { local tmp:4 = op0004; export tmp; }
+cobrS1: op1923  is op1923  & M1=1 & S2=1 & t=0 { local tmp:4 = op1923; export tmp; }
 cobrS2: sfr1418 is sfr1418 & M1=1 & S2=1 & t=0 { export sfr1418; }
-cobrSD: sfr1923 is sfr1923 & M1=1 & S2=1 & t=0 { export sfr1923; }
 
 
 # reals: 1 reg (Real), 2 regs (Long Real), or 3 regs (Extended Real)
