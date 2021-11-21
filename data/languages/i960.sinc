@@ -238,18 +238,18 @@ macro q_copy_efa_to_efa(sefa, defa) {
 }
 
 macro l_copy_lit_to_reg(slit, dreg) {
-	*[register]:4 (dreg + 0x0) = slit[0,5];
-	*[register]:4 (dreg + 0x4) = slit[0,5];
+	*[register]:4 (dreg + 0x0) = slit[0,32];
+	*[register]:4 (dreg + 0x4) = slit[32,32];
 }
 
 macro t_copy_lit_to_reg(slit, dreg) {
 	l_copy_lit_to_reg(slit, dreg);
-	*[register]:4 (dreg + 0x8) = slit[0,5];
+	*[register]:4 (dreg + 0x8) = slit[64,32];
 }
 
 macro q_copy_lit_to_reg(slit, dreg) {
 	t_copy_lit_to_reg(slit, dreg);
-	*[register]:4 (dreg + 0xc) = slit[0,5];
+	*[register]:4 (dreg + 0xc) = slit[96,32];
 }
 
 macro l_copy_reg_to_lit(sreg, dlit) {
@@ -611,59 +611,28 @@ define pcodeop fault;
 # 4. Sets the IP to the value of the RIP in new local~register r2.
 
 macro alloc_register_set() {
-	local nop:4 = 0;
-	nop = nop;
-	# fp = fp & 0xffffffc0;
-	# *[ram]:4 (fp + 0x00) = pfp;
-	# *[ram]:4 (fp + 0x04) = sp;
-	# *[ram]:4 (fp + 0x08) = rip;
-	# *[ram]:4 (fp + 0x0c) = r3;
-	# *[ram]:4 (fp + 0x10) = r4;
-	# *[ram]:4 (fp + 0x14) = r5;
-	# *[ram]:4 (fp + 0x18) = r6;
-	# *[ram]:4 (fp + 0x1c) = r7;
-	# *[ram]:4 (fp + 0x20) = r8;
-	# *[ram]:4 (fp + 0x24) = r9;
-	# *[ram]:4 (fp + 0x28) = r10;
-	# *[ram]:4 (fp + 0x2c) = r11;
-	# *[ram]:4 (fp + 0x30) = r12;
-	# *[ram]:4 (fp + 0x34) = r13;
-	# *[ram]:4 (fp + 0x38) = r14;
-	# *[ram]:4 (fp + 0x3c) = r15;
+	local regtmp = &pfp;
+	local alignfp = fp & 0xffffffc0;
+	*[ram]:0x40 alignfp = *[register]:0x40 regtmp;
 }
 
 macro dealloc_register_set() {
-	local nop:4 = 0;
-	nop = nop;
-	# pfp = *[ram]:4 (fp + 0x00);
-	# sp = *[ram]:4 (fp + 0x04);
-	# rip = *[ram]:4 (fp + 0x08);
-	# r3 = *[ram]:4 (fp + 0x0c);
-	# r4 = *[ram]:4 (fp + 0x10);
-	# r5 = *[ram]:4 (fp + 0x14);
-	# r6 = *[ram]:4 (fp + 0x18);
-	# r7 = *[ram]:4 (fp + 0x1c);
-	# r8 = *[ram]:4 (fp + 0x20);
-	# r9 = *[ram]:4 (fp + 0x24);
-	# r10 = *[ram]:4 (fp + 0x28);
-	# r11 = *[ram]:4 (fp + 0x2c);
-	# r12 = *[ram]:4 (fp + 0x30);
-	# r13 = *[ram]:4 (fp + 0x34);
-	# r14 = *[ram]:4 (fp + 0x38);
-	# r15 = *[ram]:4 (fp + 0x3c);
+	local regtmp = &pfp;
+	local alignfp = fp & 0xffffffc0;
+	*[register]:0x40 regtmp = *[ram]:0x40 alignfp;
 }
 
 
 # call
 :call disp0223 is op2431=0x9 & op0000=0x0 & disp0223
 {
+	local temp:4 = (sp + ($(SALIGN) * 16 - 1)) & ~($(SALIGN) * 16 - 1);
 	rip = inst_next;
 	alloc_register_set();
 	ip = disp0223;
-	pfp = fp & 0xffffffc0; # 26 bit copy
-	#TODO  set return status
-	fp = (sp + ($(SALIGN) * 16 - 1)) & ~($(SALIGN) * 16 - 1);
-	sp = fp + 64;
+	pfp = fp;
+	fp = temp;
+	sp = temp + 64;
 	call disp0223;
 }
 
@@ -679,15 +648,15 @@ macro dealloc_register_set() {
 # callx
 :callx efa is ( op2431=0x86 ) ... & efa
 {
+	local temp:4 = (sp + ($(SALIGN) * 16 - 1)) & ~($(SALIGN) * 16 - 1);
+	local targ:4 = efa;
 	rip = inst_next;
 	alloc_register_set();
-	local tmp:4 = efa;
-	ip = tmp;
-	pfp = fp & 0xffffffc0; # 26 bit copy
-	#TODO  set return status
-	fp = (sp + ($(SALIGN) * 16 - 1)) & ~($(SALIGN) * 16 - 1);
-	sp = fp + 64;
-	call [tmp];
+	ip = targ;
+	pfp = fp;
+	fp = temp;
+	sp = temp + 64;
+	call [targ];
 }
 
 
@@ -1564,7 +1533,7 @@ macro dealloc_register_set() {
 :ret  is op2431=0xa & op0000=0x0
 {
 	#TODO  handle return status
-	fp = pfp & 0xffffffc0;
+	fp = pfp;
 	dealloc_register_set();
 	ip = rip;
 	return [ip];
