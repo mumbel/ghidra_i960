@@ -46,7 +46,6 @@
   <returnaddress>
     <register name="rip"/>
   </returnaddress>
-  <!-- <stackpointer register="sp" space="ram" growth="positive"/> -->
   <stackpointer register="sp" space="ram" growth="positive"/>
   <default_proto>
     <prototype name="__stdcall" extrapop="0" stackshift="64">
